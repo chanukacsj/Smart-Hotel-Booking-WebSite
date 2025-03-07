@@ -7,7 +7,6 @@ import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class SmartHotelBookingWebSiteApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(SmartHotelBookingWebSiteApplication.class, args);
 

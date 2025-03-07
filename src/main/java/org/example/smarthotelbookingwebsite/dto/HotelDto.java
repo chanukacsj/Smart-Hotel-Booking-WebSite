@@ -1,36 +1,28 @@
-package org.example.smarthotelbookingwebsite.entity;
+package org.example.smarthotelbookingwebsite.dto;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import org.example.smarthotelbookingwebsite.entity.Room;
 
 import java.util.List;
 
-@Entity
-@Table(name = "hotels")
-public class Hotel {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class HotelDto {
     private Long id;
-    @Column(nullable = false)
     private String name;
     private String location;
     private String description;
     private String amenities;
     private int PhoneNumber;
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    private List<Room> rooms;
 
-    public Hotel(Long id, String name, String location, String description, String amenities, int phoneNumber, List<Room> rooms) {
+    public HotelDto(Long id, String name, String location, String description, String amenities, int phoneNumber) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.description = description;
         this.amenities = amenities;
         PhoneNumber = phoneNumber;
-        this.rooms = rooms;
     }
 
-    public Hotel() {
+    public HotelDto() {
     }
 
     public Long getId() {
@@ -81,24 +73,15 @@ public class Hotel {
         PhoneNumber = phoneNumber;
     }
 
-    public List<Room> getRooms() {
-        return rooms;
-    }
-
-    public void setRooms(List<Room> rooms) {
-        this.rooms = rooms;
-    }
-
     @Override
     public String toString() {
-        return "Hotel{" +
+        return "HotelDto{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
                 ", PhoneNumber=" + PhoneNumber +
-                ", rooms=" + rooms +
                 '}';
     }
 }
