@@ -16,11 +16,11 @@ public class Hotel {
     private String location;
     private String description;
     private String amenities;
-    private int PhoneNumber;
+    private String PhoneNumber;
     @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
     private List<Room> rooms;
 
-    public Hotel(Long id, String name, String location, String description, String amenities, int phoneNumber, List<Room> rooms) {
+    public Hotel(Long id, String name, String location, String description, String amenities, String phoneNumber, List<Room> rooms) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -73,11 +73,11 @@ public class Hotel {
         this.amenities = amenities;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return PhoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
 
@@ -97,7 +97,7 @@ public class Hotel {
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
-                ", PhoneNumber=" + PhoneNumber +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", rooms=" + rooms +
                 '}';
     }

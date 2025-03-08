@@ -1,39 +1,25 @@
-package org.example.smarthotelbookingwebsite.entity;
-
-import jakarta.persistence.*;
-import lombok.*;
+package org.example.smarthotelbookingwebsite.dto;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "reviews")
-public class Review {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+public class ReviewDTO {
     private Long id;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @ManyToOne
-    @JoinColumn(name = "hotel_id", nullable = false)
-    private Hotel hotel;
-
-    private int rating; // 1-5 stars
+    private Long userId;
+    private Long hotelId;
+    private int rating;
     private String comment;
     private LocalDate reviewDate;
 
-    public Review(Long id, User user, Hotel hotel, int rating, String comment, LocalDate reviewDate) {
+    public ReviewDTO(Long id, Long userId, Long hotelId, int rating, String comment, LocalDate reviewDate) {
         this.id = id;
-        this.user = user;
-        this.hotel = hotel;
+        this.userId = userId;
+        this.hotelId = hotelId;
         this.rating = rating;
         this.comment = comment;
         this.reviewDate = reviewDate;
     }
 
-    public Review() {
+    public ReviewDTO() {
     }
 
     public Long getId() {
@@ -44,20 +30,20 @@ public class Review {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public Hotel getHotel() {
-        return hotel;
+    public Long getHotelId() {
+        return hotelId;
     }
 
-    public void setHotel(Hotel hotel) {
-        this.hotel = hotel;
+    public void setHotelId(Long hotelId) {
+        this.hotelId = hotelId;
     }
 
     public int getRating() {
@@ -86,10 +72,10 @@ public class Review {
 
     @Override
     public String toString() {
-        return "Review{" +
+        return "ReviewDTO{" +
                 "id=" + id +
-                ", user=" + user +
-                ", hotel=" + hotel +
+                ", userId=" + userId +
+                ", hotelId=" + hotelId +
                 ", rating=" + rating +
                 ", comment='" + comment + '\'' +
                 ", reviewDate=" + reviewDate +

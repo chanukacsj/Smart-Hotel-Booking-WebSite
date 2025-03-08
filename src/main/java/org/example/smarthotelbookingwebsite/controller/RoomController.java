@@ -43,4 +43,5 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", roomService.getAll()));
     }
+
 }

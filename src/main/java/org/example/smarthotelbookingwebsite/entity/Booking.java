@@ -7,7 +7,6 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name = "bookings")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
 public class Booking {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,14 +26,109 @@ public class Booking {
     @Column(nullable = false)
     private LocalDate checkOutDate;
 
+    @Column(nullable = false)
+    private String PhoneNumber;
+
     @Enumerated(EnumType.STRING)
     private BookingStatus status; // PENDING, CONFIRMED, CANCELLED
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
     private Payment payment;
 
-    enum BookingStatus {
+    public enum BookingStatus {
         PENDING, CONFIRMED, CANCELLED
+    }
+
+    public Booking(Long id, User user, Room room, LocalDate checkInDate, LocalDate checkOutDate, String phoneNumber, BookingStatus status, Payment payment) {
+        this.id = id;
+        this.user = user;
+        this.room = room;
+        this.checkInDate = checkInDate;
+        this.checkOutDate = checkOutDate;
+        PhoneNumber = phoneNumber;
+        this.status = status;
+        this.payment = payment;
+    }
+
+    public Booking() {
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public LocalDate getCheckInDate() {
+        return checkInDate;
+    }
+
+    public void setCheckInDate(LocalDate checkInDate) {
+        this.checkInDate = checkInDate;
+    }
+
+    public LocalDate getCheckOutDate() {
+        return checkOutDate;
+    }
+
+    public void setCheckOutDate(LocalDate checkOutDate) {
+        this.checkOutDate = checkOutDate;
+    }
+
+    public String getPhoneNumber() {
+        return PhoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        PhoneNumber = phoneNumber;
+    }
+
+    public BookingStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(BookingStatus status) {
+        this.status = status;
+    }
+
+    public Payment getPayment() {
+        return payment;
+    }
+
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
+    @Override
+    public String toString() {
+        return "Booking{" +
+                "id=" + id +
+                ", user=" + user +
+                ", room=" + room +
+                ", checkInDate=" + checkInDate +
+                ", checkOutDate=" + checkOutDate +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
+                ", status=" + status +
+                ", payment=" + payment +
+                '}';
     }
 }
 

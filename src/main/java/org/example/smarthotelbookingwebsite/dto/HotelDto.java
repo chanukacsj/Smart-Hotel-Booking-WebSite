@@ -11,10 +11,10 @@ public class HotelDto {
     private String location;
     private String description;
     private String amenities;
-    private int PhoneNumber;
+    private String PhoneNumber;
     private List<RoomDTO> rooms;
 
-    public HotelDto(Long id, String name, String location, String description, String amenities, int phoneNumber, List<RoomDTO> rooms) {
+    public HotelDto(Long id, String name, String location, String description, String amenities, String phoneNumber, List<RoomDTO> rooms) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -67,11 +67,11 @@ public class HotelDto {
         this.amenities = amenities;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return PhoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         PhoneNumber = phoneNumber;
     }
 
@@ -91,7 +91,7 @@ public class HotelDto {
                 ", location='" + location + '\'' +
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
-                ", PhoneNumber=" + PhoneNumber +
+                ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", rooms=" + rooms +
                 '}';
     }

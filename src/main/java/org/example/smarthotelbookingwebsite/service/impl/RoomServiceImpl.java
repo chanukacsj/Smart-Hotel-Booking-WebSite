@@ -1,5 +1,6 @@
 package org.example.smarthotelbookingwebsite.service.impl;
 
+import org.example.smarthotelbookingwebsite.dto.HotelDto;
 import org.example.smarthotelbookingwebsite.dto.RoomDTO;
 import org.example.smarthotelbookingwebsite.entity.Hotel;
 import org.example.smarthotelbookingwebsite.entity.Room;
@@ -13,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @Transactional
 public class RoomServiceImpl implements RoomService {
@@ -49,15 +52,12 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomDTO.getHotelId()));
         existingRoom.setHotel(hotel);
 
-
-
-
         // Save the updated entity
         roomRepository.save(existingRoom);
     }
 
     @Override
-    public List<Room> getAll() {
-        return modelMapper.map(roomRepository.findAll(),new TypeToken<List<Room>>() {}.getType());
+    public List<RoomDTO> getAll() {
+        return modelMapper.map(hotelRepository.findAll(),new TypeToken<List<HotelDto>>() {}.getType());
     }
 }

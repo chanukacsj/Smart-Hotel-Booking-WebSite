@@ -13,5 +13,5 @@ public interface RoomService {
 
     void update(Long id, RoomDTO roomDTO);
 
-    List<Room> getAll();
+    List<RoomDTO> getAll();
 }
