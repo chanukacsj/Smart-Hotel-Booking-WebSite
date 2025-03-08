@@ -8,9 +8,10 @@ import java.util.List;
 
 public interface HotelService {
     void saveHotel(HotelDto hotelDto);
+
     void deleteHotel(Long id);
 
-    void updateHotel(Long id,HotelDto hotelDto);
+    void updateHotel(Long id, HotelDto hotelDto);
 
-     List<HotelDto> getAllHotels();
+    List<HotelDto> getAllHotels();
 }

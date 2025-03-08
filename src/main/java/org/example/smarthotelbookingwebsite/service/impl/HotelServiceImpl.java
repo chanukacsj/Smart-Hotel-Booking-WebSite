@@ -24,8 +24,6 @@ public class HotelServiceImpl implements HotelService {
     @Override
     public void saveHotel(HotelDto hotelDto) {
             hotelRepository.save(modelMapper.map(hotelDto,Hotel.class));
-
-
     }
 
     @Override

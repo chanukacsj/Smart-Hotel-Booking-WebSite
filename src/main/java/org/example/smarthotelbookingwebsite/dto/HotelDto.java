@@ -12,14 +12,16 @@ public class HotelDto {
     private String description;
     private String amenities;
     private int PhoneNumber;
+    private List<RoomDTO> rooms;
 
-    public HotelDto(Long id, String name, String location, String description, String amenities, int phoneNumber) {
+    public HotelDto(Long id, String name, String location, String description, String amenities, int phoneNumber, List<RoomDTO> rooms) {
         this.id = id;
         this.name = name;
         this.location = location;
         this.description = description;
         this.amenities = amenities;
         PhoneNumber = phoneNumber;
+        this.rooms = rooms;
     }
 
     public HotelDto() {
@@ -73,6 +75,14 @@ public class HotelDto {
         PhoneNumber = phoneNumber;
     }
 
+    public List<RoomDTO> getRooms() {
+        return rooms;
+    }
+
+    public void setRooms(List<RoomDTO> rooms) {
+        this.rooms = rooms;
+    }
+
     @Override
     public String toString() {
         return "HotelDto{" +
@@ -82,6 +92,7 @@ public class HotelDto {
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
                 ", PhoneNumber=" + PhoneNumber +
+                ", rooms=" + rooms +
                 '}';
     }
 }
