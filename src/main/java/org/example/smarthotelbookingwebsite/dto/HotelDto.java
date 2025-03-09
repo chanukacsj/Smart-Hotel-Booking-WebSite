@@ -1,8 +1,8 @@
 package org.example.smarthotelbookingwebsite.dto;
 
-import jakarta.persistence.Column;
-import org.example.smarthotelbookingwebsite.entity.Room;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.sql.Blob;
 import java.util.List;
 
 public class HotelDto {
@@ -13,8 +13,9 @@ public class HotelDto {
     private String amenities;
     private String PhoneNumber;
     private List<RoomDTO> rooms;
+    private Blob image;
 
-    public HotelDto(Long id, String name, String location, String description, String amenities, String phoneNumber, List<RoomDTO> rooms) {
+    public HotelDto(Long id, String name, String location, String description, String amenities, String phoneNumber, List<RoomDTO> rooms, Blob image) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -22,9 +23,7 @@ public class HotelDto {
         this.amenities = amenities;
         PhoneNumber = phoneNumber;
         this.rooms = rooms;
-    }
-
-    public HotelDto() {
+        this.image = image;
     }
 
     public Long getId() {
@@ -83,6 +82,14 @@ public class HotelDto {
         this.rooms = rooms;
     }
 
+    public Blob getImage() {
+        return image;
+    }
+
+    public void setImage(Blob image) {
+        this.image = image;
+    }
+
     @Override
     public String toString() {
         return "HotelDto{" +
@@ -93,6 +100,7 @@ public class HotelDto {
                 ", amenities='" + amenities + '\'' +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", rooms=" + rooms +
+                ", image=" + image +
                 '}';
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -22,9 +23,9 @@ public class HotelServiceImpl implements HotelService {
     private ModelMapper modelMapper;
 
     @Override
-    public void saveHotel(HotelDto hotelDto) {
-            hotelRepository.save(modelMapper.map(hotelDto,Hotel.class));
 
+    public void saveHotel(HotelDto hotelDto) {
+        hotelRepository.save(modelMapper.map(hotelDto,Hotel.class));
     }
 
     @Override

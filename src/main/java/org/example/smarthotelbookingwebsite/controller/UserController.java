@@ -13,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
@@ -31,8 +31,10 @@ public class UserController {
     public ResponseEntity<ResponseDTO> registerUser(@RequestBody @Valid UserDTO userDTO) {
         try {
             int res = userService.saveUser(userDTO);
+            System.out.println(userDTO.getUsername() + " " + userDTO.getEmail() + " " + userDTO.getRole() + " " + userDTO.getPassword());
             switch (res) {
                 case VarList.Created -> {
+                    System.out.println("Created");
                     String token = jwtUtil.generateToken(userDTO);
                     AuthDTO authDTO = new AuthDTO();
                     authDTO.setEmail(userDTO.getEmail());

@@ -70,11 +70,13 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public int saveUser(UserDTO userDTO) {
         if (userRepository.existsByEmail(userDTO.getEmail())) {
+            System.out.println("Email Already Used");
             return VarList.Not_Acceptable;
         } else {
+            System.out.println("Created");
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-//            userDTO.setRole("USER");
+            userDTO.setRole("USER");
             userRepository.save(modelMapper.map(userDTO, User.class));
             return VarList.Created;
         }

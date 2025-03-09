@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="./css/login.css">
+    <title>Modern Login Page | AsmrProg</title>
+    <style>
+        #sign-up-btn2:hover{
+            background-color: white;
+            color: black;
+            border : 1px solid black;
+        }
+        #btn-login2:hover{
+            background-color: white;
+            color: black;
+            border : 1px solid black;
+        }
+        #login:hover{
+            background-color: white;
+            color: black;
+            border : 1px solid black;
+        }
+        #register:hover{
+            background-color: white;
+            color: black;
+            border : 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container" id="container">
+    <div class="form-container sign-up">
+        <form>
+            <h1>Create Account</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <span>or use your email for registeration</span>
+            <input type="text" id="nameSignUp" placeholder="Name">
+            <input type="email" id="emailSignUp" placeholder="Email">
+            <input type="password" id="passwordSignUp"  placeholder="Password">
+            <button id="sign-up-btn2">Sign Up</button>
+        </form>
+    </div>
+    <div class="form-container sign-in">
+        <form>
+            <h1>Sign In</h1>
+            <div class="social-icons">
+                <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <span>or use your email password</span>
+            <input id="emailSignIn" type="email" placeholder="Email">
+            <input  id="passwordSignIn"  type="password" placeholder="Password">
+            <a href="#">Forget Your Password?</a>
+            <button id="btn-login2">Sign In</button>
+        </form>
+    </div>
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1>Welcome Back!</h1>
+                <p>Enter your personal details to use all of site features</p>
+                <button class="hidden" id="login">Sign In</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h2>Smart Hotel Booking</h2>
+                <p>Register with your personal details to use all of site features</p>
+                <button class="hidden" id="register">Sign Up</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+<script src="./js/sign.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#sign-up-btn2").click(function () {
+            $.ajax({
+                url: "http://localhost:8080/api/v1/user/register",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "username": $("#nameSignUp").val(),
+                    "email": $("#emailSignUp").val(),
+                    "password": $("#passwordSignUp").val(),
+                    "role": "USER"
+                }),
+                success: (res) => {
+                    console.log(res);
+                    if (res.message === "Success") {
+                        console.log("Registration successful");
+                        alert("Registration successful");
+                    } else {
+                        alert("Failed: " + (res.message || "Unknown error"));
+                    }
+                },
+                error: (error) => {
+                    console.error(error);
+                    alert("Something went wrong");
+                }
+            });
+        });
+        $("#btn-login2").click(function () {
+            $.ajax({
+                url: "http://localhost:8080/api/v1/auth/authenticate",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    "email": $("#emailSignIn").val(),
+                    "password": $("#passwordSignIn").val()
+                }),
+                success: (res) => {
+                    console.log(res);
+                    if (res.message === "Success") {
+                        console.log("Login successful");
+                        alert("Login successful");
+                    } else {
+                        alert("Failed: " + (res.message || "Unknown error"));
+                    }
+                },
+                error: (error) => {
+                    console.error(error);
+                    alert("Something went wrong");
+                }
+            });
+        })
+    });
+</script>
+
+</body>
+
+</html>

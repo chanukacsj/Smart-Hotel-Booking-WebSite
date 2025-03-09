@@ -9,8 +9,17 @@ import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
+import java.sql.Blob;
+import java.sql.SQLException;
+import java.util.Base64;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/hotel")
@@ -22,13 +31,24 @@ public class HotelController {
         this.hotelService = hotelService;
         this.hotelServiceImpl = hotelServiceImpl;
     }
-    @PostMapping("/save")
-    public ResponseEntity<ResponseDTO> saveUser(@RequestBody @Valid HotelDto hotelDto) {
-        System.out.println("phone number"+hotelDto.getPhoneNumber());
-        hotelServiceImpl.saveHotel(hotelDto);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
+    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<ResponseDTO> saveUser(@RequestParam("image") MultipartFile file, @RequestBody @Valid HotelDto hotelDto) throws SQLException, IOException {
+
+            // Convert MultipartFile to byte[] for storage
+            byte[] bytes = file.getBytes();
+            Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
+
+            // Set the image data in the DTO
+            hotelDto.setImage(blob);
+
+            // Save hotel details
+            hotelServiceImpl.saveHotel(hotelDto);
+
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
+
     }
+
     @DeleteMapping(value = "/delete/{id}")
     public ResponseEntity <ResponseDTO> deleteHotel(@PathVariable Long id) {
         hotelService.deleteHotel(id);
