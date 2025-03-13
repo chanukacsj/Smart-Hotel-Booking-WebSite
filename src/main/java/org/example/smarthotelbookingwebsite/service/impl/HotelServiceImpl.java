@@ -10,8 +10,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.IOException;
+import java.lang.reflect.Type;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,8 +29,8 @@ public class HotelServiceImpl implements HotelService {
 
     @Override
 
-    public void saveHotel(HotelDto hotelDto) {
-        hotelRepository.save(modelMapper.map(hotelDto,Hotel.class));
+    public void saveHotel(HotelDto hotel) {
+        hotelRepository.save(modelMapper.map(hotel,Hotel.class));
     }
 
     @Override
@@ -44,14 +49,16 @@ public class HotelServiceImpl implements HotelService {
         existingHotel.setDescription(hotelDto.getDescription());
         existingHotel.setAmenities(hotelDto.getAmenities());
         existingHotel.setPhoneNumber(hotelDto.getPhoneNumber());
+        existingHotel.setImage(hotelDto.getImage());
 
         // Save the updated entity
         hotelRepository.save(existingHotel);
     }
 
-        @Override
-        public List<HotelDto> getAllHotels() {
-            return modelMapper.map(hotelRepository.findAll(),new TypeToken<List<HotelDto>>() {}.getType());
-        }
+    @Override
+    public List<HotelDto> getAllHotels() {
+        return modelMapper.map(hotelRepository.findAll(), new TypeToken<List<HotelDto>>() {}.getType());
+
+    }
 
 }

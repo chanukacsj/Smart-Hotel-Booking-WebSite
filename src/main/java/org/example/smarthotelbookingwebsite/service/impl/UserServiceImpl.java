@@ -7,6 +7,7 @@ import org.example.smarthotelbookingwebsite.repo.UserRepository;
 import org.example.smarthotelbookingwebsite.service.UserService;
 import org.example.smarthotelbookingwebsite.util.VarList;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -58,12 +60,12 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     }
 
     @Override
-    public void deleteUser(Long id) {
-        if (!userRepository.existsById(String.valueOf(id))) {
+    public void deleteUser(String email) {
+        if (!userRepository.existsByEmail(email)) {
             throw new RuntimeException("User not found");
 
         }
-        userRepository.deleteById(String.valueOf(id));
+        userRepository.deleteByEmail(email);
 
     }
 
@@ -82,12 +84,16 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         }
     }
     @Override
-    public void updateUserRole(Long userId, String newRole) {
-        User user = userRepository.findById(String.valueOf(userId))
-                .orElseThrow(() -> new EntityNotFoundException("User with ID " + userId + " not found"));
+    public void updateUserRole(String email, String newRole) {
+        User user = userRepository.findByEmail(String.valueOf(email));
 
         user.setRole(newRole); // Update only the role
         userRepository.save(user); // Save the updated user
+    }
+
+    @Override
+    public List<UserDTO> getAll() {
+       return modelMapper.map(userRepository.findAll(),new TypeToken<List<UserDTO>>() {}.getType());
     }
 
 }

@@ -23,7 +23,7 @@ public class User {
     private String email;
 
     @Column(nullable = false)
-    private String role; // ADMIN, CUSTOMER
+    private String role; // ADMIN, CUSTOMER , MANAGER
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<Booking> bookings;

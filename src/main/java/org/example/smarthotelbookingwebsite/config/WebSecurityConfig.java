@@ -49,6 +49,7 @@ public class WebSecurityConfig {
                                 "/api/v1/auth/refreshToken",
                                 "/api/v1/user/delete/{id}",
                                 "/api/v1/user/update/{id}",
+                                "/api/v1/user/getAll",
                                 "/api/v1/hotel/save",
                                 "/api/v1/hotel/delete/{id}",
                                 "/api/v1/hotel/update/{id}",

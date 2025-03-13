@@ -1,8 +1,11 @@
 package org.example.smarthotelbookingwebsite.controller;
 
+import jakarta.servlet.annotation.MultipartConfig;
+import jakarta.servlet.http.Part;
 import jakarta.validation.Valid;
 import org.example.smarthotelbookingwebsite.dto.HotelDto;
 import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
+import org.example.smarthotelbookingwebsite.entity.Hotel;
 import org.example.smarthotelbookingwebsite.service.HotelService;
 import org.example.smarthotelbookingwebsite.service.impl.HotelServiceImpl;
 import org.example.smarthotelbookingwebsite.util.JwtUtil;
@@ -14,13 +17,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Blob;
 import java.sql.SQLException;
-import java.util.Base64;
 import java.util.List;
-import java.util.stream.Collectors;
 
+
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/v1/hotel")
 public class HotelController {
@@ -31,22 +39,12 @@ public class HotelController {
         this.hotelService = hotelService;
         this.hotelServiceImpl = hotelServiceImpl;
     }
-    @PostMapping(value = "/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ResponseDTO> saveUser(@RequestParam("image") MultipartFile file, @RequestBody @Valid HotelDto hotelDto) throws SQLException, IOException {
-
-            // Convert MultipartFile to byte[] for storage
-            byte[] bytes = file.getBytes();
-            Blob blob = new javax.sql.rowset.serial.SerialBlob(bytes);
-
-            // Set the image data in the DTO
-            hotelDto.setImage(blob);
-
-            // Save hotel details
-            hotelServiceImpl.saveHotel(hotelDto);
-
-            return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
-
+    @PostMapping(value = "/save")
+    public ResponseEntity<ResponseDTO> saveHotel(@RequestBody @Valid HotelDto hotelDto){
+        System.out.println(hotelDto.getImage());
+        hotelService.saveHotel(hotelDto);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
     }
 
     @DeleteMapping(value = "/delete/{id}")
@@ -57,13 +55,14 @@ public class HotelController {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDTO> updateHotel(@PathVariable Long id, @RequestBody @Valid HotelDto hotelDto) {
+        System.out.println(hotelDto.getImage());
         hotelServiceImpl.updateHotel(id,hotelDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Hotel Updated Successfully", null));
     }
-    @GetMapping("getAll")
-    public ResponseEntity<ResponseDTO> getAllHotels() {
+    @GetMapping("/getAll")
+    public ResponseEntity<ResponseDTO>getAllHotels() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK, "Success", hotelService.getAllHotels()));
+                .body(new ResponseDTO(VarList.OK,"Succses",hotelServiceImpl.getAllHotels()));
     }
 }

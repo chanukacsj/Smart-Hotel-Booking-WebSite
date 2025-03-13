@@ -56,23 +56,30 @@ public class UserController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error, e.getMessage(), null));
         }
     }
-    @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity <ResponseDTO> deleteUser(@PathVariable Long id) {
-        userServiceImpl.deleteUser(id);
+    @CrossOrigin(origins = "*")
+    @DeleteMapping(value = "/delete/{email}")
+    public ResponseEntity <ResponseDTO> deleteUser(@PathVariable String email) {
+        userServiceImpl.deleteUser(email);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", null));
     }
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> updateUserRole(@PathVariable Long id, @RequestBody Map<String, String> request) {
+    @CrossOrigin(origins = "*")
+    @PutMapping("/update/{email}")
+    public ResponseEntity<ResponseDTO> updateUserRole(@PathVariable String email, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
 
         if (newRole == null || newRole.isEmpty()) {
-            return ResponseEntity.badRequest().body("Role cannot be empty");
+            return ResponseEntity.status( HttpStatus.BAD_REQUEST)
+                    .body(new ResponseDTO(VarList.Bad_Request, "Role cannot be empty", null));
         }
 
-        userService.updateUserRole(id, newRole);
-        return ResponseEntity.ok("User role updated successfully");
+        userService.updateUserRole(email, newRole);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "User role updated successfully", null));
     }
-
-
+    @GetMapping("getAll")
+    public ResponseEntity<ResponseDTO> getAllUsers() {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", userService.getAll()));
+    }
 }
