@@ -10,15 +10,15 @@ public class Room {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(nullable = false)
     private String roomType; // Single, Double, Suite
-
     @Column(nullable = false)
     private double price;
-
     private String available;
-
+    private Long roomNumber;
+    private String image1;
+    private String image2;
+    private String image3;
     @ManyToOne
     @JoinColumn(name = "hotel_id", nullable = false)
     private Hotel hotel;
@@ -26,11 +26,15 @@ public class Room {
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
     private List<Booking> bookings;
 
-    public Room(Long id, String roomType, double price, String available, Hotel hotel, List<Booking> bookings) {
+    public Room(Long id, String roomType, double price, String available, Long roomNumber, String image1, String image2, String image3, Hotel hotel, List<Booking> bookings) {
         this.id = id;
         this.roomType = roomType;
         this.price = price;
         this.available = available;
+        this.roomNumber = roomNumber;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
         this.hotel = hotel;
         this.bookings = bookings;
     }
@@ -86,6 +90,38 @@ public class Room {
         this.bookings = bookings;
     }
 
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
+    }
+
+    public Long getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Long roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     @Override
     public String toString() {
         return "Room{" +
@@ -93,6 +129,10 @@ public class Room {
                 ", roomType='" + roomType + '\'' +
                 ", price=" + price +
                 ", available='" + available + '\'' +
+                ", roomNumber=" + roomNumber +
+                ", image1='" + image1 + '\'' +
+                ", image2='" + image2 + '\'' +
+                ", image3='" + image3 + '\'' +
                 ", hotel=" + hotel +
                 ", bookings=" + bookings +
                 '}';

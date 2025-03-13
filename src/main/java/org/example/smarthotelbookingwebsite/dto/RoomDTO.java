@@ -4,22 +4,26 @@ import java.util.List;
 
 public class RoomDTO {
     private Long id;
-
-    private String roomType; // Single, Double, Suite
-
+    private String roomType;
     private double price;
-
     private String available;
-    private Long hotelId;
-
+    private Long roomNumber;
+    private String image1;
+    private String image2;
+    private String image3;
+    private Long hotelID;
     private List<Long> bookingIds;
 
-    public RoomDTO(Long id, String roomType, double price, String available, Long hotelId, List<Long> bookingIds) {
+    public RoomDTO(Long id, String roomType, double price, String available, Long roomNumber, String image1, String image2, String image3, Long hotelID, List<Long> bookingIds) {
         this.id = id;
         this.roomType = roomType;
         this.price = price;
         this.available = available;
-        this.hotelId = hotelId;
+        this.roomNumber = roomNumber;
+        this.image1 = image1;
+        this.image2 = image2;
+        this.image3 = image3;
+        this.hotelID = hotelID;
         this.bookingIds = bookingIds;
     }
 
@@ -58,12 +62,12 @@ public class RoomDTO {
         this.available = available;
     }
 
-    public Long getHotelId() {
-        return hotelId;
+    public Long getHotelID() {
+        return hotelID;
     }
 
-    public void setHotelId(Long hotelId) {
-        this.hotelId = hotelId;
+    public void setHotelID(Long hotelID) {
+        this.hotelID = hotelID;
     }
 
     public List<Long> getBookingIds() {
@@ -74,8 +78,51 @@ public class RoomDTO {
         this.bookingIds = bookingIds;
     }
 
+    public String getImage1() {
+        return image1;
+    }
+
+    public void setImage1(String image1) {
+        this.image1 = image1;
+    }
+
+    public String getImage2() {
+        return image2;
+    }
+
+    public void setImage2(String image2) {
+        this.image2 = image2;
+    }
+
+    public String getImage3() {
+        return image3;
+    }
+
+    public void setImage3(String image3) {
+        this.image3 = image3;
+    }
+
+    public Long getRoomNumber() {
+        return roomNumber;
+    }
+
+    public void setRoomNumber(Long roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     @Override
     public String toString() {
-        return "RoomDTO{" + "id=" + id + ", roomType='" + roomType + '\'' + ", price=" + price + ", available='" + available + '\'' + ", hotelId=" + hotelId + ", bookingIds=" + bookingIds + '}';
+        return "RoomDTO{" +
+                "id=" + id +
+                ", roomType='" + roomType + '\'' +
+                ", price=" + price +
+                ", available='" + available + '\'' +
+                ", roomNumber=" + roomNumber +
+                ", image1='" + image1 + '\'' +
+                ", image2='" + image2 + '\'' +
+                ", image3='" + image3 + '\'' +
+                ", hotelID=" + hotelID +
+                ", bookingIds=" + bookingIds +
+                '}';
     }
 }

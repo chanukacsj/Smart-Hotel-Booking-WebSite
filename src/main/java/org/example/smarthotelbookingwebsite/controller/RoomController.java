@@ -9,7 +9,7 @@ import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("api/v1/room")
 public class RoomController {
@@ -22,6 +22,9 @@ public class RoomController {
     }
     @PostMapping("/save")
     public ResponseEntity<ResponseDTO> saveRoom(@RequestBody @Valid RoomDTO roomDTO) {
+        System.out.println("hotelID"+" "+roomDTO.getHotelID());
+        System.out.println(roomDTO.getImage1());
+        System.out.println(roomDTO.getImage2());
          roomServiceImpl.save(roomDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Room Saved Successfully", null));

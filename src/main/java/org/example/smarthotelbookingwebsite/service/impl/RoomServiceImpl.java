@@ -7,12 +7,15 @@ import org.example.smarthotelbookingwebsite.entity.Room;
 import org.example.smarthotelbookingwebsite.repo.HotelRepository;
 import org.example.smarthotelbookingwebsite.repo.RoomRepository;
 import org.example.smarthotelbookingwebsite.service.RoomService;
+import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.modelmapper.spi.MappingContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,8 +51,8 @@ public class RoomServiceImpl implements RoomService {
         existingRoom.setRoomType(roomDTO.getRoomType());
         existingRoom.setPrice(roomDTO.getPrice());
         existingRoom.setAvailable(roomDTO.getAvailable());
-        Hotel hotel = hotelRepository.findById(roomDTO.getHotelId())
-                .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomDTO.getHotelId()));
+        Hotel hotel = hotelRepository.findById(roomDTO.getHotelID())
+                .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomDTO.getHotelID()));
         existingRoom.setHotel(hotel);
 
         // Save the updated entity
@@ -58,6 +61,20 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDTO> getAll() {
-        return modelMapper.map(hotelRepository.findAll(),new TypeToken<List<HotelDto>>() {}.getType());
+        // Define the converter first
+        modelMapper.addConverter(new Converter<Room, List<String>>() {
+            public List<String> convert(MappingContext<Room, List<String>> context) {
+                Room room = context.getSource();
+                List<String> images = new ArrayList<>();
+                if (room.getImage1() != null) images.add(room.getImage1());
+                if (room.getImage2() != null) images.add(room.getImage2());
+                if (room.getImage3() != null) images.add(room.getImage3());
+                return images;
+            }
+        });
+
+        // Now map the entities to DTOs
+        return modelMapper.map(roomRepository.findAll(), new TypeToken<List<RoomDTO>>() {}.getType());
     }
+
 }
