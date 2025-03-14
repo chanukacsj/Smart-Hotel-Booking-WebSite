@@ -37,6 +37,7 @@ public class RoomController {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable Long id, @RequestBody @Valid RoomDTO roomDTO) {
+        System.out.println(roomDTO.getImage1()+"   Image 1");
         roomServiceImpl.update(id,roomDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Room Updated Successfully", null));

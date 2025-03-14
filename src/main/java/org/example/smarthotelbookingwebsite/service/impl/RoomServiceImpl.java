@@ -54,6 +54,9 @@ public class RoomServiceImpl implements RoomService {
         Hotel hotel = hotelRepository.findById(roomDTO.getHotelID())
                 .orElseThrow(() -> new RuntimeException("Hotel not found with id: " + roomDTO.getHotelID()));
         existingRoom.setHotel(hotel);
+        existingRoom.setImage1(roomDTO.getImage1());
+        existingRoom.setImage2(roomDTO.getImage2());
+        existingRoom.setImage3(roomDTO.getImage3());
 
         // Save the updated entity
         roomRepository.save(existingRoom);

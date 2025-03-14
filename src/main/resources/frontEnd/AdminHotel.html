@@ -129,7 +129,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="AdminRoom.html">
                         <span class="icon">
                             <ion-icon name="help-outline"></ion-icon>
                         </span>
@@ -245,7 +245,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary" id="btnSave">Save User</button>
+                        <button type="button" class="btn btn-primary" id="btnSave">Save Hotel</button>
                     </div>
                 </div>
             </div>
@@ -305,18 +305,18 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
-    const exampleModal = document.getElementById('exampleModal')
-    if (exampleModal) {
-        exampleModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget
-            const recipient = button.getAttribute('data-bs-whatever')
-            const modalTitle = exampleModal.querySelector('.modal-title')
-            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-            modalTitle.textContent = `New message to ${recipient}`
-            modalBodyInput.value = recipient
-        })
-    }
+    // const exampleModal = document.getElementById('exampleModal')
+    // if (exampleModal) {
+    //     exampleModal.addEventListener('show.bs.modal', event => {
+    //         const button = event.relatedTarget
+    //         const recipient = button.getAttribute('data-bs-whatever')
+    //         const modalTitle = exampleModal.querySelector('.modal-title')
+    //         const modalBodyInput = exampleModal.querySelector('.modal-body input')
+    //
+    //         modalTitle.textContent = `New message to ${recipient}`
+    //         modalBodyInput.value = recipient
+    //     })
+    // }
     $('#btnSave').click(function () {
         let imageInput = $("#imageUpload")[0]; // Get the file input element
         let fileName = imageInput.files.length > 0 ? imageInput.files[0].name : null; // Extract file name

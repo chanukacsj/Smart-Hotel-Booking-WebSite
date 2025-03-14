@@ -137,7 +137,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a href="AdminRoom.html">
                         <span class="icon">
                             <ion-icon name="help-outline"></ion-icon>
                         </span>
@@ -297,24 +297,7 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
-    const exampleModal = document.getElementById('exampleModal')
-    if (exampleModal) {
-        exampleModal.addEventListener('show.bs.modal', event => {
-            // Button that triggered the modal
-            const button = event.relatedTarget
-            // Extract info from data-bs-* attributes
-            const recipient = button.getAttribute('data-bs-whatever')
-            // If necessary, you could initiate an Ajax request here
-            // and then do the updating in a callback.
 
-            // Update the modal's content.
-            const modalTitle = exampleModal.querySelector('.modal-title')
-            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-            modalTitle.textContent = `New message to ${recipient}`
-            modalBodyInput.value = recipient
-        })
-    }
     function searchCustomer() {
         const query = document.getElementById("search").value.trim().toLowerCase();
         const customerTable = document.getElementById("customerTable");
@@ -374,6 +357,7 @@
                     if (res.message === "Success") {
                         console.log("Registration successful");
                         alert("Registration successful");
+                        location.reload();
                     } else {
                         alert("Failed: " + (res.message || "Unknown error"));
                     }

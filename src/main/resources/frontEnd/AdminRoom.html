@@ -219,7 +219,8 @@
                     <div class="modal-body">
                         <form id="hotelForm">
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="RoomNumber" placeholder="Enter RoomNumber" required>
+                                <input type="text" class="form-control" id="RoomNumber" placeholder="Enter RoomNumber"
+                                       required>
                             </div>
                             <div class="mb-3">
                                 <select class="form-select" id="roomType">
@@ -247,13 +248,13 @@
                                 </select>
                             </div>
                             <div>
-                                <input type="file" id="imageUpload1" name="imageUpload1" required />
+                                <input type="file" id="imageUpload1" name="imageUpload1" required/>
                             </div>
                             <div>
-                                <input type="file" id="imageUpload2" name="imageUpload2" required />
+                                <input type="file" id="imageUpload2" name="imageUpload2" required/>
                             </div>
                             <div>
-                                <input type="file" id="imageUpload3" name="imageUpload3" required />
+                                <input type="file" id="imageUpload3" name="imageUpload3" required/>
                             </div>
                         </form>
                     </div>
@@ -274,7 +275,8 @@
                     <div class="modal-body">
                         <form>
                             <div class="mb-3">
-                                <input type="text" class="form-control" id="UpdateRoomNumber" placeholder="Enter RoomNumber" required>
+                                <input type="text" class="form-control" id="UpdateRoomNumber"
+                                       placeholder="Enter RoomNumber" required>
                             </div>
                             <div class="mb-3">
                                 <select class="form-select" id="UpdateRoomType">
@@ -332,28 +334,14 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
-    const exampleModal = document.getElementById('exampleModal')
-    if (exampleModal) {
-        exampleModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget
-            const recipient = button.getAttribute('data-bs-whatever')
-            const modalTitle = exampleModal.querySelector('.modal-title')
-            const modalBodyInput = exampleModal.querySelector('.modal-body input')
-
-            modalTitle.textContent = `New message to ${recipient}`
-            modalBodyInput.value = recipient
-        })
-    }
     $(document).ready(function () {
         const imageUrl = "assets/images/";
-
-        // ✅ Fetch hotels for dropdown
         $.ajax({
             url: "http://localhost:8080/api/v1/hotel/getAll",
             method: "GET",
             contentType: "application/json",
             success: (res) => {
-                let hotelDropdown = $("#HotelID");
+                let hotelDropdown = $("#HotelID, #UpdateHotelID");
                 hotelDropdown.empty();
                 hotelDropdown.append(`<option selected disabled>Choose a Hotel</option>`);
 
@@ -367,7 +355,6 @@
             }
         });
 
-        // ✅ Fetch all rooms and display in table
         $.ajax({
             url: "http://localhost:8080/api/v1/room/getAll",
             method: "GET",
@@ -382,32 +369,29 @@
                     let image3 = imageUrl + room.image3;
 
                     table.append(`
-                <tr>
-                    <td>${room.id}</td>
-                    <td>${room.roomNumber}</td>
-                    <td>${room.roomType}</td>
-                    <td>${room.price}</td>
-                    <td>${room.available}</td>
-                    <td>${room.hotelID}</td>
-                    <td><img src="${image1}" width="100" height="100" alt="Room Image"
-                    onerror="this.onerror=null; this.src='assets/images/default.jpg';"
-                    ></td>
-                    <td><img src="${image2}" width="100" height="100" alt="Room Image"
-                    onerror="this.onerror=null; this.src='assets/images/default.jpg';"
-                    ></td>
-                    <td><img src="${image3}" width="100" height="100" alt="Room Image"
-                    onerror="this.onerror=null; this.src='assets/images/default.jpg';"
-                    ></td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-danger"
-                        data-bs-toggle="modal" data-bs-target="#updateModal"
-                        onclick="editRoom('${room.id}', '${room.roomNumber}', '${room.roomType}', '${room.price}', '${room.availability}', '${room.hotelID}', '${room.image1}', '${room.image2}', '${room.image3}')">
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-warning" onclick="deleteRoom('${room.id}')">Delete</button>
-                    </td>
-                </tr>
-            `);
+                    <tr>
+                        <td>${room.id}</td>
+                        <td>${room.roomNumber}</td>
+                        <td>${room.roomType}</td>
+                        <td>${room.price}</td>
+                        <td>${room.available}</td>
+                        <td>${room.hotelID}</td>
+                        <td><img src="${image1}" width="100" height="100" alt="Room Image"
+                            onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
+                        <td><img src="${image2}" width="100" height="100" alt="Room Image"
+                            onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
+                        <td><img src="${image3}" width="100" height="100" alt="Room Image"
+                            onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger"
+                                data-bs-toggle="modal" data-bs-target="#updateModal"
+                                onclick="editRoom('${room.id}', '${room.roomNumber}', '${room.roomType}', '${room.price}', '${room.available}', '${room.hotelID}', '${room.image1}', '${room.image2}', '${room.image3}')">
+                                Edit
+                            </button>
+                            <button type="button" class="btn btn-warning" onclick="deleteRoom('${room.id}')">Delete</button>
+                        </td>
+                    </tr>
+                `);
                 });
             },
             error: (error) => {
@@ -415,114 +399,94 @@
                 alert("Something went wrong while fetching rooms.");
             }
         });
+
+        $('#btnSave').click(function () {
+            let fileName1 = $("#imageUpload1")[0]?.files[0]?.name || null;
+            let fileName2 = $("#imageUpload2")[0]?.files[0]?.name || null;
+            let fileName3 = $("#imageUpload3")[0]?.files[0]?.name || null;
+
+            console.log("Uploading Images:", fileName1, fileName2, fileName3);
+
+            $.ajax({
+                url: "http://localhost:8080/api/v1/room/save",
+                method: "POST",
+                contentType: "application/json",
+                data: JSON.stringify({
+                    roomNumber: $("#RoomNumber").val(),
+                    roomType: $("#roomType").val(),
+                    price: $("#Price").val(),
+                    available: $("#Availability").val(),
+                    hotelID: $("#HotelID").val(),
+                    image1: fileName1,
+                    image2: fileName2,
+                    image3: fileName3
+                }),
+                success: (res) => {
+                    alert(res.message || "Room saved successfully.");
+                    $('#exampleModal').modal('hide');
+                    location.reload();
+                },
+                error: (error) => {
+                    console.error("Error saving room:", error);
+                    alert("Failed to save room.");
+                }
+            });
+        });
     });
 
-        // ✅ Save new room
-        $(document).ready(function () {
-            $(document).ready(function() {
-                $('#btnSave').click(function () {
-                    // Declare the file name variables before use
-                    let fileName1 = null;
-                    let fileName2 = null;
-                    let fileName3 = null;
-
-                    // Get the file input elements
-                    let imageInput1 = $("#imageUpload1")[0];
-                    if (imageInput1 && imageInput1.files.length > 0) {
-                        fileName1 = imageInput1.files[0].name;
-                    }
-
-                    let imageInput2 = $("#imageUpload2")[0];
-                    if (imageInput2 && imageInput2.files.length > 0) {
-                        fileName2 = imageInput2.files[0].name;
-                    }
-
-                    let imageInput3 = $("#imageUpload3")[0];
-                    if (imageInput3 && imageInput3.files.length > 0) {
-                        fileName3 = imageInput3.files[0].name;
-                    }
-
-                    // Log the file names to check if they are properly set
-                    console.log(fileName1, fileName2, fileName3);
-
-                    $.ajax({
-                        url: "http://localhost:8080/api/v1/room/save",
-                        method: "POST",
-                        contentType: "application/json",
-                        data: JSON.stringify({
-                            roomNumber: $("#RoomNumber").val(),
-                            roomType: $("#roomType").val(),
-                            price: $("#Price").val(),
-                            available: $("#Availability").val(),
-                            hotelID: $("#HotelID").val(),
-                            image1: fileName1,
-                            image2: fileName2,
-                            image3: fileName3
-                        }),
-                        success: (res) => {
-                            alert(res.message || "Room saved successfully.");
-                            $('#exampleModal').modal('hide');
-                            location.reload();
-                        },
-                        error: (error) => {
-                            console.error("Error saving room:", error);
-                            alert("Failed to save room.");
-                        }
-                    });
-                });
-            });
-
-        });
-
-    // ✅ Edit room function
-    const editRoom = (id, roomNumber, roomType, price, availability, hotelID, image1, image2, image3) => {
+    const editRoom = (id, roomNumber, roomType, price, available, hotelID, image1, image2, image3) => {
         $("#UpdateRoomNumber").val(roomNumber);
         $("#UpdateRoomType").val(roomType);
         $("#UpdatePrice").val(price);
-        $("#UpdateAvailability").val(availability);
+        $("#UpdateAvailability").val(available);
         $("#UpdateHotelID").val(hotelID);
-
-        $("#UpdateImagePreview1").attr("src", imageUrl + (image1 || "default.jpg"));
-        $("#UpdateImagePreview2").attr("src", imageUrl + (image2 || "default.jpg"));
-        $("#UpdateImagePreview3").attr("src", imageUrl + (image3 || "default.jpg"));
 
         $("#UpdateImageUpload1, #UpdateImageUpload2, #UpdateImageUpload3").val("");
 
         $("#btnUpdate").off("click").on("click", function () {
+            let fileInput1 = document.getElementById("UpdateImageUpload1");
+            let fileInput2 = document.getElementById("UpdateImageUpload2");
+            let fileInput3 = document.getElementById("UpdateImageUpload3");
+
+            console.log("File Inputs:", fileInput1, fileInput2, fileInput3);
+
             let updatedData = {
                 roomNumber: $("#UpdateRoomNumber").val(),
                 roomType: $("#UpdateRoomType").val(),
                 price: $("#UpdatePrice").val(),
-                availability: $("#UpdateAvailability").val(),
+                available: $("#UpdateAvailability").val(),
                 hotelID: $("#UpdateHotelID").val(),
                 image1: image1,
                 image2: image2,
                 image3: image3
             };
 
-            let fileInput1 = $("#UpdateImageUpload1")[0].files[0];
-            let fileInput2 = $("#UpdateImageUpload2")[0].files[0];
-            let fileInput3 = $("#UpdateImageUpload3")[0].files[0];
-
-            if (fileInput1) updatedData.image1 = fileInput1.name;
-            if (fileInput2) updatedData.image2 = fileInput2.name;
-            if (fileInput3) updatedData.image3 = fileInput3.name;
+            if (fileInput1?.files.length > 0) {
+                updatedData.image1 = fileInput1.files[0].name;
+            }
+            if (fileInput2?.files.length > 0) {
+                updatedData.image2 = fileInput2.files[0].name;
+            }
+            if (fileInput3?.files.length > 0) {
+                updatedData.image3 = fileInput3.files[0].name;
+            }
 
             updateRoom(id, updatedData);
         });
     };
 
-    // ✅ Update room AJAX request
-    const updateRoom = (roomId, updatedData) => {
+    const updateRoom = (id, updatedData) => {
         $.ajax({
-            url: `http://localhost:8080/api/v1/room/update/${roomId}`,
+            url: `http://localhost:8080/api/v1/room/update/${id}`,
             method: "PUT",
             contentType: "application/json",
             data: JSON.stringify(updatedData),
             success: (res) => {
-                alert(res.message || "Room updated successfully.");
-                $("#updateModal").modal("hide");
-                location.reload();
+                if (res.statusCode === 200) {
+                    alert("Room updated successfully.");
+                    $("#updateModal").modal("hide");
+                    location.reload();
+                }
             },
             error: (error) => {
                 console.error("Error updating room:", error);
@@ -531,15 +495,18 @@
         });
     };
 
-    // ✅ Delete room AJAX request
     const deleteRoom = (id) => {
         if (confirm("Are you sure you want to delete this room?")) {
             $.ajax({
                 url: `http://localhost:8080/api/v1/room/delete/${id}`,
                 method: "DELETE",
                 success: (res) => {
-                    alert(res.message || "Room deleted successfully.");
-                    location.reload();
+                    if (res.statusCode === 200) {
+                        alert("Room deleted successfully.");
+                        location.reload();
+                    } else {
+                        alert("Failed: " + (res.message || "Unknown error"));
+                    }
                 },
                 error: (error) => {
                     console.error("Error deleting room:", error);
@@ -548,7 +515,6 @@
             });
         }
     };
-
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
