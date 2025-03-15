@@ -43,18 +43,6 @@ public class BookingServiceImpl implements BookingService {
     @Override
     public void update(Long id, BookingDTO bookingDTO) {
         Booking existingBooking = bookingRepository.findById(id).orElseThrow(() -> new RuntimeException("Booking not found."));
-
-        // Update fields
-        User user = userRepository.findById(String.valueOf(bookingDTO.getUserId()))
-                .orElseThrow(() -> new RuntimeException("User not found with id: " + bookingDTO.getUserId()));
-        existingBooking.setUser(user);
-
-        Room room = roomRepository.findById(bookingDTO.getRoomId())
-                .orElseThrow(() -> new RuntimeException("Room not found with id: " + bookingDTO.getRoomId()));
-        existingBooking.setRoom(room);
-        existingBooking.setCheckInDate(bookingDTO.getCheckInDate());
-        existingBooking.setCheckOutDate(bookingDTO.getCheckOutDate());
-        existingBooking.setPhoneNumber(bookingDTO.getPhoneNumber());
         existingBooking.setStatus(Booking.BookingStatus.valueOf(bookingDTO.getStatus()));
 
         bookingRepository.save(existingBooking);
