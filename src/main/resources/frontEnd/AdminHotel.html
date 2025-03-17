@@ -78,7 +78,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="Login.html">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
@@ -87,7 +87,6 @@
             </li>
         </ul>
     </div>
-
     <!-- ========================= Main ==================== -->
     <div class="main">
         <div class="topbar">
@@ -99,8 +98,6 @@
                 <img src="assets/imgs/customer01.jpg" alt="">
             </div>
         </div>
-
-
         <div class="Container">
             <h1 style="padding-top: 40px">Hotel Management</h1>
             <button type="button" class="add-btn" style="margin-top: 38px;margin-right: 10px;border-radius: 5px"
@@ -112,24 +109,6 @@
                        onkeyup="searchCustomer()" id="search">
                 <ion-icon name="search-outline"></ion-icon>
             </label>
-
-<!--            <table>-->
-<!--                <thead>-->
-<!--                <tr>-->
-<!--                    <th>ID</th>-->
-<!--                    <th>Name</th>-->
-<!--                    <th>Location</th>-->
-<!--                    <th>Description</th>-->
-<!--                    <th>Amenities</th>-->
-<!--                    <th>PhoneNumber</th>-->
-<!--                    <th>Image</th>-->
-<!--                    <th>Actions</th>-->
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody id="HotelTable">-->
-
-<!--                </tbody>-->
-<!--            </table>-->
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
@@ -264,20 +243,30 @@
     //     })
     // }
     $('#btnSave').click(function () {
+        let name = $("#name").val().trim();
+        let locationn = $("#location").val().trim();
+        let description = $("#description").val().trim();
+        let amenities =  $("#amenities").val().trim();
+        let phoneNumber = $("#PhoneNumber").val().trim();
         let imageInput = $("#imageUpload")[0]; // Get the file input element
         let fileName = imageInput.files.length > 0 ? imageInput.files[0].name : null; // Extract file name
+
+        if (!name || !locationn || !description || !amenities || !phoneNumber) {
+            alert("Please fill in all the required fields.");
+            return;
+        }
 
         $.ajax({
             url: "http://localhost:8080/api/v1/hotel/save",
             method: "POST",
             contentType: "application/json",
             data: JSON.stringify({
-                "name": $("#name").val(),
-                "location": $("#location").val(),
-                "description": $("#description").val(),
-                "amenities": $("#amenities").val(),
-                "phoneNumber": $("#PhoneNumber").val(),
-                "image": fileName,
+                "name": name,
+                "location": locationn,
+                "description": description,
+                "amenities": amenities,
+                "phoneNumber": phoneNumber,
+                "image": fileName
             }),
             success: (res) => {
                 if (res.message === "Hotel Saved Successfully") {
@@ -335,6 +324,25 @@
             alert("Something went wrong while fetching hotels.");
         }
     });
+
+    function searchCustomer() {
+        let input = document.getElementById("search").value.toLowerCase();
+        let table = document.getElementById("HotelTable");
+        let rows = table.getElementsByTagName("tr");
+
+        for (let i = 0; i < rows.length; i++) {
+            let cols = rows[i].getElementsByTagName("td");
+            if (cols.length > 0) {
+                let hotelName = cols[1].textContent.toLowerCase();
+                if (hotelName.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+    }
+
 
     const edit = (HotelID, HotelName, HotelLocation, HotelDescription, HotelAmenities, HotelPhoneNumber, HotelImage) => {
         // Set input values
@@ -400,7 +408,7 @@
             method: "DELETE",
             success: (res) => {
                 if (res.message === "Success") {
-                    alert("User deleted successfully");
+                    alert("Hotel deleted successfully");
                     location.reload(); // Reload the page to update the table
                 } else {
                     alert("Failed: " + (res.message || "Unknown error"));

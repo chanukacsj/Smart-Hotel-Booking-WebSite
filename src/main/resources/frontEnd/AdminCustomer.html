@@ -214,7 +214,7 @@
                 </a>
             </li>
             <li>
-                <a href="#">
+                <a href="AdminBooking.html">
             <span class="icon">
                      <ion-icon name="calendar-outline"></ion-icon>
              </span>
@@ -232,7 +232,7 @@
 
 
             <li>
-                <a href="#">
+                <a href="Login.html">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
@@ -273,20 +273,6 @@
                        onkeyup="searchCustomer()">
 
             </label>
-
-            <!--            <table>-->
-            <!--                <thead>-->
-            <!--                <tr>-->
-            <!--                    <th>Name</th>-->
-            <!--                    <th>Email</th>-->
-            <!--                    <th>Role</th>-->
-            <!--                    <th>Actions</th>-->
-            <!--                </tr>-->
-            <!--                </thead>-->
-            <!--                <tbody id="customerTable">-->
-
-            <!--                </tbody>-->
-            <!--            </table>-->
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
@@ -294,6 +280,7 @@
                     <table>
                         <thead>
                         <tr style="padding-bottom: 10px;border: 2px solid black " >
+                            <td>Id</td>
                             <td>Customer Name</td>
                             <td>Email</td>
                             <td>Role</td>
@@ -386,6 +373,42 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
+    let customers = [];  // Declare globally so it's accessible
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/getAll",
+            method: "GET",
+            contentType: "application/json",
+            success: (res) => {
+                customers = res.data;  // Assign data globally
+
+                let table = $('#customerTable');
+                table.empty();
+                customers.forEach((customer) => {
+                    table.append(`
+                    <tr>
+                        <td>${customer.id}</td>
+                        <td>${customer.username}</td>
+                        <td>${customer.email}</td>
+                        <td>${customer.role}</td>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-danger"
+                                data-bs-toggle="modal" data-bs-target="#updateModal"
+                                onclick="edit('${customer.email}', '${customer.role}')">Edit</button>
+                            <button type="button" class="btn btn-warning"
+                                onclick="deleteCustomer('${customer.email}')">Delete</button>
+                        </td>
+                    </tr>
+                `);
+                });
+            },
+            error: (error) => {
+                console.error(error);
+                alert("Something went wrong while fetching users.");
+            }
+        });
+    });
 
     function searchCustomer() {
         const query = document.getElementById("search").value.trim().toLowerCase();
@@ -409,8 +432,10 @@
         `;
             return;
         }
+
         customerTable.innerHTML = filtered.map(customer => `
         <tr>
+            <td>${customer.id}</td>
             <td>${customer.username}</td>
             <td>${customer.email}</td>
             <td>${customer.role}</td>
@@ -425,72 +450,45 @@
     `).join(""); // Convert array to a single HTML string
     }
 
+    $('#btnSave').click(function () {
+        let username = $("#username").val().trim();
+        let email = $("#email").val().trim();
+        let password = $("#password").val().trim();
+        let role = $("#role").val().trim();
 
-    $(document).ready(function () {
-        $('#btnSave').click(function () {
-            $.ajax({
-                url: "http://localhost:8080/api/v1/user/register",
-                method: "POST",
-                contentType: "application/json",
-                data: JSON.stringify({
-                    "username": $("#username").val(),
-                    "email": $("#email").val(),
-                    "password": $("#password").val(),
-                    "role": $("#role").val()
-                }),
-                success: (res) => {
-                    console.log(res);
-                    if (res.message === "Success") {
-                        console.log("Registration successful");
-                        alert("Registration successful");
-                        location.reload();
-                    } else {
-                        alert("Failed: " + (res.message || "Unknown error"));
-                    }
-                },
-                error: (error) => {
-                    console.error(error);
-                    alert("Something went wrong");
+        if (!username || !email || !password || !role) {
+            alert("All fields are required!");
+            return;
+        }
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/register",
+            method: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({
+                "username": username,
+                "email": email,
+                "password": password,
+                "role": role
+            }),
+            success: (res) => {
+                console.log(res);
+                if (res.message === "Success") {
+                    console.log("Registration successful");
+                    alert("Registration successful");
+                    location.reload();
+                } else {
+                    alert("Failed: " + (res.message || "Unknown error"));
                 }
-            })
-        })
-
-        let customers = [];
-
-        $(document).ready(function () {
-            $.ajax({
-                url: "http://localhost:8080/api/v1/user/getAll",
-                method: "GET",
-                contentType: "application/json",
-                success: (res) => {
-                    customers = res.data;
-
-                    let table = $('#customerTable');
-                    table.empty();
-                    customers.forEach((customer) => {
-                        table.append(`
-                    <tr>
-                        <td>${customer.username}</td>
-                        <td>${customer.email}</td>
-                        <td>${customer.role}</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-danger"
-                                data-bs-toggle="modal" data-bs-target="#updateModal"
-                                onclick="edit('${customer.email}', '${customer.role}')">Edit</button>
-                            <button type="button" class="btn btn-warning"
-                                onclick="deleteCustomer('${customer.email}')">Delete</button>
-                        </td>
-                    </tr>
-                `);
-                    });
-                },
-                error: (error) => {
-                    console.error(error);
-                    alert("Something went wrong while fetching users.");
-                }
-            });
+            },
+            error: (error) => {
+                console.error(error);
+                alert("Something went wrong");
+            }
         });
     });
+
+
     const edit = (UserEmail, UserRole) => {
         document.getElementById("update_role").value = UserRole;
 

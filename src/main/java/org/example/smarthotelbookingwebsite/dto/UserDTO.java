@@ -2,17 +2,20 @@ package org.example.smarthotelbookingwebsite.dto;
 
 
 public class UserDTO {
+    private Long id;
     private String username;
     private String email;
     private String role;
     private String password;
 
-    public UserDTO(String username, String email, String role, String password) {
+    public UserDTO(Long id, String username, String email, String role, String password) {
+        this.id = id;
         this.username = username;
         this.email = email;
         this.role = role;
         this.password = password;
     }
+
     public UserDTO(){}
     public String getUsername() {
         return username;
@@ -46,10 +49,19 @@ public class UserDTO {
         this.password = password;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
-                "username='" + username + '\'' +
+                "id=" + id +
+                ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", password='" + password + '\'' +

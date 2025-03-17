@@ -81,7 +81,7 @@
 
 
             <li>
-                <a href="#">
+                <a href="Login.html">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
@@ -108,21 +108,10 @@
             >Add Room
             </button>
             <label>
-                <input type="text" style="height: 40px ;border-radius: 10px" placeholder="  Search Rooms..."
-                       onkeyup="searchCustomer()" id="search">
+                <input type="text" style="height: 40px ;border-radius: 10px" placeholder="  Search Rooms Number..."
+                       onkeyup="searchRoom()" id="search">
                 <ion-icon name="search-outline"></ion-icon>
             </label>
-
-<!--            <table>-->
-<!--                <thead>-->
-<!--                <tr>-->
-
-<!--                </tr>-->
-<!--                </thead>-->
-<!--                <tbody id="RoomTable">-->
-
-<!--                </tbody>-->
-<!--            </table>-->
             <div class="details">
                 <div class="recentOrders">
                     <div class="cardHeader">
@@ -135,7 +124,7 @@
                             <th>Type</th>
                             <th>Price</th>
                             <th>Available</th>
-                            <th>HotelId</th>
+                            <th>HotelName</th>
                             <th>Image1</th>
                             <th>Image2</th>
                             <th>Image3</th>
@@ -295,53 +284,95 @@
                 console.error("Error fetching hotels:", error);
                 alert("Failed to load hotels.");
             }
-        });
-
-        $.ajax({
-            url: "http://localhost:8080/api/v1/room/getAll",
+        });$.ajax({
+            url: "http://localhost:8080/api/v1/hotel/getAll",
             method: "GET",
             contentType: "application/json",
             success: (res) => {
-                let table = $('#RoomTable');
-                table.empty();
+                let hotelArray = [];
 
-                res.data.forEach((room) => {
-                    let image1 = imageUrl + room.image1;
-                    let image2 = imageUrl + room.image2;
-                    let image3 = imageUrl + room.image3;
+                res.data.forEach((hotel) => {
+                    hotelArray.push({ id: hotel.id, name: hotel.name });
+                });
 
-                    table.append(`
-                    <tr>
-                        <td>${room.id}</td>
-                        <td>${room.roomNumber}</td>
-                        <td>${room.roomType}</td>
-                        <td>${room.price}</td>
-                        <td>${room.available}</td>
-                        <td>${room.hotelID}</td>
-                        <td><img src="${image1}" width="100" height="100" alt="Room Image"
+                console.log(hotelArray);
+
+                // Now make the second request to fetch room data
+                $.ajax({
+                    url: "http://localhost:8080/api/v1/room/getAll",
+                    method: "GET",
+                    contentType: "application/json",
+                    success: (res) => {
+                        let table = $('#RoomTable');
+                        table.empty();
+
+                        res.data.forEach((room) => {
+                            let image1 = imageUrl + room.image1;
+                            let image2 = imageUrl + room.image2;
+                            let image3 = imageUrl + room.image3;
+
+                            // Find the hotel name corresponding to the room's hotelID
+                            let hotelName = hotelArray.find(hotel => hotel.id === room.hotelID)?.name || "Unknown Hotel";
+
+                            table.append(`
+                        <tr>
+                            <td>${room.id}</td>
+                            <td>${room.roomNumber}</td>
+                            <td>${room.roomType}</td>
+                            <td>${room.price}</td>
+                            <td>${room.available}</td>
+                            <td>${hotelName}</td>
+                            <td><img src="${image1}" width="100" height="100" alt="Room Image"
                             onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
-                        <td><img src="${image2}" width="100" height="100" alt="Room Image"
+                            <td><img src="${image2}" width="100" height="100" alt="Room Image"
                             onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
-                        <td><img src="${image3}" width="100" height="100" alt="Room Image"
+                            <td><img src="${image3}" width="100" height="100" alt="Room Image"
                             onerror="this.onerror=null; this.src='assets/images/default.jpg';"></td>
-                        <td class="text-center">
+                            <td class="text-center">
                             <button type="button" class="btn btn-danger"
-                                data-bs-toggle="modal" data-bs-target="#updateModal"
-                                onclick="editRoom('${room.id}', '${room.roomNumber}', '${room.roomType}', '${room.price}', '${room.available}', '${room.hotelID}', '${room.image1}', '${room.image2}', '${room.image3}')">
-                                Edit
+                            data-bs-toggle="modal" data-bs-target="#updateModal"
+                            onclick="editRoom('${room.id}', '${room.roomNumber}', '${room.roomType}', '${room.price}', '${room.available}', '${room.hotelID}', '${room.image1}', '${room.image2}', '${room.image3}')">
+                            Edit
                             </button>
                             <button type="button" class="btn btn-warning" onclick="deleteRoom('${room.id}')">Delete</button>
-                        </td>
-                    </tr>
-                `);
-                });
-            },
-            error: (error) => {
-                console.error("Error fetching rooms:", error);
-                alert("Something went wrong while fetching rooms.");
-            }
+                            </td>
+                            </tr>
+                            `);
+                            });
+                            },
+                            error: (error) => {
+                            console.error("Error fetching rooms:", error);
+                            alert("Something went wrong while fetching rooms.");
+                            }
+                            });
+                            },
+                            error: (error) => {
+                            console.error("Error fetching hotels:", error);
+                            alert("Failed to load hotels.");
+                            }
+                            });
+
+                            $("#search").on("keyup", function () {
+            searchRoom();
         });
 
+        function searchRoom() {
+            let input = document.getElementById("search").value.toLowerCase().trim();
+            let table = document.getElementById("RoomTable");
+            let rows = table.getElementsByTagName("tr");
+
+            for (let i = 0; i < rows.length; i++) {
+                let roomNumberCell = rows[i].getElementsByTagName("td")[1];
+                if (roomNumberCell) {
+                    let roomNumber = roomNumberCell.textContent || roomNumberCell.innerText;
+                    if (roomNumber.toLowerCase().includes(input)) {
+                        rows[i].style.display = ""; // Show matching rows
+                    } else {
+                        rows[i].style.display = "none";
+                    }
+                }
+            }
+        }
         $('#btnSave').click(function () {
             let fileName1 = $("#imageUpload1")[0]?.files[0]?.name || null;
             let fileName2 = $("#imageUpload2")[0]?.files[0]?.name || null;

@@ -86,14 +86,24 @@
 <script>
     $(document).ready(function () {
         $("#sign-up-btn2").click(function () {
+
+            let username = $("#nameSignUp").val().trim();
+            let email = $("#emailSignUp").val().trim();
+            let password = $("#passwordSignUp").val().trim();
+
+            if (!username || !email || !password) {
+                alert("All fields are required!");
+                return;
+            }
+
             $.ajax({
                 url: "http://localhost:8080/api/v1/user/register",
                 method: "POST",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "username": $("#nameSignUp").val(),
-                    "email": $("#emailSignUp").val(),
-                    "password": $("#passwordSignUp").val(),
+                    "username": username,
+                    "email": email,
+                    "password": password,
                     "role": "USER"
                 }),
                 success: (res) => {

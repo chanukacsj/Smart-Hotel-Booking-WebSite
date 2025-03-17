@@ -43,4 +43,5 @@ public class PaymentController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", paymentServiceimpl.getAll()));
     }
+
 }
