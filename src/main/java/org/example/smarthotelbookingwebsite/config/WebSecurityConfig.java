@@ -70,6 +70,7 @@ public class WebSecurityConfig {
                                 "/api/v1/payment/delete/{id}",
                                 "/api/v1/payment/update/{id}",
                                 "/api/v1/payment/getAll",
+                                "/api/v1/hotelManager/getAll",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()

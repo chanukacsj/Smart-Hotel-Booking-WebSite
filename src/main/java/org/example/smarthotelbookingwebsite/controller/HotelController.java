@@ -41,7 +41,8 @@ public class HotelController {
     }
     @PostMapping(value = "/save")
     public ResponseEntity<ResponseDTO> saveHotel(@RequestBody @Valid HotelDto hotelDto){
-        System.out.println(hotelDto.getImage());
+
+        System.out.println(hotelDto.getUserId());
         hotelService.saveHotel(hotelDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
@@ -63,6 +64,6 @@ public class HotelController {
     @GetMapping("/getAll")
     public ResponseEntity<ResponseDTO>getAllHotels() {
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK,"Succses",hotelServiceImpl.getAllHotels()));
+                .body(new ResponseDTO(VarList.OK,"Success",hotelServiceImpl.getAllHotels()));
     }
 }

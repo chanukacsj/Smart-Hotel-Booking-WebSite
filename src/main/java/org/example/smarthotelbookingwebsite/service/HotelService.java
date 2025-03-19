@@ -1,5 +1,6 @@
 package org.example.smarthotelbookingwebsite.service;
 
+import jakarta.transaction.Transactional;
 import org.example.smarthotelbookingwebsite.dto.HotelDto;
 import org.example.smarthotelbookingwebsite.entity.Hotel;
 
@@ -14,5 +15,7 @@ public interface HotelService {
 
     List<HotelDto> getAllHotels();
 
+    Long getUserIdByEmail(String email);
 
+    List<Hotel>getHotelsByUserId(Long userId);
 }

@@ -1,6 +1,9 @@
 package org.example.smarthotelbookingwebsite.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -17,24 +20,32 @@ public class User {
     private String username;
 
     @Column(nullable = false)
+    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
     private String email;
 
     @Column(nullable = false)
-    private String role; // ADMIN, CUSTOMER , MANAGER
+    private String role; // ADMIN, CUSTOMER, MANAGER
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Booking> bookings;
 
-    public User(Long id, String username, String password, String email, String role, List<Booking> bookings) {
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonBackReference
+    @JsonIgnore
+    private Hotel hotel;
+
+    public User(Long id, String username, String password, String email, String role, List<Booking> bookings, Hotel hotel) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
         this.bookings = bookings;
+        this.hotel = hotel;
     }
 
     public User() {
@@ -88,6 +99,14 @@ public class User {
         this.bookings = bookings;
     }
 
+    public Hotel getHotel() {
+        return hotel;
+    }
+
+    public void setHotel(Hotel hotel) {
+        this.hotel = hotel;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -97,6 +116,7 @@ public class User {
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", bookings=" + bookings +
+                ", hotel=" + hotel +
                 '}';
     }
 }

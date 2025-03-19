@@ -107,6 +107,7 @@
                     "role": "USER"
                 }),
                 success: (res) => {
+                    localStorage.setItem("email", email);
                     console.log(res);
                     if (res.message === "Success") {
                         console.log("Registration successful");

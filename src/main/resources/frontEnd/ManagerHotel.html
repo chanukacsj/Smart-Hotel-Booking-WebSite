@@ -120,9 +120,8 @@
                             <th>Description</th>
                             <th>Amenities</th>
                             <th>PhoneNumber</th>
-                            <th>ManagerID</th>
+                            <th>ManagerName</th>
                             <th>Image</th>
-                            <th>Actions</th>
                         </tr>
                         </thead>
 
@@ -228,8 +227,6 @@
                 </div>
             </div>
         </div>
-
-
     </div>
 </div>
 </div>
@@ -242,88 +239,20 @@
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
     $(document).ready(function () {
-        $.ajax({
-            url: "http://localhost:8080/api/v1/user/getAll",
-            method: "GET",
-            contentType: "application/json",
-            success: (res) => {
-                if (!res.data || !Array.isArray(res.data)) {
-                    console.error("Invalid response data:", res);
-                    return;
-                }
-
-                let userDropDown = $("#UserID,#UpdateUserID");
-                userDropDown.empty();
-                userDropDown.append('<option selected disabled>Choose a Manager</option>');
-
-                res.data.forEach(user => {
-                    if (user.role !== "Manager") {
-                        return;
-                    }
-                    userDropDown.append(`<option value="${user.id}">${user.username}</option>`);
-                });
-            },
-            error: (err) => {
-                console.error("Failed to load users:", err);
-                alert("Error fetching user data. Please try again.");
-            }
-        });
-    });
-
-    $('#btnSave').click(function () {
-        let name = $("#name").val().trim();
-        let locationn = $("#location").val().trim();
-        let description = $("#description").val().trim();
-        let amenities =  $("#amenities").val().trim();
-        let phoneNumber = $("#PhoneNumber").val().trim();
-        let userID = $("#UserID").val().trim();
-        let imageInput = $("#imageUpload")[0]; // Get the file input element
-        let fileName = imageInput.files.length > 0 ? imageInput.files[0].name : null; // Extract file name
-            console.log(userID);
-        if (!name || !locationn || !description || !amenities || !phoneNumber || !userID) {
-            alert("Please fill in all the required fields.");
-            return;
-        }
-
-        $.ajax({
-            url: "http://localhost:8080/api/v1/hotel/save",
-            method: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({
-                "name": name,
-                "location": locationn,
-                "description": description,
-                "amenities": amenities,
-                "phoneNumber": phoneNumber,
-                "userId": userID,
-                "image": fileName
-            }),
-            success: (res) => {
-                if (res.message === "Hotel Saved Successfully") {
-                    alert("Hotel added successfully");
-                    location.reload();
-                } else {
-                    alert("Failed: " + (res.message || "Unknown error"));
-                }
-            },
-            error: (error) => {
-                console.error(error);
-                alert("Something went wrong");
-            }
-        });
-    });
+    let userEmail = "banuka@gmail.com";
     let imageUrl = "assets/images/";
-
+    console.log(userEmail);
     $.ajax({
-        url: "http://localhost:8080/api/v1/hotel/getAll",
+        url: "http://localhost:8080/api/v1/hotelManager/getAll",
         method: "GET",
+        data: { email: userEmail },
         contentType: "application/json",
         success: (res) => {
             let table = $('#HotelTable');
             table.empty();
 
             res.data.forEach((hotel) => {
-                let image = imageUrl + hotel.image; // Construct the correct image path
+                let image = imageUrl + hotel.image;
 
                 table.append(`
                 <tr>
@@ -333,19 +262,12 @@
                     <td>${hotel.description}</td>
                     <td>${hotel.amenities}</td>
                     <td>${hotel.phoneNumber}</td>
-                    <td>${hotel.userId}</td>
+                    <td>${hotel.user.username}</td>
                     <td>
                         <img src="${image}" width="100" height="100" alt="Hotel Image"
-                        onerror="this.onerror=null; this.src='assets/images/default.jpg';">
+                            onerror="this.onerror=null; this.src='assets/images/default.jpg';">
                     </td>
-                    <td class="text-center">
-                        <button type="button" class="btn btn-danger"
-                        data-bs-toggle="modal" data-bs-target="#updateModal"
-                        onclick="edit('${hotel.id}', '${hotel.name}', '${hotel.location}', '${hotel.description}', '${hotel.amenities}', '${hotel.phoneNumber}', '${hotel.image}')">
-                            Edit
-                        </button>
-                        <button type="button" class="btn btn-warning" onclick="deleteHotel('${hotel.id}')">Delete</button>
-                    </td>
+
                 </tr>
             `);
             });
@@ -355,104 +277,8 @@
             alert("Something went wrong while fetching hotels.");
         }
     });
+});
 
-    function searchCustomer() {
-        let input = document.getElementById("search").value.toLowerCase();
-        let table = document.getElementById("HotelTable");
-        let rows = table.getElementsByTagName("tr");
-
-        for (let i = 0; i < rows.length; i++) {
-            let cols = rows[i].getElementsByTagName("td");
-            if (cols.length > 0) {
-                let hotelName = cols[1].textContent.toLowerCase();
-                if (hotelName.includes(input)) {
-                    rows[i].style.display = "";
-                } else {
-                    rows[i].style.display = "none";
-                }
-            }
-        }
-    }
-
-
-    const edit = (HotelID, HotelName, HotelLocation, HotelDescription, HotelAmenities, HotelPhoneNumber, HotelImage) => {
-        // Set input values
-        $("#Update_name").val(HotelName);
-        $("#Update_location").val(HotelLocation);
-        $("#Update_description").val(HotelDescription);
-        $("#Update_amenities").val(HotelAmenities);
-        $("#Update_PhoneNumber").val(HotelPhoneNumber);
-        $("UpdateUserID").val(HotelID);
-
-        // Show current image
-        $("#Update_currentImage").attr("src", imageUrl + HotelImage).on("error", function () {
-            $(this).attr("src", "assets/images/default.jpg");
-        });
-
-        // Clear file input
-        $("#Update_imageUpload").val("");
-
-        // Update button click event
-        $("#btnUpdate").off("click").on("click", function () {
-            let fileInput = document.getElementById("Update_imageUpload");
-            let hotelData = {
-                name: $("#Update_name").val(),
-                location: $("#Update_location").val(),
-                description: $("#Update_description").val(),
-                amenities: $("#Update_amenities").val(),
-                phoneNumber: $("#Update_PhoneNumber").val(),
-                userID: $("#UpdateUserID").val(),
-                image: HotelImage // Default to existing image
-            };
-
-            if (fileInput.files.length > 0) {
-                // Extract only filename
-                let fileName = fileInput.files[0].name;
-                hotelData.image = fileName;
-            }
-
-            // Send update request
-            updateHotel(HotelID, hotelData);
-        });
-    };
-
-    // Function to send AJAX request
-    const updateHotel = (HotelID, hotelData) => {
-        $.ajax({
-            url: "http://localhost:8080/api/v1/hotel/update/" + HotelID,
-            method: "PUT",
-            contentType: "application/json",
-            data: JSON.stringify(hotelData),
-            success: (res) => {
-                alert("Hotel updated successfully!");
-                $("#updateModal").modal("hide");
-                location.reload(); // Refresh the page to reflect changes
-            },
-            error: (error) => {
-                console.error(error);
-                alert("Something went wrong while updating.");
-            }
-        });
-    };
-
-    const deleteHotel = (id) => {
-        $.ajax({
-            url: "http://localhost:8080/api/v1/hotel/delete/" + id,
-            method: "DELETE",
-            success: (res) => {
-                if (res.message === "Success") {
-                    alert("Hotel deleted successfully");
-                    location.reload(); // Reload the page to update the table
-                } else {
-                    alert("Failed: " + (res.message || "Unknown error"));
-                }
-            },
-            error: (error) => {
-                console.error(error);
-                alert("Something went wrong while deleting.");
-            }
-        });
-    };
 
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"

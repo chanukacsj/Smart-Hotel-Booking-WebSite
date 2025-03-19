@@ -11,9 +11,10 @@ public class HotelDto {
     private String amenities;
     private String phoneNumber;  // Fixed variable naming
     private String image;; // Image path as a string
+    private Long userId;
 
 
-    public HotelDto(Long id, String name, String location, String description, String amenities, String phoneNumber, String image) {
+    public HotelDto(Long id, String name, String location, String description, String amenities, String phoneNumber, String image, Long userId) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -21,6 +22,7 @@ public class HotelDto {
         this.amenities = amenities;
         this.phoneNumber = phoneNumber;
         this.image = image;
+        this.userId = userId;
     }
 
     public HotelDto() {
@@ -83,6 +85,14 @@ public class HotelDto {
         this.image = image;
     }
 
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
+    }
+
     @Override
     public String toString() {
         return "HotelDto{" +
@@ -92,7 +102,8 @@ public class HotelDto {
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", image=" + image +
+                ", image='" + image + '\'' +
+                ", userId=" + userId +
                 '}';
     }
 }

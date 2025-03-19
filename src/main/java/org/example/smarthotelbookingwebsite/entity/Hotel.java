@@ -1,5 +1,7 @@
 package org.example.smarthotelbookingwebsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import java.util.List;
 
@@ -9,17 +11,26 @@ public class Hotel {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column(nullable = false)
     private String name;
+
     private String location;
     private String description;
     private String amenities;
     private String PhoneNumber;
     private String image;
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<Room> rooms;
 
-    public Hotel(Long id, String name, String location, String description, String amenities, String phoneNumber, String image, List<Room> rooms) {
+    @JsonManagedReference
+    @OneToOne
+    @JoinColumn(name = "User_id", nullable = false)
+    private User user;
+
+    public Hotel(Long id, String name, String location, String description, String amenities, String phoneNumber, String image, List<Room> rooms, User user) {
         this.id = id;
         this.name = name;
         this.location = location;
@@ -28,7 +39,9 @@ public class Hotel {
         PhoneNumber = phoneNumber;
         this.image = image;
         this.rooms = rooms;
+        this.user = user;
     }
+
     public Hotel() {
     }
 
@@ -96,6 +109,14 @@ public class Hotel {
         this.rooms = rooms;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     @Override
     public String toString() {
         return "Hotel{" +
@@ -105,8 +126,9 @@ public class Hotel {
                 ", description='" + description + '\'' +
                 ", amenities='" + amenities + '\'' +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
-                ", image=" + image +
+                ", image='" + image + '\'' +
                 ", rooms=" + rooms +
+                ", user=" + user +
                 '}';
     }
 }
