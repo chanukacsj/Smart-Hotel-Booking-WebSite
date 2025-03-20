@@ -71,6 +71,9 @@ public class WebSecurityConfig {
                                 "/api/v1/payment/update/{id}",
                                 "/api/v1/payment/getAll",
                                 "/api/v1/hotelManager/getAll",
+                                "/api/v1/ManagerRoom/getAllRoomByHotelID",
+                                "/api/v1/ManagerBooking/getAllHotelBookings",
+                                "/api/v1/ManagerPayment/getAllPaymentsByHotel",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()

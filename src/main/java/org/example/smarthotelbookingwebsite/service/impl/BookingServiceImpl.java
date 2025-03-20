@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -52,5 +53,14 @@ public class BookingServiceImpl implements BookingService {
     public List<BookingDTO> getAll() {
 
         return modelMapper.map(bookingRepository.findAll(), new TypeToken<List<BookingDTO>>() {}.getType());
+    }
+
+    @Override
+    public List<Booking> getBookingsByHotel(Long hotelID) {
+        List<Room> rooms = roomRepository.findByHotelId(hotelID);
+
+        List<Long> roomIds = rooms.stream().map(Room::getId).collect(Collectors.toList());
+
+        return bookingRepository.findByRoomIdIn(roomIds);
     }
 }

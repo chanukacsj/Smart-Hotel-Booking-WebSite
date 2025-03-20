@@ -64,7 +64,6 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public List<RoomDTO> getAll() {
-        // Define the converter first
         modelMapper.addConverter(new Converter<Room, List<String>>() {
             public List<String> convert(MappingContext<Room, List<String>> context) {
                 Room room = context.getSource();
@@ -76,8 +75,13 @@ public class RoomServiceImpl implements RoomService {
             }
         });
 
-        // Now map the entities to DTOs
         return modelMapper.map(roomRepository.findAll(), new TypeToken<List<RoomDTO>>() {}.getType());
     }
+
+    @Override
+    public List<Room> getAllRoomsByHotelID(Long id) {
+        return roomRepository.findAllByHotelId(id);
+    }
+
 
 }

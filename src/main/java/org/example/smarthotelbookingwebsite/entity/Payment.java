@@ -1,5 +1,7 @@
 package org.example.smarthotelbookingwebsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -14,6 +16,8 @@ public class Payment {
 
     @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
+    @JsonIgnore
+    @JsonBackReference
     private Booking booking;
 
     private double amount;

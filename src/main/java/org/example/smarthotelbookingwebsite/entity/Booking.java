@@ -1,5 +1,8 @@
 package org.example.smarthotelbookingwebsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -18,6 +21,8 @@ public class Booking {
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
+    @JsonBackReference
+    @JsonIgnore
     private Room room;
 
     @Column(nullable = false)
@@ -33,6 +38,7 @@ public class Booking {
     private BookingStatus status; // PENDING, CONFIRMED, CANCELLED
 
     @OneToOne(mappedBy = "booking", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Payment payment;
 
     public enum BookingStatus {

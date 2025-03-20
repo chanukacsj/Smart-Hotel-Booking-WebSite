@@ -68,4 +68,7 @@ public class PaymentServiceImpl implements PaymentService {
     public List<PaymentDTO> getAll() {
         return modelMapper.map(paymentRepository.findAll(),new TypeToken<List<PaymentDTO>>() {}.getType());
     }
+    public List<Payment> getPaymentsByHotelId(Long hotelId) {
+        return paymentRepository.findPaymentsByHotelId(hotelId);
+    }
 }

@@ -1,5 +1,7 @@
 package org.example.smarthotelbookingwebsite.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -24,6 +26,8 @@ public class Room {
     private Hotel hotel;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @JsonIgnore
     private List<Booking> bookings;
 
     public Room(Long id, String roomType, double price, String available, Long roomNumber, String image1, String image2, String image3, Hotel hotel, List<Booking> bookings) {
