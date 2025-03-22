@@ -9,6 +9,6 @@ public interface UserService {
     UserDTO searchUser(String username);
     void deleteUser(String email);
     void updateUserRole(String email, String newRole);
-
     List<UserDTO> getAll();
+    boolean allReadyUsedEmail(String email);
 }

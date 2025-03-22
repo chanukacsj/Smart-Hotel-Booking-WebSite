@@ -45,7 +45,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
-                                "/api/v1/user/register",
+                                "/api/v1/user/send-otp",
+                                "/api/v1/user/register/{otp}",
                                 "/api/v1/auth/refreshToken",
                                 "/api/v1/user/delete/{id}",
                                 "/api/v1/user/update/{id}",

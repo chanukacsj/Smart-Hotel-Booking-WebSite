@@ -1,8 +1,5 @@
 package org.example.smarthotelbookingwebsite.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
 
 
@@ -10,13 +7,23 @@ import org.springframework.stereotype.Component;
 public class AuthDTO {
     private String email;
     private String token;
+    private String role;
 
     public AuthDTO(String email, String token) {
         this.email = email;
         this.token = token;
+        this.role = role;
     }
 
     public AuthDTO() {
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 
     public String getEmail() {
@@ -40,6 +47,7 @@ public class AuthDTO {
         return "AuthDTO{" +
                 "email='" + email + '\'' +
                 ", token='" + token + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

@@ -1,6 +1,5 @@
 package org.example.smarthotelbookingwebsite.service.impl;
 
-import jakarta.persistence.EntityNotFoundException;
 import org.example.smarthotelbookingwebsite.entity.User;
 import org.example.smarthotelbookingwebsite.dto.UserDTO;
 import org.example.smarthotelbookingwebsite.repo.UserRepository;
@@ -94,6 +93,11 @@ public class UserServiceImpl implements UserDetailsService, UserService {
     @Override
     public List<UserDTO> getAll() {
        return modelMapper.map(userRepository.findAll(),new TypeToken<List<UserDTO>>() {}.getType());
+    }
+
+    @Override
+    public boolean allReadyUsedEmail(String email) {
+        return userRepository.existsByEmail(email);
     }
 
 }
