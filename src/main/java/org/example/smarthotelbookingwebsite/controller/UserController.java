@@ -59,7 +59,7 @@ public class UserController {
             switch (res) {
                 case VarList.Created -> {
                     String token = jwtUtil.generateToken(userDTO);
-                    AuthDTO authDTO = new AuthDTO(userDTO.getEmail(), token);
+                    AuthDTO authDTO = new AuthDTO(userDTO.getEmail(),token);
                     return ResponseEntity.status(HttpStatus.CREATED)
                             .body(new ResponseDTO(VarList.Created, "User registered successfully", authDTO));
                 }
@@ -112,8 +112,19 @@ public class UserController {
                 .body(new ResponseDTO(VarList.OK, "User role updated successfully", null));
     }
     @GetMapping("getAll")
-    public ResponseEntity<ResponseDTO> getAllUsers() {
+    public ResponseEntity<ResponseDTO> getAllUsers(@RequestHeader("Authorization") String token) {
+
+        String jwt = token.substring(7);
+
+        // Validate Token
+        String username = jwtUtil.getUsernameFromToken(jwt);
+        if (username == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(new ResponseDTO(VarList.Not_Found, "Invalid Token", null));
+        }
+
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", userService.getAll()));
     }
+
 }

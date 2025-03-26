@@ -29,7 +29,6 @@ public class WebSecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
@@ -45,6 +44,9 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
+                                "/api/v1/auth/forgot-password",
+                               "/api/v1/auth/verify-otp",
+                                "/api/v1/auth/reset-password",
                                 "/api/v1/user/send-otp",
                                 "/api/v1/user/register/{otp}",
                                 "/api/v1/auth/refreshToken",

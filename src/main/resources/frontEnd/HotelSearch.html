@@ -10,15 +10,13 @@
     <!--
       - favicon
     -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
 
     <!--
       - custom css link
     -->
-    <link rel="stylesheet" href="css/CustomerDashboard.css">
+    <link rel="stylesheet" href="css/hotelSearch.css">
 
     <!--
       - google font link
@@ -29,13 +27,15 @@
             href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Poppins:wght@400;500;600;700&display=swap"
             rel="stylesheet">
     <style>
-        .logo-hotel {
+        .logo-hotel{
             width: 300px;
             height: 53px;
         }
-
         ol, ul {
-            padding-left: 0rem;
+             padding-left: 0rem;
+        }
+        .see{
+            padding: 8px 20px;
         }
     </style>
 </head>
@@ -160,6 +160,9 @@
 </header>
 
 
+
+
+
 <main>
     <article>
 
@@ -173,9 +176,7 @@
                 <h2 class="h1 hero-title">Journey to explore Sri Lanka</h2>
 
                 <p class="hero-text">
-                    Discover the breathtaking beauty of Sri Lanka, where golden beaches, lush mountains, and rich
-                    heritage await. Whether you're seeking adventure, relaxation, or cultural experiences, your perfect
-                    getaway starts here
+                    Discover the breathtaking beauty of Sri Lanka, where golden beaches, lush mountains, and rich heritage await. Whether you're seeking adventure, relaxation, or cultural experiences, your perfect getaway starts here
                 </p>
 
                 <div class="btn-group">
@@ -186,6 +187,9 @@
 
             </div>
         </section>
+
+
+
 
 
         <!--
@@ -203,17 +207,18 @@
                         <input type="text" name="destination" id="destination" required placeholder="Enter Destination"
                                class="input-field">
                     </div>
-
                     <div class="input-wrapper">
                         <label for="people" class="input-label">Room Type*</label>
 
-                        <select name="people" id="people" required class="input-field">
+                        <select name="people" id="people" required class="input-field" >
                             <option value="" disabled selected>Select Room Type............</option>
                             <option value="single">Single</option>
                             <option value="double">Double</option>
                             <option value="suite">Suite</option>
                         </select>
                     </div>
+
+
                     <div class="input-wrapper">
                         <label for="checkin" class="input-label">Checkin Date**</label>
 
@@ -226,200 +231,35 @@
                         <input type="date" name="checkout" id="checkout" required class="input-field">
                     </div>
 
-                    <button type="submit" class="btn btn-secondary" id="Search">Search now</button>
+                    <button type="submit" class="btn btn-secondary">Search now</button>
 
                 </form>
 
             </div>
         </section>
 
-
-        <!--
-          - #POPULAR
-        -->
-
-        <section class="popular" id="destination1">
-            <div class="container">
-
-                <p class="section-subtitle">Uncover place</p>
-
-                <h2 class="h2 section-title">Popular destination</h2>
-
-                <p class="section-text">
-                    "Explore breathtaking destinations that captivate travelers with their charm, history, and natural
-                    beauty. From serene tropical beaches to bustling cityscapes, these must-visit locations offer
-                    unforgettable experiences for every kind of traveler." </p>
-
-                <ul class="popular-list">
-
-                    <li>
-                        <div class="popular-card">
-
-                            <figure class="card-img">
-                                <img src="./assets/images/colombo.jpeg" alt="San miguel, italy" loading="lazy">
-                            </figure>
-
-                            <div class="card-content">
-
-                                <div class="card-rating">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                </div>
-
-
-                                <h3 class="h3 card-title">
-                                    <a href="#">Colombo</a>
-                                </h3>
-
-                                <p class="card-text">
-                                    Colombo, the vibrant capital of Sri Lanka, is a dynamic blend of modern skyscrapers,
-                                    colonial architecture, bustling markets, and scenic coastal views.
-                                </p>
-
-                            </div>
-
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="popular-card">
-
-                            <figure class="card-img">
-                                <img src="./assets/images/Kandy.jpeg" alt="Burj khalifa, dubai" loading="lazy">
-                            </figure>
-
-                            <div class="card-content">
-
-                                <div class="card-rating">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                </div>
-
-                                <p class="card-subtitle">
-                                    <a href="#"></a>
-                                </p>
-
-                                <h3 class="h3 card-title">
-                                    <a href="#">Kandy</a>
-                                </h3>
-
-                                <p class="card-text">
-                                    Kandy, a cultural gem of Sri Lanka, is home to the sacred Temple of the Tooth and
-                                    surrounded by lush green hills, blending history and nature beautifully.
-                                </p>
-
-                            </div>
-
-                        </div>
-                    </li>
-
-                    <li>
-                        <div class="popular-card">
-
-                            <figure class="card-img">
-                                <img src="./assets/images/NuwaraEliya.jpeg" alt="Kyoto temple, japan" loading="lazy">
-                            </figure>
-
-                            <div class="card-content">
-
-                                <div class="card-rating">
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                    <ion-icon name="star"></ion-icon>
-                                </div>
-
-
-                                <h3 class="h3 card-title">
-                                    <a href="#">NuwaraEliya</a>
-                                </h3>
-
-                                <p class="card-text">
-                                    Nuwara Eliya, known as 'Little England,' is a charming hill town in Sri Lanka,
-                                    famous for its cool climate, tea plantations, and stunning landscapes.
-                                </p>
-
-                            </div>
-
-                        </div>
-                    </li>
-
-                </ul>
-
-                <!--                <button class="btn btn-primary">More destintion</button>-->
-
+<div class="searchContainer m-5 d-flex justify-content-around flex-wrap " id="hotelsContainer">
+    <div class="card mb-3" id="hotel" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="assets/images/colombo.jpeg" class="img-fluid rounded-start" alt="Hotels">
             </div>
-        </section>
-
-
-        <!--
-          - #PACKAGE
-        -->
-
-
-        <!--
-          - #GALLERY
-        -->
-
-        <section class="gallery" id="gallery">
-            <div class="container">
-
-                <p class="section-subtitle">Photo Gallery</p>
-
-                <h2 class="h2 section-title">Photo's From Travellers</h2>
-
-                <p class="section-text">
-                    Explore stunning snapshots from travelers across Sri Lanka, showcasing its breathtaking landscapes,
-                    rich heritage, and vibrant culture. From golden beaches to misty mountains, every photo captures the
-                    island’s unique charm.
-                </p>
-
-                <ul class="gallery-list">
-
-                    <li class="gallery-item">
-                        <figure class="gallery-image">
-                            <img src="./assets/images/travller.jpeg" alt="Gallery image">
-                        </figure>
-                    </li>
-
-                    <li class="gallery-item">
-                        <figure class="gallery-image">
-                            <img src="./assets/images/travller1.jpeg" alt="Gallery image">
-                        </figure>
-                    </li>
-
-                    <li class="gallery-item">
-                        <figure class="gallery-image">
-                            <img src="./assets/images/travller2.jpeg" alt="Gallery image">
-                        </figure>
-                    </li>
-
-                    <li class="gallery-item">
-                        <figure class="gallery-image">
-                            <img src="./assets/images/The Elephant Orphanage at Pinnawala, Sri Lanka.jpeg"
-                                 alt="Gallery image">
-                        </figure>
-                    </li>
-
-                    <li class="gallery-item">
-                        <figure class="gallery-image">
-                            <img src="./assets/images/travller4.jpeg" alt="Gallery image">
-                        </figure>
-                    </li>
-
-                </ul>
-
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title fw-bold">Hotel Name</h5>
+                    <div class="d-flex">
+                        <p class="me-2"><a class="link-opacity-100-hover" style="font-size: 10px" href="#">Colombo</a></p>
+                        <p><a class="link-opacity-100-hover" style="font-size: 10px" href="#">Show On Map</a></p>
+                        <p class="ms-2"><a class="link-opacity-100-hover" style="font-size: 10px" href="#">Reviews</a></p>
+                    </div>
+                    <p class="card-text"><small class="text-body-secondary">Double Room</small></p>
+                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                    <button type="button" class="btn btn-primary see ms-4">See Availability</button>
+                </div>
             </div>
-        </section>
-
-
+        </div>
+    </div>
+</div>
         <!--
           - #CTA
         -->
@@ -446,8 +286,6 @@
 
     </article>
 </main>
-
-
 <!--
   - #FOOTER
 -->
@@ -464,8 +302,7 @@
                 </a>
 
                 <p class="footer-text">
-                    Urna ratione ante harum provident, eleifend, vulputate molestiae proin fringilla, praesentium magna
-                    conubia
+                    Urna ratione ante harum provident, eleifend, vulputate molestiae proin fringilla, praesentium magna conubia
                     at
                     perferendis, pretium, aenean aut ultrices.
                 </p>
@@ -555,34 +392,108 @@
 </a>
 
 
+
+
+
 <!--
   - custom js link
 -->
 <script src="js/CustomerDashboard.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 
 <!--
   - ionicon link
 -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 <script>
+
     $(document).ready(function () {
-        $(".tour-search-form").submit(function (e) {
-            e.preventDefault();
 
-            let destination = $("#destination").val();
-            let checkin = $("#checkin").val();
-            let checkout = $("#checkout").val();
-            let people = $("#people").val();
+        // Load values from localStorage on page load
+        $("#destination").val(localStorage.getItem("destination"));
+        $("#checkin").val(localStorage.getItem("checkin"));
+        $("#checkout").val(localStorage.getItem("checkout"));
+        $("#people").val(localStorage.getItem("people"));
 
-            localStorage.setItem("destination", destination);
-            localStorage.setItem("checkin", checkin);
-            localStorage.setItem("checkout", checkout);
-            localStorage.setItem("people", people);
+        // Calculate the number of days between checkin and checkout
+        let checkin = $("#checkin").val();
+        let checkout = $("#checkout").val();
+        let date = (checkin, checkout) => {
+            if (checkin && checkout) {
+                let checkinDate = new Date(checkin);
+                let checkoutDate = new Date(checkout);
+                let timeDiff = checkoutDate.getTime() - checkinDate.getTime();
+                let days = Math.ceil(timeDiff / (1000 * 3600 * 24));
+                localStorage.setItem("days", days);
+                console.log(days); // This will log the number of days to the console
+            }
+        };
 
-            window.location.href = "HotelSearch.html";
-        });
+        // Call the date function
+        date(checkin, checkout);
+
+        // Add event listener for form submission or search acti
+            // Get the destination value and filter hotels based on it
+            let destination = $("#destination").val().trim().toLowerCase();
+
+            $.ajax({
+                url: "http://localhost:8080/api/v1/hotel/getAll",
+                method: "GET",
+                contentType: "application/json",
+                success: (res) => {
+                    $("#hotelsContainer").empty();
+
+                    let filteredHotels = res.data.filter((hotel) =>
+                        hotel.location.toLowerCase().includes(destination)
+                    );
+
+                    if (filteredHotels.length === 0) {
+                        $("#hotelsContainer").html("<p class='text-danger'>No hotels found for the selected destination.</p>");
+                        return;
+                    }
+
+                    filteredHotels.forEach((hotel) => {
+                        $("#hotelsContainer").append(`
+                    <div class="card mb-3" style="max-width: 540px;">
+                        <div class="row g-0">
+                            <div class="col-md-4">
+                                <img style="height: 223px;width: 300px" src="assets/images/${hotel.image || 'default.jpg'}" class="img-fluid rounded-start" alt="Hotel Image">
+                            </div>
+                            <div class="col-md-8">
+                                <div class="card-body">
+                                    <h5 class="card-title fw-bold">${hotel.name}</h5>
+                                    <div class="d-flex">
+                                        <p class="me-2"><a class="link-opacity-100-hover" style="font-size: 10px">${hotel.location}</a></p>
+                                        <p><a class="link-opacity-100-hover" style="font-size: 10px" href="#">Show On Map</a></p>
+                                        <p class="ms-2"><a class="link-opacity-100-hover" style="font-size: 10px" href="#">Reviews</a></p>
+                                    </div>
+                                    <p class="card-text"><small class="text-body-secondary">Double Room</small></p>
+                                    <p class="card-text">${hotel.description || "No description available."}</p>
+                                    <button type="button" class="btn btn-primary ms-4 seeAvailability" data-id="${hotel.id}">See Availability</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    `);
+                    });
+
+                    // Add click event listener for "See Availability" buttons
+                    $(".seeAvailability").click(function () {
+                        let hotelId = $(this).data("id");
+                        console.log("Selected Hotel ID:", hotelId);
+                        localStorage.setItem("ClickedHotelId", hotelId);
+                        window.location.href = "Hotel.html";
+                    });
+                },
+                error: (err) => {
+                    alert(err.responseJSON?.message || "An error occurred while fetching hotels.");
+                }
+            });
+
+
     });
 
 </script>

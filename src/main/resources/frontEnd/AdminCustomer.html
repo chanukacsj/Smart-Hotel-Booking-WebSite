@@ -231,7 +231,7 @@
 
 
             <li>
-                <a href="Login.html">
+                <a href="" onclick="logout()">
                         <span class="icon">
                             <ion-icon name="log-out-outline"></ion-icon>
                         </span>
@@ -370,15 +370,26 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
-    let customers = [];  // Declare globally so it's accessible
+    let customers = [];
 
     $(document).ready(function () {
+
+        let token = localStorage.getItem("jwtToken");
+        if (!token) {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+            return;
+        }
+
         $.ajax({
             url: "http://localhost:8080/api/v1/user/getAll",
             method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
             contentType: "application/json",
             success: (res) => {
-                customers = res.data;  // Assign data globally
+                customers = res.data;
 
                 let table = $('#customerTable');
                 table.empty();
@@ -532,6 +543,11 @@
             }
         });
     };
+    function logout() {
+        localStorage.removeItem("jwtToken");
+        alert("Logged out successfully");
+        window.location.href = "Login.html";
+    }
 
 </script>
 

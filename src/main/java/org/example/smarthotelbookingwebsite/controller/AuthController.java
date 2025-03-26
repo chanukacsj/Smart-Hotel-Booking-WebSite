@@ -1,8 +1,8 @@
 package org.example.smarthotelbookingwebsite.controller;
 
-import org.example.smarthotelbookingwebsite.dto.AuthDTO;
-import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
-import org.example.smarthotelbookingwebsite.dto.UserDTO;
+import org.example.smarthotelbookingwebsite.dto.*;
+import org.example.smarthotelbookingwebsite.service.AuthService;
+import org.example.smarthotelbookingwebsite.service.impl.AuthServiceImpl;
 import org.example.smarthotelbookingwebsite.service.impl.UserServiceImpl;
 import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
@@ -20,13 +20,15 @@ public class AuthController {
     private final AuthenticationManager authenticationManager;
     private final UserServiceImpl userService;
     private final ResponseDTO responseDTO;
+    private final AuthServiceImpl authServiceImpl;
 
     //constructor injection
-    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl userService, ResponseDTO responseDTO) {
+    public AuthController(JwtUtil jwtUtil, AuthenticationManager authenticationManager, UserServiceImpl userService, ResponseDTO responseDTO, AuthServiceImpl authServiceImpl) {
         this.jwtUtil = jwtUtil;
         this.authenticationManager = authenticationManager;
         this.userService = userService;
         this.responseDTO = responseDTO;
+        this.authServiceImpl = authServiceImpl;
     }
 
     @PostMapping("/authenticate")
@@ -59,6 +61,26 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(new ResponseDTO(VarList.Created, "Success", authDTO));
     }
+
+    @PostMapping("/forgot-password")
+    public ResponseEntity<ResponseDTO> forgotPassword(@RequestBody ForgotPasswordRequestDTO request) {
+        String response = authServiceImpl.generateOTP(request.getEmail());
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(new ResponseDTO(VarList.Created, "Success",response));
+    }
+    @PostMapping("/verify-otp")
+    public ResponseEntity<String> verifyOTP(@RequestBody OTPVerificationDTO request) {
+        boolean isValid = authServiceImpl.verifyOTP(request.getEmail(), request.getOtp());
+        return isValid ? ResponseEntity.ok("OTP Verified! Reset your password.")
+                : ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OTP!");
+    }
+    @PostMapping("/reset-password")
+    public ResponseEntity<String> resetPassword(@RequestBody ResetPasswordDTO request) {
+        String response = authServiceImpl.resetPassword(request.getEmail(), request.getNewPassword());
+        return ResponseEntity.ok(response);
+    }
+
+
 
 }
 
