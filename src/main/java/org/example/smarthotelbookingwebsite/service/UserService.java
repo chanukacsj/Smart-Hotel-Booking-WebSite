@@ -11,4 +11,7 @@ public interface UserService {
     void updateUserRole(String email, String newRole);
     List<UserDTO> getAll();
     boolean allReadyUsedEmail(String email);
+    UserDTO getUserByEmail(String email);
+
+    UserDTO getUserNameById(Long id);
 }

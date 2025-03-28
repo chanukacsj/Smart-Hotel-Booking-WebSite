@@ -212,9 +212,9 @@
 
                         <select name="people" id="people" required class="input-field" >
                             <option value="" disabled selected>Select Room Type............</option>
-                            <option value="single">Single</option>
-                            <option value="double">Double</option>
-                            <option value="suite">Suite</option>
+                            <option value="single">single</option>
+                            <option value="double">double</option>
+                            <option value="suite">suite</option>
                         </select>
                     </div>
 
@@ -416,7 +416,6 @@
         $("#destination").val(localStorage.getItem("destination"));
         $("#checkin").val(localStorage.getItem("checkin"));
         $("#checkout").val(localStorage.getItem("checkout"));
-        $("#people").val(localStorage.getItem("people"));
 
         // Calculate the number of days between checkin and checkout
         let checkin = $("#checkin").val();

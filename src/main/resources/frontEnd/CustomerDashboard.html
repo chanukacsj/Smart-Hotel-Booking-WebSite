@@ -209,9 +209,9 @@
 
                         <select name="people" id="people" required class="input-field">
                             <option value="" disabled selected>Select Room Type............</option>
-                            <option value="single">Single</option>
-                            <option value="double">Double</option>
-                            <option value="suite">Suite</option>
+                            <option value="single">single</option>
+                            <option value="double">double</option>
+                            <option value="suite">suite</option>
                         </select>
                     </div>
                     <div class="input-wrapper">
@@ -583,6 +583,15 @@
 
             window.location.href = "HotelSearch.html";
         });
+        let token = localStorage.getItem("jwtToken");
+
+        if (!token) {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+            return;
+        }
+
+
     });
 
 </script>

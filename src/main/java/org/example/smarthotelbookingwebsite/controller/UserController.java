@@ -126,5 +126,17 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", userService.getAll()));
     }
+    @GetMapping("get/{email}")
+    public ResponseEntity<ResponseDTO> getUserByEmail(@PathVariable String email) {
+        System.out.println("Email: " + email);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", userService.getUserByEmail(email)));
+    }
+    @GetMapping("getName/{Id}")
+    public ResponseEntity<ResponseDTO> getUserNameById(@PathVariable Long Id) {
+        System.out.println("Id: " + Id);
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", userServiceImpl.getUserNameById(Id)));
+    }
 
 }

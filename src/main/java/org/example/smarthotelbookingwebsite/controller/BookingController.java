@@ -23,6 +23,9 @@ public class BookingController {
     }
     @PostMapping("/save")
     public ResponseEntity<ResponseDTO> saveBooking(@RequestBody @Valid BookingDTO bookingDTO) {
+        System.out.println(bookingDTO.getCheckInDate());
+        System.out.println(bookingDTO.getCheckOutDate());
+
         bookingServiceImpl.save(bookingDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Booking Saved Successfully", null));

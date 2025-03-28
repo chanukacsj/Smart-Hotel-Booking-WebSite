@@ -100,4 +100,23 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.existsByEmail(email);
     }
 
+    @Override
+    public UserDTO getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user != null) {
+            return modelMapper.map(user, UserDTO.class);
+        } else {
+            throw new UsernameNotFoundException("User not found with email: " + email);
+        }
+    }
+
+    @Override
+    public UserDTO getUserNameById(Long id) {
+        User user = userRepository.findById(String.valueOf(id)).orElse(null);
+        if (user != null) {
+            return modelMapper.map(user, UserDTO.class);
+        } else {
+            throw new UsernameNotFoundException("User not found with id: " + id);
+        }
+    }
 }

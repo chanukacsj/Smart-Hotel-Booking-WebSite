@@ -227,6 +227,7 @@
                                 window.location.href = "AdminDashBoard.html";
                             } else if (userRole === "USER") {
                                 // alert("Login successful");
+                                localStorage.setItem("emailUser", email);
                                 window.location.href = "CustomerDashboard.html";
                             } else if (userRole === "Manager") {
                                 localStorage.setItem("email", email);

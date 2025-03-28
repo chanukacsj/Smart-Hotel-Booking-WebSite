@@ -40,6 +40,7 @@ public class WebSecurityConfig {
     @Bean
     protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
@@ -48,6 +49,8 @@ public class WebSecurityConfig {
                                "/api/v1/auth/verify-otp",
                                 "/api/v1/auth/reset-password",
                                 "/api/v1/user/send-otp",
+                                "/api/v1/user/get/{email}",
+                                "/api/v1/user/getName/{Id}",
                                 "/api/v1/user/register/{otp}",
                                 "/api/v1/auth/refreshToken",
                                 "/api/v1/user/delete/{id}",
