@@ -111,6 +111,7 @@
                             <th>CheckInDate</th>
                             <th>CheckOutDate</th>
                             <th>PhoneNumber</th>
+                            <th>Email</th>
                             <th>Status</th>
                             <th>Actions</th>
                         </tr>
@@ -179,11 +180,12 @@
                         <td>${booking.checkInDate}</td>
                         <td>${booking.checkOutDate}</td>
                         <td>${booking.phoneNumber}</td>
+                        <td>${booking.email}</td>
                         <td>${booking.status}</td>
                         <td class="text-center">
                             <button type="button" class="btn btn-danger" style="background-color: red"
                                 data-bs-toggle="modal" data-bs-target="#updateModal"
-                                onclick="editBooking('${booking.id}', '${booking.status}')">
+                                onclick="editBooking('${booking.id}', '${booking.status}', '${booking.email}', '${booking.checkInDate}', '${booking.checkOutDate}', '${booking.roomId}')">
                                 Edit
                             </button>
                             <button type="button" class="btn btn-warning" style="background-color: orange" onclick="deleteBooking('${booking.id}')">Delete</button>
@@ -199,7 +201,7 @@
         });
     });
 
-    const editBooking = (id, status) => {
+    const editBooking = (id, status, email , checkInDate, checkOutDate,roomId) => {
         document.getElementById("UpdateBookingStatus").value = status;
 
         document.getElementById("btnUpdate").onclick = () => {
@@ -208,7 +210,11 @@
                 method: "PUT",
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "status": document.getElementById("UpdateBookingStatus").value
+                    "status": document.getElementById("UpdateBookingStatus").value,
+                    "email": email,
+                    "checkInDate": checkInDate,
+                    "checkOutDate": checkOutDate,
+                    "roomId": roomId
                 }),
                 success: (res) => {
                     if (res.statusCode === 200) {

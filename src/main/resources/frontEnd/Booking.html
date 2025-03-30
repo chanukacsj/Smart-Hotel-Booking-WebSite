@@ -391,7 +391,6 @@
 <!--
   - custom js link
 -->
-<script src="js/CustomerDashboard.js"></script>
 
 <!--
   - ionicon link
@@ -461,13 +460,17 @@
                     "checkInDate": checkin,
                     "checkOutDate": checkout,
                     "phoneNumber": ($("#phone").val()),
-                    "status": "PENDING"
+                    "status": "PENDING",
+                    "email": ($("#email").val()),
                 }),
-                success: function (data) {
-                    console.log("Booking Data:", data);
-                    alert("Booking successful.");
-                    localStorage.removeItem("checkin");
-                    localStorage.removeItem("checkout");
+                success: function (res) {
+                    console.log("Booking Data:", res);
+                     if (res.statusCode === 200) {
+                         console.log("Booking Data:", res);
+                         alert("Booking successful.");
+                         localStorage.removeItem("checkin");
+                         localStorage.removeItem("checkout");
+                     }
                 },
                 error: function (xhr, status, error) {
                     console.log("Error creating booking:", error);

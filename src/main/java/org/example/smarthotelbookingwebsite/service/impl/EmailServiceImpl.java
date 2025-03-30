@@ -1,14 +1,19 @@
 package org.example.smarthotelbookingwebsite.service.impl;
 
+import jakarta.mail.MessagingException;
+import jakarta.mail.internet.MimeMessage;
+import org.example.smarthotelbookingwebsite.service.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Transactional
 @Service
-public class EmailServiceImpl {
+public class EmailServiceImpl implements EmailService {
 
     @Autowired
     private JavaMailSender mailSender;
@@ -29,4 +34,36 @@ public class EmailServiceImpl {
         mailSender.send(message);
         System.out.println("OTP email sent successfully to " + toEmail);
     }
+
+    @Override
+
+    public void sendBookingConfirmationEmail(String toEmail, String bookingDetails, String paymentLink) {
+        String subject = "Booking Confirmation";
+        String body = "<html><body>" +
+                "<p>Dear User,</p>" +
+                "<p>Your booking has been confirmed. Here are the details:</p>" +
+                "<p>" + bookingDetails + "</p>" +
+                "<p>Click the button below to proceed with the payment:</p>" +
+                "<a href='" + paymentLink + "' style='display: inline-block; padding: 10px 20px; font-size: 16px; " +
+                "color: #fff; background-color: #28a745; text-decoration: none; border-radius: 5px;'>Pay Now</a>" +
+                "<p>Thank you for choosing our service.</p>" +
+                "<p>Best regards,<br>Smart Hotel Booking Team</p>" +
+                "</body></html>";
+
+        try {
+            MimeMessage message = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+
+            helper.setTo(toEmail);
+            helper.setSubject(subject);
+            helper.setText(body, true); // Enable HTML
+            helper.setFrom("chanucsj@gmail.com");
+
+            mailSender.send(message);
+            System.out.println("Booking confirmation email sent successfully to " + toEmail);
+        } catch (MessagingException e) {
+            System.err.println("Error sending email: " + e.getMessage());
+        }
+    }
+
 }
