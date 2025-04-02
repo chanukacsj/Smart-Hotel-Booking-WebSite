@@ -28,7 +28,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("api/v1/hotel")
 public class HotelController {

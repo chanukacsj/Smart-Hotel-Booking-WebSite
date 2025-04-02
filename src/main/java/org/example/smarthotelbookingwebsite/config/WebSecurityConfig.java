@@ -60,6 +60,7 @@ public class WebSecurityConfig {
                                 "/api/v1/hotel/delete/{id}",
                                 "/api/v1/hotel/update/{id}",
                                 "/api/v1/hotel/getAll",
+                                "/api/v1/room/getByHotelId/{hotelID}",
                                 "/api/v1/room/save",
                                 "/api/v1/room/delete/{id}",
                                 "/api/v1/room/update/{id}",

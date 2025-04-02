@@ -16,7 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("api/v1/user")
 public class UserController {
@@ -90,14 +90,12 @@ public class UserController {
         emailServiceImpl.sendOtpEmail(email, otp);
         return ResponseEntity.ok(new ResponseDTO(VarList.OK, "OTP sent successfully to " + email, null));
     }
-    @CrossOrigin(origins = "*")
     @DeleteMapping(value = "/delete/{email}")
     public ResponseEntity <ResponseDTO> deleteUser(@PathVariable String email) {
         userServiceImpl.deleteUser(email);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", null));
     }
-    @CrossOrigin(origins = "*")
     @PutMapping("/update/{email}")
     public ResponseEntity<ResponseDTO> updateUserRole(@PathVariable String email, @RequestBody Map<String, String> request) {
         String newRole = request.get("role");
@@ -116,7 +114,6 @@ public class UserController {
 
         String jwt = token.substring(7);
 
-        // Validate Token
         String username = jwtUtil.getUsernameFromToken(jwt);
         if (username == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)

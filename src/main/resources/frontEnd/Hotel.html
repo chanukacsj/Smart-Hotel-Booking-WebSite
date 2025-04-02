@@ -113,7 +113,7 @@
 
             </a>
 
-            <a href="#" class="logo logo-hotel">
+            <a href="CustomerDashboard.html" class="logo logo-hotel">
                 <img src="./assets/images/HotelLogo.png" alt="Tourly logo" class="logo-hotel">
             </a>
 
@@ -174,7 +174,7 @@
                 <ul class="navbar-list">
 
                     <li>
-                        <a href="#home" class="navbar-link" data-nav-link>home</a>
+                        <a href="CustomerDashboard.html" class="navbar-link" data-nav-link>home</a>
                     </li>
 
                     <li>
@@ -198,7 +198,7 @@
 
             </nav>
 
-            <button class="btn btn-primary">Book Now</button>
+            <button class="btn btn-primary" onclick="logout()">Log Out</button>
 
         </div>
     </div>
@@ -227,7 +227,7 @@
                 <div class="btn-group">
                     <button class="btn btn-primary">Learn more</button>
 
-                    <button class="btn btn-secondary">Book now</button>
+                    <button class="btn btn-primary" onclick="logout()">Log Out</button>
                 </div>
 
             </div>
@@ -571,6 +571,14 @@
 <script>
     $(document).ready(function () {
 
+        let token = localStorage.getItem("jwtToken");
+
+        if (!token) {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+            return;
+        }
+
         $("#destination").val(localStorage.getItem("destination"));
         $("#checkin").val(localStorage.getItem("checkin"));
         $("#checkout").val(localStorage.getItem("checkout"));
@@ -652,6 +660,7 @@
                 </tr>
             `);
                 });
+                localStorage.removeItem("people");
             }
         });
         $.ajax({
@@ -761,7 +770,11 @@
         function bookRoom(roomId) {
         window.location.href = 'Booking.html?roomId=' + roomId;
     }
-
+    function logout() {
+        localStorage.removeItem("jwtToken");
+        alert("Logged out successfully");
+        window.location.href = "Login.html";
+    }
 
 </script>
 </body>

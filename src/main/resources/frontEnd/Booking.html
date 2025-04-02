@@ -178,7 +178,7 @@
 
             </a>
 
-            <a href="#" class="logo logo-hotel">
+            <a href="CustomerDashboard.html" class="logo logo-hotel">
                 <img src="./assets/images/HotelLogo.png" alt="Tourly logo" class="logo-hotel">
             </a>
 
@@ -406,6 +406,15 @@
         crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
+
+        let token = localStorage.getItem("jwtToken");
+
+        if (!token) {
+            alert("You are not logged in!");
+            window.location.href = "login.html";
+            return;
+        }
+
         let checkin = localStorage.getItem("checkin");
         let checkout = localStorage.getItem("checkout");
         let Userid;

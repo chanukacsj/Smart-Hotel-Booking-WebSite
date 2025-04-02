@@ -9,7 +9,7 @@ import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-@CrossOrigin(origins = "*")
+@CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("api/v1/room")
 public class RoomController {
@@ -47,5 +47,9 @@ public class RoomController {
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", roomService.getAll()));
     }
-
+    @GetMapping("/getByHotelId/{hotelId}")
+    public ResponseEntity<ResponseDTO> getAllRoomsByHotelID(@PathVariable Long hotelId) {
+        return ResponseEntity.status(HttpStatus.OK)
+                .body(new ResponseDTO(VarList.OK, "Success", roomService.getAllRoomsByHotelID(hotelId)));
+    }
 }

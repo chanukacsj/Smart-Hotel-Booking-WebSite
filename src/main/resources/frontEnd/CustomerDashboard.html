@@ -67,7 +67,7 @@
 
             </a>
 
-            <a href="#" class="logo logo-hotel">
+            <a href="CustomerDashboard.html" class="logo logo-hotel">
                 <img src="./assets/images/HotelLogo.png" alt="Tourly logo" class="logo-hotel">
             </a>
 
@@ -152,7 +152,7 @@
 
             </nav>
 
-            <button class="btn btn-primary">Book Now</button>
+            <button class="btn btn-primary" onclick="logout()">Log Out</button>
 
         </div>
     </div>
@@ -206,26 +206,22 @@
 
                     <div class="input-wrapper">
                         <label for="people" class="input-label">Room Type*</label>
-
                         <select name="people" id="people" required class="input-field">
-                            <option value="" disabled selected>Select Room Type............</option>
-                            <option value="single">single</option>
-                            <option value="double">double</option>
-                            <option value="suite">suite</option>
+                            <option value="single">Single</option>
+                            <option value="double" selected>Double</option> <!-- Default value -->
+                            <option value="suite">Suite</option>
                         </select>
                     </div>
-                    <div class="input-wrapper">
-                        <label for="checkin" class="input-label">Checkin Date**</label>
 
+                    <div class="input-wrapper">
+                        <label for="checkin" class="input-label">Check-in Date*</label>
                         <input type="date" name="checkin" id="checkin" required class="input-field">
                     </div>
 
                     <div class="input-wrapper">
-                        <label for="checkout" class="input-label">Checkout Date*</label>
-
+                        <label for="checkout" class="input-label">Check-out Date*</label>
                         <input type="date" name="checkout" id="checkout" required class="input-field">
                     </div>
-
                     <button type="submit" class="btn btn-secondary" id="Search">Search now</button>
 
                 </form>
@@ -271,7 +267,7 @@
 
 
                                 <h3 class="h3 card-title">
-                                    <a href="#">Colombo</a>
+                                    <a href="#" onclick="setDestination('colombo')">Colombo</a>
                                 </h3>
 
                                 <p class="card-text">
@@ -306,7 +302,7 @@
                                 </p>
 
                                 <h3 class="h3 card-title">
-                                    <a href="#">Kandy</a>
+                                    <a href="#" onclick="setDestination('kandy')">Kandy</a>
                                 </h3>
 
                                 <p class="card-text">
@@ -338,7 +334,7 @@
 
 
                                 <h3 class="h3 card-title">
-                                    <a href="#">NuwaraEliya</a>
+                                    <a href="#" onclick="setDestination('NuwaraEliya')">NuwaraEliya</a>
                                 </h3>
 
                                 <p class="card-text">
@@ -567,22 +563,8 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
+
     $(document).ready(function () {
-        $(".tour-search-form").submit(function (e) {
-            e.preventDefault();
-
-            let destination = $("#destination").val();
-            let checkin = $("#checkin").val();
-            let checkout = $("#checkout").val();
-            let people = $("#people").val();
-
-            localStorage.setItem("destination", destination);
-            localStorage.setItem("checkin", checkin);
-            localStorage.setItem("checkout", checkout);
-            localStorage.setItem("people", people);
-
-            window.location.href = "HotelSearch.html";
-        });
         let token = localStorage.getItem("jwtToken");
 
         if (!token) {
@@ -591,8 +573,51 @@
             return;
         }
 
+        $(".tour-search-form").submit(function (e) {
+            e.preventDefault();
+            handleFormSubmission();
+        });
 
+        function handleFormSubmission() {
+            let destination = $("#destination").val();
+            let checkin = $("#checkin").val();
+            let checkout = $("#checkout").val();
+            let people = $("#people option:selected").val();
+
+            localStorage.setItem("destination", destination);
+            localStorage.setItem("checkin", checkin);
+            localStorage.setItem("checkout", checkout);
+            localStorage.setItem("people", people);
+
+            window.location.href = "HotelSearch.html";
+        }
     });
+
+    window.onload = function () {
+        let checkinField = document.getElementById("checkin");
+        let checkoutField = document.getElementById("checkout");
+
+        if (checkinField && checkoutField) {
+            let today = new Date().toISOString().split('T')[0]; // Get today's date
+            let tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day for tomorrow
+            let tomorrowDate = tomorrow.toISOString().split('T')[0];
+
+            checkinField.value = today;
+            checkoutField.value = tomorrowDate;
+        }
+    };
+
+    function setDestination(value) {
+        console.log("value: " + value);
+        document.getElementById("destination").value = value;
+        document.querySelector(".tour-search-form").submit();
+    }
+    function logout() {
+        localStorage.removeItem("jwtToken");
+        alert("Logged out successfully");
+        window.location.href = "Login.html";
+    }
 
 </script>
 </body>
