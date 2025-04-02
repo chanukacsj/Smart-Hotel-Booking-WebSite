@@ -102,25 +102,20 @@
         .details .recentOrders table tr td:nth-child(3) {
             text-align: center;
         }
-
-        /*table {*/
-        /*    width: 95%;*/
-        /*    border-collapse: collapse;*/
-        /*    margin-top: 20px;*/
-        /*    margin: 30px;*/
-        /*}*/
-
-        /*th, td {*/
-        /*    padding: 10px;*/
-        /*    border: 1px solid #ddd;*/
-        /*    text-align: left;*/
-        /*}*/
-
-        /*th {*/
-        /*    background: #007BFF;*/
-        /*    color: white;*/
-        /*}*/
-
+        .profile-img {
+            width: 130px;
+            height: 130px;
+            margin-bottom: 20px;
+            border-radius: 50%;
+            object-fit: cover;
+            border:3px solid #909daa;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Soft shadow */
+            transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .profile-img:hover {
+            transform: scale(1.1); /* Slight zoom on hover */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
         .add-btn {
             background: #28a745;
             color: white;
@@ -340,7 +335,7 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="updateModalLabel">Add New User</h1>
+                        <h1 class="modal-title fs-5" id="updateModalLabel">Update User Role</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
@@ -363,7 +358,25 @@
             </div>
         </div>
 
-
+        <!-- Profile Modal -->
+        <div class="modal fade" id="profileModal" tabindex="-1" aria-labelledby="profileModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="profileModalLabel">User Profile</h5>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="modalProfilePicture" src="assets/images/default-profile.png"
+                             alt="Profile Picture" class="profile-img">
+                        <p id="modalUserName">User Name</p>
+                        <p id="modalUserEmail">User Email</p>
+                        <p id="modalUserRole">User Role</p>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 </div>
@@ -377,6 +390,8 @@
 <script>
     let customers = [];
 
+
+
     $(document).ready(function () {
 
         let token = localStorage.getItem("jwtToken");
@@ -385,6 +400,8 @@
             window.location.href = "login.html";
             return;
         }
+
+        let imageUrl = "assets/images/";
 
         $.ajax({
             url: "http://localhost:8080/api/v1/user/getAll",
@@ -399,12 +416,16 @@
                 let table = $('#customerTable');
                 table.empty();
                 customers.forEach((customer) => {
+                    let image = imageUrl + customer.profileImage;
                     table.append(`
-                    <tr>
+                   <tr>
                         <td>${customer.id}</td>
-                        <td>${customer.username}</td>
-                        <td>${customer.email}</td>
-                        <td>${customer.role}</td>
+                        <td onclick="openProfileModal('${customer.username}', '${customer.email}','${image}', '${customer.role}')"
+                        data-bs-toggle="modal" data-bs-target="#profileModal">${customer.username}</td>
+                        <td onclick="openProfileModal('${customer.username}', '${customer.email}', '${image}', '${customer.role}')"
+                        data-bs-toggle="modal" data-bs-target="#profileModal">${customer.email}</td>
+                        <td onclick="openProfileModal('${customer.username}', '${customer.email}', '${image}', '${customer.role}')"
+                        data-bs-toggle="modal" data-bs-target="#profileModal">${customer.role}</td>
                         <td class="text-center">
                             <button type="button" class="btn btn-danger"
                                 data-bs-toggle="modal" data-bs-target="#updateModal"
@@ -448,10 +469,10 @@
 
         customerTable.innerHTML = filtered.map(customer => `
         <tr>
-            <td>${customer.id}</td>
-            <td>${customer.username}</td>
-            <td>${customer.email}</td>
-            <td>${customer.role}</td>
+        <td>${customer.id}</td>
+        <td>${customer.username}</td>
+        <td>${customer.email}</td>
+        <td>${customer.role}</td>
             <td class="text-center">
                 <button type="button" class="btn btn-danger"
                     data-bs-toggle="modal" data-bs-target="#updateModal"
@@ -548,6 +569,20 @@
             }
         });
     };
+
+    function openProfileModal(username, email ,image, role) {
+
+        console.log(username,email,image)
+        document.getElementById("modalUserName").innerText = username;
+        document.getElementById("modalUserEmail").innerText = email;
+        document.getElementById("modalProfilePicture").src = image;
+        document.getElementById("modalUserRole").innerText = role;
+
+        let modal = new bootstrap.Modal(document.getElementById('profileModal'));
+        modal.show();
+    }
+
+
     function logout() {
         localStorage.removeItem("jwtToken");
         alert("Logged out successfully");

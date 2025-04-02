@@ -1,5 +1,7 @@
 package org.example.smarthotelbookingwebsite.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+import java.util.Arrays;
 
 public class UserDTO {
     private Long id;
@@ -7,16 +9,21 @@ public class UserDTO {
     private String email;
     private String role;
     private String password;
+    private String ProfileImage;
 
-    public UserDTO(Long id, String username, String email, String role, String password) {
+
+    public UserDTO(Long id, String username, String email, String role, String password, String profileImage) {
         this.id = id;
         this.username = username;
         this.email = email;
         this.role = role;
         this.password = password;
+        ProfileImage = profileImage;
     }
 
-    public UserDTO(){}
+    public UserDTO() {
+    }
+
     public String getUsername() {
         return username;
     }
@@ -57,6 +64,14 @@ public class UserDTO {
         this.id = id;
     }
 
+    public String getProfileImage() {
+        return ProfileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        ProfileImage = profileImage;
+    }
+
     @Override
     public String toString() {
         return "UserDTO{" +
@@ -65,6 +80,7 @@ public class UserDTO {
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
                 ", password='" + password + '\'' +
+                ", ProfileImage='" + ProfileImage + '\'' +
                 '}';
     }
 }

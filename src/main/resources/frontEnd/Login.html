@@ -49,7 +49,10 @@
             <input type="text" id="nameSignUp" placeholder="Name">
             <input type="email" id="emailSignUp" placeholder="Email">
             <input type="password" id="passwordSignUp"  placeholder="Password">
-<!--            <button id="sign-up-btn2">Sign Up</button>-->
+<!--            <input type="file" id="profileImageSignUp" accept="image/*" placeholder="Profile Image">-->
+            <input type="file" id="imageUpload" accept="image/*">
+
+            <!--            <button id="sign-up-btn2">Sign Up</button>-->
             <button type="button" class="btn btn-primary" id="sendOtp" data-bs-toggle="" data-bs-target="#staticBackdrop">
                 Sign Up
             </button>
@@ -157,10 +160,11 @@
             let email = $("#emailSignUp").val().trim();
             let password = $("#passwordSignUp").val().trim();
             let otp = $("#otpInput").val().trim();
-
+            let imageInput = $("#imageUpload")[0];
+            let fileName = imageInput.files.length > 0 ? imageInput.files[0].name : null;
             console.log(otp);
 
-            if (!username || !email || !password || !otp) {
+            if (!username || !email || !password || !otp || !fileName) {
                 alert("All fields are required!");
                 return;
             }
@@ -174,13 +178,14 @@
                     "email": email,
                     "password": password,
                     "role": "USER",
+                    "profileImage": fileName
                 }),
                 success: (res) => {
                     localStorage.setItem("email", email);
                     console.log(res);
                     if (res.statusCode === 201) {
                         console.log("Registration successful");
-                        window.location.href = "CustomerDashboard.html";
+                        window.location.href = "Login.html";
                         alert("Registration successful");
 
                     } else {

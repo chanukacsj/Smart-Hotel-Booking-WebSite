@@ -1,5 +1,6 @@
 package org.example.smarthotelbookingwebsite.service;
 import org.example.smarthotelbookingwebsite.dto.UserDTO;
+import org.example.smarthotelbookingwebsite.entity.User;
 
 import java.util.List;
 

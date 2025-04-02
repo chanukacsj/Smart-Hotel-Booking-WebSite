@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import org.example.smarthotelbookingwebsite.dto.AuthDTO;
 import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
 import org.example.smarthotelbookingwebsite.dto.UserDTO;
+import org.example.smarthotelbookingwebsite.entity.User;
 import org.example.smarthotelbookingwebsite.service.OtpService;
 import org.example.smarthotelbookingwebsite.service.UserService;
 import org.example.smarthotelbookingwebsite.service.impl.EmailServiceImpl;
@@ -12,9 +13,12 @@ import org.example.smarthotelbookingwebsite.service.impl.UserServiceImpl;
 import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Map;
 @CrossOrigin(origins = "http://localhost:63342")
 @RestController
@@ -77,7 +81,6 @@ public class UserController {
                     .body(new ResponseDTO(VarList.Internal_Server_Error, "Error: " + e.getMessage(), null));
         }
     }
-
     @PostMapping("/send-otp")
     public ResponseEntity<ResponseDTO> sendOtp(@RequestBody Map<String, String> request) {
         String email = request.get("email");

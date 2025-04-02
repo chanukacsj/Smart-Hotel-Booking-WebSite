@@ -3,9 +3,9 @@ package org.example.smarthotelbookingwebsite.entity;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -29,6 +29,9 @@ public class User {
     @Column(nullable = false)
     private String role; // ADMIN, CUSTOMER, MANAGER
 
+    @Column(nullable = false)
+    private String ProfileImage;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Booking> bookings;
@@ -38,17 +41,26 @@ public class User {
     @JsonIgnore
     private Hotel hotel;
 
-    public User(Long id, String username, String password, String email, String role, List<Booking> bookings, Hotel hotel) {
+    public User(Long id, String username, String password, String email, String role, String profileImage, List<Booking> bookings, Hotel hotel) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.email = email;
         this.role = role;
+        ProfileImage = profileImage;
         this.bookings = bookings;
         this.hotel = hotel;
     }
 
     public User() {
+    }
+
+    public String getProfileImage() {
+        return ProfileImage;
+    }
+
+    public void setProfileImage(String profileImage) {
+        ProfileImage = profileImage;
     }
 
     public Long getId() {
@@ -115,6 +127,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 ", role='" + role + '\'' +
+                ", ProfileImage='" + ProfileImage + '\'' +
                 ", bookings=" + bookings +
                 ", hotel=" + hotel +
                 '}';
