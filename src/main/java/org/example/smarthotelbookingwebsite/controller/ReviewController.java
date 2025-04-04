@@ -10,9 +10,12 @@ import org.example.smarthotelbookingwebsite.entity.User;
 import org.example.smarthotelbookingwebsite.service.ReviewService;
 import org.example.smarthotelbookingwebsite.service.UserService;
 import org.example.smarthotelbookingwebsite.service.impl.ReviewServiceImpl;
+import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,7 +28,8 @@ public class ReviewController {
     private final ReviewService reviewService;
     private final ReviewServiceImpl reviewServiceImpl;
     private final UserService userService;
-
+    @Autowired
+    JwtUtil jwtUtil;
 
     public ReviewController(ReviewService reviewService, ReviewServiceImpl reviewServiceImpl, UserService userService) {
         this.reviewService = reviewService;
@@ -33,8 +37,10 @@ public class ReviewController {
         this.userService = userService;
     }
     @PostMapping("/save")
-    public ResponseEntity<ResponseDTO> saveReview(@RequestBody @Valid ReviewDTO reviewDTO) {
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public ResponseEntity<ResponseDTO> saveReview(@RequestBody @Valid ReviewDTO reviewDTO,@RequestHeader("Authorization") String token) {
         System.out.println("date"+reviewDTO.getReviewDate());
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         reviewServiceImpl.save(reviewDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Review Saved Successfully", null));
@@ -52,7 +58,10 @@ public class ReviewController {
                 .body(new ResponseDTO(VarList.OK, "Review Updated Successfully", null));
     }
     @GetMapping("getAll")
-    public ResponseEntity<ResponseDTO> getAllReviews() {
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getAllReviews(@RequestHeader("Authorization") String token) {
+
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", reviewService.getAll()));
     }

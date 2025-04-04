@@ -19,10 +19,8 @@ public class Booking {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "room_id", nullable = false)
-    @JsonBackReference
-    @JsonIgnore
     private Room room;
 
     @Column(nullable = false)
@@ -36,7 +34,6 @@ public class Booking {
 
     @Column(nullable = false)
     private String email;
-
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status; // PENDING, CONFIRMED, CANCELLED

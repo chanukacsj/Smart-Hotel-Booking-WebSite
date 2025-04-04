@@ -21,7 +21,7 @@ public class Hotel {
     private String PhoneNumber;
     private String image;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL, fetch = FetchType.LAZY,orphanRemoval = true)
     @JsonIgnore
     private List<Room> rooms;
 

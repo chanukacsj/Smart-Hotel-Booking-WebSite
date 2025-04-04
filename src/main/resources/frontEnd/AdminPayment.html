@@ -151,6 +151,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/payment/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 let payments = res.data;

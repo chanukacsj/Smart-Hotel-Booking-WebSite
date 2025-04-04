@@ -182,6 +182,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/booking/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 let bookings = res.data;
@@ -225,6 +228,9 @@
             $.ajax({
                 url: `http://localhost:8080/api/v1/booking/update/${id}`,
                 method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 data: JSON.stringify({
                     "status": document.getElementById("UpdateBookingStatus").value,
@@ -253,6 +259,9 @@
             $.ajax({
                 url: `http://localhost:8080/api/v1/booking/delete/${id}`,
                 method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 success: (res) => {
                     if (res.statusCode === 200) {
                         alert("Booking deleted successfully.");

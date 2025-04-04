@@ -139,6 +139,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/ManagerPayment/getAllPaymentsByHotel",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             data: { hotelID: localStorage.getItem("hotelId") },
             success: (res) => {

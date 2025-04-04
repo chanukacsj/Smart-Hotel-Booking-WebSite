@@ -352,7 +352,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Modal title</h1>
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Reviews</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
@@ -596,6 +596,9 @@
         $.ajax({
             url: `http://localhost:8080/api/v1/user/get/${email}`,
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: function (data) {
                 console.log("Customer Data:", data);
@@ -617,6 +620,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/room/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 $("#roomImages").empty();
@@ -666,6 +672,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/hotel/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 localStorage.removeItem("people");
@@ -681,6 +690,9 @@
             $.ajax({
                 url: "http://localhost:8080/api/v1/review/getAll",
                 method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 success: (res) => {
                     let reviews = res.data;
@@ -698,6 +710,9 @@
                         $.ajax({
                             url:`http://localhost:8080/api/v1/user/getName/${ID}`,
                             method: "GET",
+                            headers: {
+                                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                            },
                             contentType: "application/json",
                             success: (res) => {
                                 console.log(res.data);
@@ -746,6 +761,9 @@
             $.ajax({
                 url: "http://localhost:8080/api/v1/review/save",
                 method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 data: JSON.stringify({
                     "comment": $("#ReviewComment").val(),

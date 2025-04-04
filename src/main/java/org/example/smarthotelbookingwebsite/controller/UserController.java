@@ -15,6 +15,7 @@ import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -94,13 +95,18 @@ public class UserController {
         return ResponseEntity.ok(new ResponseDTO(VarList.OK, "OTP sent successfully to " + email, null));
     }
     @DeleteMapping(value = "/delete/{email}")
-    public ResponseEntity <ResponseDTO> deleteUser(@PathVariable String email) {
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity <ResponseDTO> deleteUser(@PathVariable String email,@RequestHeader("Authorization") String token) {
+
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         userServiceImpl.deleteUser(email);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", null));
     }
     @PutMapping("/update/{email}")
-    public ResponseEntity<ResponseDTO> updateUserRole(@PathVariable String email, @RequestBody Map<String, String> request) {
+    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    public ResponseEntity<ResponseDTO> updateUserRole(@PathVariable String email,@RequestHeader("Authorization") String token, @RequestBody Map<String, String> request) {
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         String newRole = request.get("role");
 
         if (newRole == null || newRole.isEmpty()) {
@@ -113,6 +119,7 @@ public class UserController {
                 .body(new ResponseDTO(VarList.OK, "User role updated successfully", null));
     }
     @GetMapping("getAll")
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
     public ResponseEntity<ResponseDTO> getAllUsers(@RequestHeader("Authorization") String token) {
 
         String jwt = token.substring(7);
@@ -127,14 +134,18 @@ public class UserController {
                 .body(new ResponseDTO(VarList.OK, "Success", userService.getAll()));
     }
     @GetMapping("get/{email}")
-    public ResponseEntity<ResponseDTO> getUserByEmail(@PathVariable String email) {
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
+    public ResponseEntity<ResponseDTO> getUserByEmail(@PathVariable String email,@RequestHeader("Authorization") String token) {
         System.out.println("Email: " + email);
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", userService.getUserByEmail(email)));
     }
     @GetMapping("getName/{Id}")
-    public ResponseEntity<ResponseDTO> getUserNameById(@PathVariable Long Id) {
+    @PreAuthorize("hasAnyAuthority('USER')")
+    public ResponseEntity<ResponseDTO> getUserNameById(@PathVariable Long Id,@RequestHeader("Authorization") String token) {
         System.out.println("Id: " + Id);
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", userServiceImpl.getUserNameById(Id)));
     }

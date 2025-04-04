@@ -4,9 +4,12 @@ import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
 import org.example.smarthotelbookingwebsite.entity.Hotel;
 import org.example.smarthotelbookingwebsite.service.HotelService;
 import org.example.smarthotelbookingwebsite.service.impl.HotelServiceImpl;
+import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,6 +20,9 @@ import java.util.List;
 public class ManagerHotelController {
     private final HotelService hotelService;
     private final HotelServiceImpl hotelServiceImpl;
+    @Autowired
+    JwtUtil jwtUtil;
+
 
     public ManagerHotelController(HotelService hotelService, HotelServiceImpl hotelServiceImpl) {
         this.hotelService = hotelService;
@@ -24,9 +30,11 @@ public class ManagerHotelController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<ResponseDTO> getHotelsByEmail(@RequestParam String email) {
+    @PreAuthorize("hasAnyAuthority('Manager')")
+    public ResponseEntity<ResponseDTO> getHotelsByEmail(@RequestParam String email, @RequestHeader("Authorization") String token) {
         System.out.println("Email: " + email);
 
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         Long userId = hotelService.getUserIdByEmail(email);
         System.out.println("User ID: " + userId);
 

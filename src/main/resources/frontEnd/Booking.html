@@ -441,6 +441,9 @@
         $.ajax({
             url: `http://localhost:8080/api/v1/user/get/${email}`,
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: function (data) {
                 console.log("Customer Data:", data);
@@ -462,6 +465,9 @@
             $.ajax({
                 url: "http://localhost:8080/api/v1/booking/save",
                 method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 data: JSON.stringify({
                     "roomId": roomId,
@@ -477,6 +483,7 @@
                      if (res.statusCode === 200) {
                          console.log("Booking Data:", res);
                          alert("Booking successful.");
+
                          localStorage.removeItem("checkin");
                          localStorage.removeItem("checkout");
                      }

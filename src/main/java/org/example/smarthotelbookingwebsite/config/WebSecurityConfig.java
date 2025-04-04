@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -42,6 +43,7 @@ public class WebSecurityConfig {
         return http
 
                 .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 "/api/v1/auth/authenticate",
@@ -49,38 +51,38 @@ public class WebSecurityConfig {
                                "/api/v1/auth/verify-otp",
                                 "/api/v1/auth/reset-password",
                                 "/api/v1/user/send-otp",
-                                "/api/v1/user/get/{email}",
-                                "/api/v1/user/getName/{Id}",
+//                                "/api/v1/user/get/{email}",
+//                                "/api/v1/user/getName/{Id}",
                                 "/api/v1/user/register/{otp}",
                                 "/api/v1/auth/refreshToken",
-                                "/api/v1/user/delete/{id}",
-                                "/api/v1/user/update/{id}",
-                                "/api/v1/user/getAll",
-                                "/api/v1/hotel/save",
-                                "/api/v1/hotel/delete/{id}",
-                                "/api/v1/hotel/update/{id}",
-                                "/api/v1/hotel/getAll",
-                                "/api/v1/room/getByHotelId/{hotelID}",
-                                "/api/v1/room/save",
-                                "/api/v1/room/delete/{id}",
-                                "/api/v1/room/update/{id}",
-                                "/api/v1/room/getAll",
-                                "/api/v1/review/save",
-                                "/api/v1/review/delete/{id}",
-                                "/api/v1/review/update/{id}",
-                                "/api/v1/review/getAll",
-                                "/api/v1/booking/save",
-                                "/api/v1/booking/delete/{id}",
-                                "/api/v1/booking/update/{id}",
-                                "/api/v1/booking/getAll",
-                                "/api/v1/payment/save",
-                                "/api/v1/payment/delete/{id}",
-                                "/api/v1/payment/update/{id}",
-                                "/api/v1/payment/getAll",
-                                "/api/v1/hotelManager/getAll",
-                                "/api/v1/ManagerRoom/getAllRoomByHotelID",
-                                "/api/v1/ManagerBooking/getAllHotelBookings",
-                                "/api/v1/ManagerPayment/getAllPaymentsByHotel",
+//                                "/api/v1/user/delete/{id}",
+//                                "/api/v1/user/update/{id}",
+//                                "/api/v1/user/getAll",
+//                                "/api/v1/hotel/save",
+//                                "/api/v1/hotel/delete/{id}",
+//                                "/api/v1/hotel/update/{id}",
+//                                "/api/v1/hotel/getAll",
+//                                "/api/v1/room/getByHotelId/{hotelID}",
+//                                "/api/v1/room/save",
+//                                "/api/v1/room/delete/{id}",
+//                                "/api/v1/room/update/{id}",
+//                                "/api/v1/room/getAll",
+//                                "/api/v1/review/save",
+//                                "/api/v1/review/delete/{id}",
+//                                "/api/v1/review/update/{id}",
+//                                "/api/v1/review/getAll",
+//                                "/api/v1/booking/save",
+//                                "/api/v1/booking/delete/{id}",
+//                                "/api/v1/booking/update/{id}",
+//                                "/api/v1/booking/getAll",
+//                                "/api/v1/payment/save",
+//                                "/api/v1/payment/delete/{id}",
+//                                "/api/v1/payment/update/{id}",
+//                                "/api/v1/payment/getAll",
+//                                "/api/v1/hotelManager/getAll",
+//                                "/api/v1/ManagerRoom/getAllRoomByHotelID",
+//                                "/api/v1/ManagerBooking/getAllHotelBookings",
+//                                "/api/v1/ManagerPayment/getAllPaymentsByHotel",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
                                 "/swagger-ui.html").permitAll()

@@ -269,6 +269,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/hotel/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 let hotelDropdown = $("#HotelID, #UpdateHotelID");
@@ -287,6 +290,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/hotel/getAll",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             success: (res) => {
                 let hotelArray = [];
@@ -298,6 +304,9 @@
                 console.log(localStorage.getItem("hotelId"));
                 $.ajax({
                     url: "http://localhost:8080/api/v1/ManagerRoom/getAllRoomByHotelID",
+                    headers: {
+                        "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                    },
                     method: "GET",
                     data: {hotelID: localStorage.getItem("hotelId")},
                     contentType: "application/json",
@@ -382,6 +391,9 @@
             $.ajax({
                 url: "http://localhost:8080/api/v1/room/save",
                 method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 data: JSON.stringify({
                     roomNumber: $("#RoomNumber").val(),
@@ -451,6 +463,9 @@
         $.ajax({
             url: `http://localhost:8080/api/v1/room/update/${id}`,
             method: "PUT",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             data: JSON.stringify(updatedData),
             success: (res) => {
@@ -472,6 +487,9 @@
             $.ajax({
                 url: `http://localhost:8080/api/v1/room/delete/${id}`,
                 method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 success: (res) => {
                     if (res.statusCode === 200) {
                         alert("Room deleted successfully.");

@@ -48,6 +48,7 @@ public class RoomServiceImpl implements RoomService {
                 .orElseThrow(() -> new RuntimeException("Room not found with ID: " + id));
 
         // Update fields
+        existingRoom.setRoomNumber(roomDTO.getRoomNumber());
         existingRoom.setRoomType(roomDTO.getRoomType());
         existingRoom.setPrice(roomDTO.getPrice());
         existingRoom.setAvailable(roomDTO.getAvailable());

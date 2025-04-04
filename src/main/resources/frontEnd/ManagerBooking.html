@@ -171,36 +171,48 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/ManagerBooking/getAllHotelBookings",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             data: { hotelID: hotelId },
             success: (res) => {
+                if (!res || !res.data) {
+                    console.error("Invalid API Response:", res);
+                    alert("No data received.");
+                    return;
+                }
+
                 console.log("API Response:", res.data);
                 let bookings = res.data;
                 let table = $('#BookingTable');
                 table.empty();
+
                 bookings.forEach((booking) => {
                     let userId = booking.user ? booking.user.username : "Unknown";
-                    let roomId = booking.room ? booking.room.roomNumber : "Unknown";
+                    let roomNumber = booking.room ? booking.room.roomNumber : "Unknown";
+                    let email = booking.email ? booking.email : "No Email Provided";
 
                     table.append(`
-                    <tr>
-                        <td>${booking.id}</td>
-                        <td>${userId}</td>
-                        <td>${roomId}</td>
-                        <td>${booking.checkInDate}</td>
-                        <td>${booking.checkOutDate}</td>
-                        <td>${booking.phoneNumber}</td>
-                        <td>${booking.status}</td>
-                        <td class="text-center">
-                            <button type="button" class="btn btn-danger" style="background-color: red"
-                                data-bs-toggle="modal" data-bs-target="#updateModal"
-                                onclick="editBooking('${booking.id}', '${booking.status}')">
-                                Edit
-                            </button>
-                            <button type="button" class="btn btn-warning" style="background-color: orange" onclick="deleteBooking('${booking.id}')">Delete</button>
-                        </td>
-                    </tr>
-                `);
+            <tr>
+                <td>${booking.id}</td>
+                <td>${userId}</td>
+                <td>${roomNumber}</td>
+                <td>${booking.checkInDate}</td>
+                <td>${booking.checkOutDate}</td>
+                <td>${booking.phoneNumber}</td>
+                <td>${booking.status}</td>
+                <td>${email}</td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger" style="background-color: red"
+                        data-bs-toggle="modal" data-bs-target="#updateModal"
+                        onclick="editBooking('${booking.id}', '${booking.status}', '${email}', '${booking.checkInDate}', '${booking.checkOutDate}', '${roomNumber}')">
+                        Edit
+                    </button>
+                    <button type="button" class="btn btn-warning" style="background-color: orange" onclick="deleteBooking('${booking.id}')">Delete</button>
+                </td>
+            </tr>
+        `);
                 });
             },
             error: (error) => {
@@ -208,18 +220,26 @@
                 alert("Something went wrong while fetching bookings.");
             }
         });
+
     });
 
-    const editBooking = (id, status) => {
+    const editBooking = (id, status, email , checkInDate, checkOutDate,roomId) => {
         document.getElementById("UpdateBookingStatus").value = status;
 
         document.getElementById("btnUpdate").onclick = () => {
             $.ajax({
                 url: `http://localhost:8080/api/v1/booking/update/${id}`,
                 method: "PUT",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "status": document.getElementById("UpdateBookingStatus").value
+                    "status": document.getElementById("UpdateBookingStatus").value,
+                    "email": email,
+                    "checkInDate": checkInDate,
+                    "checkOutDate": checkOutDate,
+                    "roomId": roomId
                 }),
                 success: (res) => {
                     if (res.statusCode === 200) {
@@ -241,6 +261,9 @@
             $.ajax({
                 url: `http://localhost:8080/api/v1/booking/delete/${id}`,
                 method: "DELETE",
+                headers: {
+                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                },
                 success: (res) => {
                     if (res.statusCode === 200) {
                         alert("Booking deleted successfully.");

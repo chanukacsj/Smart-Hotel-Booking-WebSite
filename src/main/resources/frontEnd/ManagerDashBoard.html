@@ -132,7 +132,7 @@
                     <tr>
                         <th>ID</th>
                         <th>UserId</th>
-                        <th>RoomId</th>
+                        <th>RoomNumber</th>
                         <th>CheckInDate</th>
                         <th>CheckOutDate</th>
                         <th>PhoneNumber</th>
@@ -172,6 +172,9 @@
         $.ajax({
             url: "http://localhost:8080/api/v1/ManagerBooking/getAllHotelBookings",
             method: "GET",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            },
             contentType: "application/json",
             data: { hotelID: hotelId },
             success: (res) => {
@@ -180,11 +183,13 @@
                 table.empty();
 
                 bookings.forEach((booking) => {
+                    let roomNumber = booking.room ? booking.room.roomNumber : "Unknown";
+
                     table.append(`
                     <tr>
                         <td>${booking.id}</td>
                         <td>${booking.user.username}</td>
-                        <td>${booking.room}</td>
+                        <td>${roomNumber}</td>
                         <td>${booking.checkInDate}</td>
                         <td>${booking.checkOutDate}</td>
                         <td>${booking.phoneNumber}</td>

@@ -10,10 +10,12 @@ import org.example.smarthotelbookingwebsite.service.HotelService;
 import org.example.smarthotelbookingwebsite.service.impl.HotelServiceImpl;
 import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,35 +36,47 @@ import java.util.List;
 public class HotelController {
     private final HotelService hotelService;
     private final HotelServiceImpl hotelServiceImpl;
+    @Autowired
+    JwtUtil jwtUtil;
 
     public HotelController(HotelService hotelService, HotelServiceImpl hotelServiceImpl) {
         this.hotelService = hotelService;
         this.hotelServiceImpl = hotelServiceImpl;
     }
     @PostMapping(value = "/save")
-    public ResponseEntity<ResponseDTO> saveHotel(@RequestBody @Valid HotelDto hotelDto){
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
+    public ResponseEntity<ResponseDTO> saveHotel(@RequestBody @Valid HotelDto hotelDto,@RequestHeader("Authorization") String token){
 
         System.out.println(hotelDto.getUserId());
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         hotelService.saveHotel(hotelDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Hotel Saved Successfully", null));
     }
 
     @DeleteMapping(value = "/delete/{id}")
-    public ResponseEntity <ResponseDTO> deleteHotel(@PathVariable Long id) {
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
+    public ResponseEntity <ResponseDTO> deleteHotel(@PathVariable Long id,@RequestHeader("Authorization") String token) {
+        System.out.println("Delete Hotel ID: " + id);
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         hotelService.deleteHotel(id);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Success", null));
     }
     @PutMapping("/update/{id}")
-    public ResponseEntity<ResponseDTO> updateHotel(@PathVariable Long id, @RequestBody @Valid HotelDto hotelDto) {
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
+    public ResponseEntity<ResponseDTO> updateHotel(@PathVariable Long id, @RequestBody @Valid HotelDto hotelDto,@RequestHeader("Authorization") String token) {
         System.out.println(hotelDto.getImage());
+
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         hotelServiceImpl.updateHotel(id,hotelDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Hotel Updated Successfully", null));
     }
     @GetMapping("/getAll")
-    public ResponseEntity<ResponseDTO>getAllHotels() {
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager','USER')")
+    public ResponseEntity<ResponseDTO>getAllHotels(@RequestHeader("Authorization") String token) {
+        jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK,"Success",hotelServiceImpl.getAllHotels()));
     }
