@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name = "bookings")
@@ -60,7 +61,6 @@ public class Booking {
 
     public Booking() {
     }
-
     public String getEmail() {
         return email;
     }

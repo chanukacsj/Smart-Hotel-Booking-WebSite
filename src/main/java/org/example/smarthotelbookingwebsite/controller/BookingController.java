@@ -3,6 +3,7 @@ package org.example.smarthotelbookingwebsite.controller;
 import jakarta.validation.Valid;
 import org.example.smarthotelbookingwebsite.dto.BookingDTO;
 import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
+import org.example.smarthotelbookingwebsite.entity.Booking;
 import org.example.smarthotelbookingwebsite.service.BookingService;
 import org.example.smarthotelbookingwebsite.service.EmailService;
 import org.example.smarthotelbookingwebsite.service.impl.BookingServiceImpl;
@@ -36,10 +37,11 @@ public class BookingController {
 
     @PostMapping("/save")
     @PreAuthorize("hasAnyAuthority('USER')")
-    public ResponseEntity<ResponseDTO> saveBooking(@RequestBody @Valid BookingDTO bookingDTO,@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ResponseDTO> saveBooking(@RequestBody @Valid BookingDTO bookingDTO, @RequestHeader("Authorization") String token) {
         System.out.println("Check-in Date: " + bookingDTO.getCheckInDate());
         System.out.println("Check-out Date: " + bookingDTO.getCheckOutDate());
         System.out.println("User Email: " + bookingDTO.getEmail());
+
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
 
         bookingServiceImpl.save(bookingDTO);
@@ -51,7 +53,7 @@ public class BookingController {
 
     @DeleteMapping(value = "/delete/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
-    public ResponseEntity<ResponseDTO> deleteBooking(@PathVariable Long id,@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ResponseDTO> deleteBooking(@PathVariable Long id, @RequestHeader("Authorization") String token) {
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         bookingService.delete(id);
         return ResponseEntity.status(HttpStatus.OK)
@@ -60,7 +62,7 @@ public class BookingController {
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
-    public ResponseEntity<ResponseDTO> updateBooking(@PathVariable Long id, @RequestBody @Valid BookingDTO bookingDTO,@RequestHeader("Authorization") String token) {
+    public ResponseEntity<ResponseDTO> updateBooking(@PathVariable Long id, @RequestBody @Valid BookingDTO bookingDTO, @RequestHeader("Authorization") String token) {
         System.out.println(bookingDTO.getEmail());
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
 
@@ -70,7 +72,8 @@ public class BookingController {
             String userEmail = bookingDTO.getEmail();
             String bookingDetails = "Check-in Date: " + bookingDTO.getCheckInDate() + "<br>" +
                     "Check-out Date: " + bookingDTO.getCheckOutDate() + "<br>" +
-                    "Room ID: " + bookingDTO.getRoomId();
+                    "Room ID: " + bookingDTO.getRoomId() + "<br>" +
+                    "Booking ID: " + bookingDTO.getId();
 
             String paymentLink = "https://yourpaymentgateway.com/pay?bookingId=" + bookingDTO.getId();
 

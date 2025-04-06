@@ -3,7 +3,6 @@ package org.example.smarthotelbookingwebsite.service.impl;
 import org.example.smarthotelbookingwebsite.dto.BookingDTO;
 import org.example.smarthotelbookingwebsite.entity.Booking;
 import org.example.smarthotelbookingwebsite.entity.Room;
-import org.example.smarthotelbookingwebsite.entity.User;
 import org.example.smarthotelbookingwebsite.repo.BookingRepository;
 import org.example.smarthotelbookingwebsite.repo.RoomRepository;
 import org.example.smarthotelbookingwebsite.repo.UserRepository;
@@ -32,8 +31,10 @@ public class BookingServiceImpl implements BookingService {
     @Autowired
     private RoomRepository roomRepository;
     @Override
-    public void save(BookingDTO bookingDTO) {
+    public BookingDTO save(BookingDTO bookingDTO) {
         bookingRepository.save(modelMapper.map(bookingDTO, Booking.class));
+        return bookingDTO;
+
     }
 
     @Override
@@ -63,4 +64,5 @@ public class BookingServiceImpl implements BookingService {
 
         return bookingRepository.findByRoomIdIn(roomIds);
     }
+
 }

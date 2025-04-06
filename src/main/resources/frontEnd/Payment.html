@@ -158,7 +158,7 @@
                 </div>
 
                 <div class="form-footer">
-                    <button type="submit" class="btn btn-primary">Pay Now</button>
+                    <button type="submit" class="btn btn-primary" onclick="payNow()">Pay Now</button>
                 </div>
             </form>
         </div>
@@ -307,6 +307,48 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script>
+    function payNow() {
+        const token = localStorage.getItem("jwtToken");
+        console.log(localStorage.getItem("bookingId"));
+
+        let bookingId = localStorage.getItem("bookingId");
+        if (!bookingId) {
+            alert("Booking not found. Please book first.");
+            window.location.href = "rooms.html";
+        }
+
+
+        const paymentData = {
+            amount: parseFloat($("#amount").val()), // Replace with actual amount
+            method: "CREDIT_CARD", // Or your enum value
+            bookingId: localStorage.getItem("bookingId"),
+            paymentDate: new Date().toISOString()
+        };
+
+        $.ajax({
+            url: "http://localhost:8080/api/v1/payment/save",
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${token}`,
+                "Content-Type": "application/json"
+            },
+            data: JSON.stringify(paymentData),
+            success: function (response) {
+                if (response.statusCode === 200) {
+                    const payhereUrl = response.data.paymentUrl;
+                    // Redirect to PayHere
+                    window.location.href = payhereUrl;
+                } else {
+                    alert("Payment initiation failed: " + response.message);
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                alert("Error while initiating payment.");
+            }
+        });
+    }
+
 </script>
 </body>
 

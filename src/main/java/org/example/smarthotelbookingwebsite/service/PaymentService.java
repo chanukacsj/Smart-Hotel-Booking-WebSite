@@ -1,7 +1,7 @@
 package org.example.smarthotelbookingwebsite.service;
 
 import org.example.smarthotelbookingwebsite.dto.PaymentDTO;
-import org.example.smarthotelbookingwebsite.dto.RoomDTO;
+import org.example.smarthotelbookingwebsite.dto.PaymentResponse;
 import org.example.smarthotelbookingwebsite.entity.Payment;
 
 import java.util.List;

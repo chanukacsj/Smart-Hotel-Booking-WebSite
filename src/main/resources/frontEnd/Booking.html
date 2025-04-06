@@ -408,7 +408,6 @@
     $(document).ready(function () {
 
         let token = localStorage.getItem("jwtToken");
-
         if (!token) {
             alert("You are not logged in!");
             window.location.href = "login.html";
@@ -418,8 +417,9 @@
         let checkin = localStorage.getItem("checkin");
         let checkout = localStorage.getItem("checkout");
         let Userid;
-        console.log("Checkin:", checkin);
-        // Function to get query parameters from the URL
+        let roomId;
+
+        // ✅ Get roomId from URL
         function getQueryParams() {
             let params = {};
             let queryString = window.location.search.substring(1);
@@ -431,10 +431,10 @@
             return params;
         }
 
-        // Get the roomId from the query parameters
         let params = getQueryParams();
-        let roomId = params['roomId'];
+        roomId = params['roomId'];
         console.log("Room ID:", roomId);
+        console.log("Checkin:", checkin);
 
         let email = localStorage.getItem("emailUser");
 
@@ -442,7 +442,7 @@
             url: `http://localhost:8080/api/v1/user/get/${email}`,
             method: "GET",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                "Authorization": `Bearer ${token}`
             },
             contentType: "application/json",
             success: function (data) {
@@ -450,7 +450,7 @@
                 if (data && data.data) {
                     $("#name").val(data.data.username);
                     $("#email").val(data.data.email);
-                     Userid = data.data.id;
+                    Userid = data.data.id;
                 } else {
                     console.log("No customer data found.");
                     alert("Customer not found.");
@@ -461,40 +461,47 @@
                 alert("Failed to fetch customer details.");
             }
         });
+
         $("#ConfirmBooking").click(function () {
+
+            if (!$("#phone").val() || !$("#name").val() || !$("#email").val()) {
+                alert("Please fill in all fields.");
+                return;
+            }
+
             $.ajax({
                 url: "http://localhost:8080/api/v1/booking/save",
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                    "Authorization": `Bearer ${token}`
                 },
                 contentType: "application/json",
                 data: JSON.stringify({
-                    "roomId": roomId,
-                    "userId": Userid,
-                    "checkInDate": checkin,
-                    "checkOutDate": checkout,
-                    "phoneNumber": ($("#phone").val()),
-                    "status": "PENDING",
-                    "email": ($("#email").val()),
+                    roomId: roomId,
+                    userId: Userid,
+                    checkInDate: checkin,
+                    checkOutDate: checkout,
+                    phoneNumber: $("#phone").val(),
+                    status: "PENDING",
+                    email: $("#email").val()
                 }),
-                success: function (res) {
-                    console.log("Booking Data:", res);
-                     if (res.statusCode === 200) {
-                         console.log("Booking Data:", res);
-                         alert("Booking successful.");
-
-                         localStorage.removeItem("checkin");
-                         localStorage.removeItem("checkout");
-                     }
+                success: (res) => {
+                    console.log("Booking Response:", res);
+                    if (res.statusCode === 200) {
+                        alert("Booking successful.");
+                        location.href = "CustomerDashboard.html";
+                    } else {
+                        alert("Booking failed: " + res.message);
+                    }
                 },
-                error: function (xhr, status, error) {
+                error: (error) => {
                     console.log("Error creating booking:", error);
                     alert("Failed to create booking.");
                 }
             });
         });
     });
+
 
 </script>
 </body>

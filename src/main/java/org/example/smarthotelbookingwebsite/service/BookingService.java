@@ -1,13 +1,12 @@
 package org.example.smarthotelbookingwebsite.service;
 
 import org.example.smarthotelbookingwebsite.dto.BookingDTO;
-import org.example.smarthotelbookingwebsite.dto.ReviewDTO;
 import org.example.smarthotelbookingwebsite.entity.Booking;
 
 import java.util.List;
 
 public interface BookingService {
-    void save(BookingDTO bookingDTO);
+    BookingDTO save(BookingDTO bookingDTO);
 
     void delete(Long id);
 
@@ -16,4 +15,5 @@ public interface BookingService {
     List<BookingDTO> getAll();
 
     List<Booking> getBookingsByHotel(Long hotelID);
+
 }

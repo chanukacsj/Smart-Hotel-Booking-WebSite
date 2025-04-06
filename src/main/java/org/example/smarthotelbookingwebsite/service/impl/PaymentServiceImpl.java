@@ -1,6 +1,7 @@
 package org.example.smarthotelbookingwebsite.service.impl;
 
 import org.example.smarthotelbookingwebsite.dto.PaymentDTO;
+import org.example.smarthotelbookingwebsite.dto.PaymentResponse;
 import org.example.smarthotelbookingwebsite.entity.Booking;
 import org.example.smarthotelbookingwebsite.entity.Payment;
 import org.example.smarthotelbookingwebsite.repo.BookingRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -70,5 +72,35 @@ public class PaymentServiceImpl implements PaymentService {
     }
     public List<Payment> getPaymentsByHotelId(Long hotelId) {
         return paymentRepository.findPaymentsByHotelId(hotelId);
+    }
+    public static PaymentResponse createPayment(PaymentDTO paymentDTO) {
+        // Here you should build a HTTP POST request to PayHere with paymentDTO data
+
+        // Sample simulation:
+        PaymentResponse response = new PaymentResponse();
+        String payhereUrl = "https://sandbox.payhere.lk/pay/checkout?" +
+                "merchant_id=" + paymentDTO.getMerchantId() +
+                "&return_url=" + paymentDTO.getReturnUrl() +
+                "&cancel_url=" + paymentDTO.getCancelUrl() +
+                "&notify_url=" + paymentDTO.getNotifyUrl() +
+                "&order_id=" + paymentDTO.getBookingId() +
+                "&items=Hotel Booking" +
+                "&amount=" + paymentDTO.getAmount() +
+                "&currency=LKR" +
+                "&first_name=John" +
+                "&last_name=Doe" +
+                "&email=john@example.com" +
+                "&phone=0771234567" +
+                "&address=Colombo" +
+                "&city=Colombo" +
+                "&country=Sri Lanka";
+
+        response.setPaymentUrl(payhereUrl);
+
+        response.setStatus("PENDING");
+        response.setBookingId(paymentDTO.getBookingId());
+        response.setPaymentId(UUID.randomUUID().toString());
+
+        return response;
     }
 }
