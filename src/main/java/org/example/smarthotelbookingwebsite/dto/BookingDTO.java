@@ -11,8 +11,10 @@ public class BookingDTO {
     private String phoneNumber;
     private String status; // PENDING, CONFIRMED, CANCELLED
     private String email;
+    private String city;
 
-    public BookingDTO(Long id, Long userId, Long roomId, LocalDate checkInDate, LocalDate checkOutDate, String phoneNumber, String status, String email) {
+
+    public BookingDTO(Long id, Long userId, Long roomId, LocalDate checkInDate, LocalDate checkOutDate, String phoneNumber, String status, String email, String city) {
         this.id = id;
         this.userId = userId;
         this.roomId = roomId;
@@ -21,9 +23,18 @@ public class BookingDTO {
         this.phoneNumber = phoneNumber;
         this.status = status;
         this.email = email;
+        this.city = city;
     }
 
     public BookingDTO() {
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getEmail() {
@@ -101,6 +112,7 @@ public class BookingDTO {
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", status='" + status + '\'' +
                 ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
                 '}';
     }
 }

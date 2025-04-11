@@ -14,8 +14,9 @@ public class PaymentDTO {
     private String ReturnUrl;
     private String CancelUrl;
     private String NotifyUrl;
+    private String hash;
 
-    public PaymentDTO(Long id, Long bookingId, double amount, String method, LocalDateTime paymentDate, String merchantId, String currency, String returnUrl, String cancelUrl, String notifyUrl) {
+    public PaymentDTO(Long id, Long bookingId, double amount, String method, LocalDateTime paymentDate, String merchantId, String currency, String returnUrl, String cancelUrl, String notifyUrl, String hash) {
         this.id = id;
         this.bookingId = bookingId;
         this.amount = amount;
@@ -26,9 +27,18 @@ public class PaymentDTO {
         ReturnUrl = returnUrl;
         CancelUrl = cancelUrl;
         NotifyUrl = notifyUrl;
+        this.hash = hash;
     }
 
     public PaymentDTO() {
+    }
+
+    public String getHash() {
+        return hash;
+    }
+
+    public void setHash(String hash) {
+        this.hash = hash;
     }
 
     public Long getId() {
@@ -124,6 +134,7 @@ public class PaymentDTO {
                 ", ReturnUrl='" + ReturnUrl + '\'' +
                 ", CancelUrl='" + CancelUrl + '\'' +
                 ", NotifyUrl='" + NotifyUrl + '\'' +
+                ", hash='" + hash + '\'' +
                 '}';
     }
 }

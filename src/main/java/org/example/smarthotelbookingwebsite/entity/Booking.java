@@ -36,6 +36,9 @@ public class Booking {
     @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
+    private String city;
+
     @Enumerated(EnumType.STRING)
     private BookingStatus status; // PENDING, CONFIRMED, CANCELLED
 
@@ -47,7 +50,7 @@ public class Booking {
         PENDING, CONFIRMED, CANCELLED
     }
 
-    public Booking(Long id, User user, Room room, LocalDate checkInDate, LocalDate checkOutDate, String phoneNumber, BookingStatus status, Payment payment, String email) {
+    public Booking(Long id, User user, Room room, LocalDate checkInDate, LocalDate checkOutDate, String phoneNumber, BookingStatus status, Payment payment, String email,String city) {
         this.id = id;
         this.user = user;
         this.room = room;
@@ -57,6 +60,16 @@ public class Booking {
         this.status = status;
         this.payment = payment;
         this.email = email;
+        this.city = city;
+
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public Booking() {
@@ -143,6 +156,7 @@ public class Booking {
                 ", checkOutDate=" + checkOutDate +
                 ", PhoneNumber='" + PhoneNumber + '\'' +
                 ", email='" + email + '\'' +
+                ", city='" + city + '\'' +
                 ", status=" + status +
                 ", payment=" + payment +
                 '}';

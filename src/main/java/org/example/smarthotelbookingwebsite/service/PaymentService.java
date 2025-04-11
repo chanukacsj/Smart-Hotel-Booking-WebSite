@@ -1,13 +1,12 @@
 package org.example.smarthotelbookingwebsite.service;
 
 import org.example.smarthotelbookingwebsite.dto.PaymentDTO;
-import org.example.smarthotelbookingwebsite.dto.PaymentResponse;
 import org.example.smarthotelbookingwebsite.entity.Payment;
 
 import java.util.List;
 
 public interface PaymentService {
-    void save(PaymentDTO paymentDTO);
+    boolean save(PaymentDTO paymentDTO);
 
     void delete(Long id);
 

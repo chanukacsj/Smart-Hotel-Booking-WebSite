@@ -3,7 +3,6 @@ package org.example.smarthotelbookingwebsite.controller;
 import jakarta.validation.Valid;
 import org.example.smarthotelbookingwebsite.dto.BookingDTO;
 import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
-import org.example.smarthotelbookingwebsite.entity.Booking;
 import org.example.smarthotelbookingwebsite.service.BookingService;
 import org.example.smarthotelbookingwebsite.service.EmailService;
 import org.example.smarthotelbookingwebsite.service.impl.BookingServiceImpl;
@@ -61,26 +60,38 @@ public class BookingController {
     }
 
     @PutMapping("/update/{id}")
-    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
-    public ResponseEntity<ResponseDTO> updateBooking(@PathVariable Long id, @RequestBody @Valid BookingDTO bookingDTO, @RequestHeader("Authorization") String token) {
+    @PreAuthorize("hasAnyAuthority('ADMIN', 'Manager')")
+    public ResponseEntity<ResponseDTO> updateBooking(@PathVariable Long id,
+                                                     @RequestBody @Valid BookingDTO bookingDTO,
+                                                     @RequestHeader("Authorization") String token) {
         System.out.println(bookingDTO.getEmail());
+
+        // Validate JWT token and user role
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
 
+        // Update the booking
         bookingServiceImpl.update(id, bookingDTO);
 
-        if ((bookingDTO.getStatus()).equals("CONFIRMED")) {
+        // If the booking is confirmed, generate the payment link
+        if ("CONFIRMED".equals(bookingDTO.getStatus())) {
             String userEmail = bookingDTO.getEmail();
+
+            // Booking details to be sent in the email
             String bookingDetails = "Check-in Date: " + bookingDTO.getCheckInDate() + "<br>" +
                     "Check-out Date: " + bookingDTO.getCheckOutDate() + "<br>" +
                     "Room ID: " + bookingDTO.getRoomId() + "<br>" +
-                    "Booking ID: " + bookingDTO.getId();
+                    "Booking ID: " + id;
+            System.out.println("Booking ID_"+id);
 
-            String paymentLink = "https://yourpaymentgateway.com/pay?bookingId=" + bookingDTO.getId();
 
+            // Constructing the payment link with PayHere
+            String paymentLink = "https://8bd7-2402-4000-20c3-d84f-b5f6-96c6-9430-8ab2.ngrok-free.app/Payment.html?bookingId=" + id;
+
+            // Sending the booking confirmation email with the payment link
             emailService.sendBookingConfirmationEmail(userEmail, bookingDetails, paymentLink);
-
         }
 
+        // Return success response
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Booking Updated Successfully", null));
     }

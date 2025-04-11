@@ -4,7 +4,7 @@ public class PaymentResponse {
     private String paymentUrl;
     private String status;
     private String paymentId;
-    private Long bookingId;  // Using bookingId instead of orderId
+    private Long bookingId;
 
     // Constructors, getters, and setters
 
@@ -42,8 +42,8 @@ public class PaymentResponse {
         this.paymentId = paymentId;
     }
 
-    public Long getBookingId() {
-        return bookingId;
+    public Long getBookingId(Long bookingId) {
+        return this.bookingId;
     }
 
     public void setBookingId(Long bookingId) {

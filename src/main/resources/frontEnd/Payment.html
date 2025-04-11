@@ -66,6 +66,7 @@
             text-align: center;
             margin-top: 20px;
         }
+
         .logo-hotel {
             width: 300px;
             height: 53px;
@@ -118,49 +119,102 @@
 
         </div>
     </div>
-
-
 </header>
-
 <main>
     <section class="payment">
         <div class="payment__container">
             <h2>Payment Details</h2>
-            <form id="paymentForm">
-                <div class="form__group">
-                    <label for="cardName">Cardholder Name:</label>
-                    <input type="text" id="cardName" name="cardName" required placeholder="Enter cardholder name">
-                </div>
+            <!--            <form id="paymentForm">-->
 
-                <div class="form__group">
-                    <label for="cardNumber">Card Number:</label>
-                    <input type="text" id="cardNumber" name="cardNumber" required placeholder="1234 5678 9012 3456">
-                </div>
+            <!--                <div class="form__group">-->
+            <!--                    <label for="method">Payment Method:</label>-->
+            <!--                    <select id="method" name="method" required>-->
+            <!--                        <option value="CREDIT_CARD">Credit Card</option>-->
+            <!--                    </select>-->
+            <!--                </div>-->
+            <!--                <div class="form__group">-->
+            <!--                    <label for="amount">AMOUNT:</label>-->
+            <!--                    <input type="text" id="amount" name="amount" required placeholder="amount">-->
+            <!--                </div>-->
 
-                <div class="form__group">
-                    <label for="expiryDate">Expiration Date:</label>
-                    <input type="text" id="expiryDate" name="expiryDate" required placeholder="MM/YY">
-                </div>
+            <!--                <div class="form-footer">-->
+            <!--                    <button type="submit" class="btn btn-primary" ">Pay Now</button>-->
+            <!--                </div>-->
+            <!--            </form>-->
 
-                <div class="form__group">
-                    <label for="cvv">CVV:</label>
-                    <input type="text" id="cvv" name="cvv" required placeholder="123">
-                </div>
-                <div class="form__group">
-                    <label for="method">Payment Method:</label>
-                    <select id="method" name="method" required>
-                        <option value="CREDIT_CARD">Credit Card</option>
-                    </select>
-                </div>
-                <div class="form__group">
-                    <label for="cvv">AMOUNT:</label>
+            <!--            <form method="post" action="https://sandbox.payhere.lk/pay/checkout">-->
+            <!--                <input type="hidden" name="merchant_id" value="1230019">    &lt;!&ndash; Replace your Merchant ID &ndash;&gt;-->
+            <!--                <input type="hidden" name="return_url" value="http://sample.com/return">-->
+            <!--                <input type="hidden" name="cancel_url" value="http://sample.com/cancel">-->
+            <!--                <input type="hidden" name="notify_url" value="http://sample.com/notify">-->
+            <!--                </br></br>Item Details</br>-->
+            <!--                <input type="text" name="order_id" value="ItemNo12345">-->
+            <!--                <input type="text" name="items" value="Door bell wireless">-->
+            <!--                <input type="text" name="currency" value="LKR">-->
+            <!--                <input type="text" name="amount" value="1000">-->
+            <!--                </br></br>Customer Details</br>-->
+            <!--                <input type="text" name="first_name" value="Saman">-->
+            <!--                <input type="text" name="last_name" value="Perera">-->
+            <!--                <input type="text" name="email" value="samanp@gmail.com">-->
+            <!--                <input type="text" name="phone" value="0771234567">-->
+            <!--                <input type="text" name="address" value="No.1, Galle Road">-->
+            <!--                <input type="text" name="city" value="Colombo">-->
+            <!--                <input type="hidden" name="country" value="Sri Lanka">-->
+            <!--                <input type="hidden" name="hash" value="098F6BCD4621D373CADE4E832627B4F6">    &lt;!&ndash; Replace with generated hash &ndash;&gt;-->
+            <!--                <input type="submit" value="Buy Now">-->
+            <!--            </form>-->
+            <form method="post" action="https://sandbox.payhere.lk/pay/checkout">
+                <input type="hidden" id="merchant_id" name="merchant_id" value="1230019">
+                <input type="hidden" id="return_url" name="return_url">
+                <input type="hidden" id="cancel_url" name="cancel_url">
+                <input type="hidden" id="notify_url" name="notify_url">
+                <input type="hidden" id="order_id" name="order_id">
+                <input type="hidden" id="items" name="items">
+                <input type="hidden" id="currency" name="currency">
+                <!--                <input type="hidden" id="amount" name="amount">-->
+                <div class="form__group">-->
+                    <label for="amount">AMOUNT:</label>
                     <input type="text" id="amount" name="amount" required placeholder="amount">
                 </div>
-
-                <div class="form-footer">
-                    <button type="submit" class="btn btn-primary" onclick="payNow()">Pay Now</button>
+                <!--                <input type="hidden" id="first_name" name="first_name">-->
+                <div class="form__group">-->
+                    <label for="amount">first_name:</label>
+                    <input type="text" id="first_name" name="first_name" required placeholder="first_name">
                 </div>
+                <!--                <input type="hidden" id="last_name" name="last_name">-->
+                <div class="form__group">-->
+                    <label for="amount">last_name:</label>
+                    <input type="text" id="last_name" name="last_name" required placeholder="last_name">
+                </div>
+                <!--                <input type="hidden" id="email" name="email">-->
+                <div class="form__group">-->
+                    <label for="amount">Email:</label>
+                    <input type="text" id="email" name="email" required placeholder="email">
+                </div>
+                <!--                <input type="hidden" id="phone" name="phone">-->
+                <div class="form__group">-->
+                    <label for="phone">phone:</label>
+                    <input type="text" id="phone" name="phone" required placeholder="phone">
+                </div>
+                <!--                <input type="hidden" id="address" name="address">-->
+                <div class="form__group">-->
+                    <label for="phone">address:</label>
+                    <input type="text" id="address" name="address" required placeholder="address">
+                </div>
+                <!--                <input type="hidden" id="city" name="city">-->
+                <div class="form__group">-->
+                    <label for="city">city:</label>
+                    <input type="text" id="city" name="city" required placeholder="city">
+                </div>
+                <!--                <input type="hidden" id="country" name="country">-->
+                <div class="form__group">-->
+                    <label for="country">country:</label>
+                    <input type="text" id="country" name="country" required placeholder="country">
+                </div>
+                <input type="hidden" id="hash" name="hash">
+                <input type="submit" onclick="payNow()" value="Buy Now">
             </form>
+
         </div>
     </section>
 </main>
@@ -307,37 +361,112 @@
         integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
         crossorigin="anonymous"></script>
 <script>
-    function payNow() {
-        const token = localStorage.getItem("jwtToken");
-        console.log(localStorage.getItem("bookingId"));
-
-        let bookingId = localStorage.getItem("bookingId");
-        if (!bookingId) {
-            alert("Booking not found. Please book first.");
-            window.location.href = "rooms.html";
-        }
 
 
-        const paymentData = {
-            amount: parseFloat($("#amount").val()), // Replace with actual amount
-            method: "CREDIT_CARD", // Or your enum value
-            bookingId: localStorage.getItem("bookingId"),
-            paymentDate: new Date().toISOString()
-        };
+$(document).ready(function () {
 
+    console.log("Paynow")
+
+        const bookingId = new URLSearchParams(window.location.search).get('bookingId');
+        const amount = parseFloat($("#amount").val());
+        const method = "CREDIT_CARD";
+
+
+        $.ajax({
+            url: `http://localhost:8080/api/v1/payment/get?bookingId=${bookingId}&amount=${amount}`,
+            method: "GET",
+            // headers: {
+            //     "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+            // },
+            success: function (response) {
+                if (response.statusCode === 200) {
+                    // alert("Payment details successfully");
+                    document.getElementById('merchant_id').value = response.data.merchantId;
+                    document.getElementById('return_url').value = response.data.returnUrl;
+                    document.getElementById('cancel_url').value = response.data.cancelUrl;
+                    document.getElementById('notify_url').value = response.data.notifyUrl;
+                    document.getElementById('order_id').value = bookingId;
+                    document.getElementById('items').value = "Hotel Booking";
+                    document.getElementById('currency').value = "LKR";
+                    document.getElementById('hash').value = response.data.hash;
+                    console.log(response.data.merchantId);
+                    console.log(response.data.returnUrl);
+                    console.log(response.data.cancelUrl);
+                    console.log(response.data.notifyUrl);
+                    console.log(bookingId);
+                    console.log("Hash: " + response.data.hash);
+                } else {
+                    alert("Payment initiation failed: " + response.message);
+                }
+            },
+            error: function (err) {
+                console.error(err);
+                alert("Error while initiating payment.");
+            }
+        });
+
+
+    });
+        function payNow() {
+            let urlParams = new URLSearchParams(window.location.search);
+            let bookingId = urlParams.get('bookingId');
+            console.log("Booking ID: ", bookingId);
+
+            // Check if the booking ID is missing
+            if (!bookingId) {
+                alert("Booking not found. Please book first.");
+                window.location.href = "rooms.html";
+                return; // Prevent further execution if bookingId is not found
+            }
+
+            const paymentData = {
+                amount: parseFloat($("#amount").val()),
+                method: "CREDIT_CARD",
+                bookingId: bookingId,
+                paymentDate: new Date().toISOString()
+            };
+        // First AJAX call to save the payment details
         $.ajax({
             url: "http://localhost:8080/api/v1/payment/save",
             method: "POST",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            },
+            contentType: "application/json",
             data: JSON.stringify(paymentData),
             success: function (response) {
                 if (response.statusCode === 200) {
-                    const payhereUrl = response.data.paymentUrl;
-                    // Redirect to PayHere
-                    window.location.href = payhereUrl;
+                    alert("Payment saved successful");
+
+                    // // Populate the form dynamically with data from the response
+                    // document.getElementById('merchant_id').value = response.data.merchantId;
+                    // document.getElementById('return_url').value = response.data.returnUrl;
+                    // document.getElementById('cancel_url').value = response.data.cancelUrl;
+                    // document.getElementById('notify_url').value = response.data.notifyUrl;
+                    // document.getElementById('order_id').value = bookingId;
+                    // document.getElementById('items').value = "Hotel Booking";
+                    // document.getElementById('currency').value = response.data.currency;
+                    // document.getElementById('amount').value = response.data.amount;
+                    // document.getElementById('hash').value = response.data.hash;
+
+                    console.log()
+
+                    // // Generate the hash
+                    // let merchantSecret = 'your_merchant_secret'; // Replace with actual merchant secret
+                    // let merchantId = response.data.merchantId; // Use the merchant ID from the response
+                    // let orderId = bookingId;
+                    // let amount = response.data.amount;
+                    //
+                    // // Format the amount to two decimal places
+                    // let amountFormatted = parseFloat(amount).toFixed(2);
+                    //
+                    // // Define currency
+                    // let currency = response.data.currency;
+                    //
+                    // // Generate the final hash
+                    // let hash = CryptoJS.MD5(merchantId + orderId + amountFormatted + currency + merchantSecret).toString().toUpperCase();
+                    //
+                    // console.log("Generated Hash:", hash);
+                    //
+                    // // Submit the form to PayHere
+                    // document.forms[0].submit();
                 } else {
                     alert("Payment initiation failed: " + response.message);
                 }
@@ -348,8 +477,6 @@
             }
         });
     }
-
 </script>
 </body>
-
 </html>
