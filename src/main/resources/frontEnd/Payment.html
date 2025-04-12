@@ -164,7 +164,7 @@
             <!--                <input type="submit" value="Buy Now">-->
             <!--            </form>-->
             <form method="post" action="https://sandbox.payhere.lk/pay/checkout">
-                <input type="hidden" id="merchant_id" name="merchant_id" value="1230019">
+                <input type="hidden" id="merchant_id" name="merchant_id">
                 <input type="hidden" id="return_url" name="return_url">
                 <input type="hidden" id="cancel_url" name="cancel_url">
                 <input type="hidden" id="notify_url" name="notify_url">
@@ -367,7 +367,7 @@ $(document).ready(function () {
 
     console.log("Paynow")
 
-        const bookingId = new URLSearchParams(window.location.search).get('bookingId');
+        const bookingId = 59; //new URLSearchParams(window.location.search).get('bookingId');
         const amount = parseFloat($("#amount").val());
         const method = "CREDIT_CARD";
 
@@ -409,7 +409,7 @@ $(document).ready(function () {
     });
         function payNow() {
             let urlParams = new URLSearchParams(window.location.search);
-            let bookingId = urlParams.get('bookingId');
+            let bookingId = 59; //urlParams.get('bookingId');
             console.log("Booking ID: ", bookingId);
 
             // Check if the booking ID is missing

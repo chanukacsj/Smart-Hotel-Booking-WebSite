@@ -18,6 +18,7 @@ import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.util.Map;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -51,10 +52,13 @@ public class PaymentController {
     public ResponseEntity<ResponseDTO> getPayment( @RequestParam double amount,
                                                    @RequestParam long bookingId) {
 
+        System.out.println("bookingId: " + bookingId);
+        System.out.println("amount: " + amount);
+
         String merahantID     = "1230019";
         String merchantSecret = "MzY3MTUwNDg0MTIzMjQ5MDY3OTE1MTI1ODU3OTYxODc3MzY3Mjkx";
         String orderID        = String.valueOf(bookingId);
-        double amount1         = amount;
+        double amount1         = 200.00;
         String currency       = "LKR";
         DecimalFormat df       = new DecimalFormat("0.00");
         String amountFormatted = df.format(amount1);
@@ -65,10 +69,12 @@ public class PaymentController {
         PaymentDTO payment = new PaymentDTO();
         payment.setMerchantId("1230019");
         payment.setCurrency("LKR");
-        payment.setReturnUrl("http://localhost:63342/Smart-Hotel-Booking-WebSite/frontEnd/PaymentSuccess.html");
-        payment.setCancelUrl("http://localhost:63342/Smart-Hotel-Booking-WebSite/frontEnd/PaymentCancel.html");
-        payment.setNotifyUrl("http://localhost:63342/Smart-Hotel-Booking-WebSite/frontEnd/PaymentNotify.html");
+        payment.setReturnUrl("https://99ac-2402-4000-23c0-4193-1d5d-129-24e7-3d.ngrok-free.app/PaymentSuccess.html");
+        payment.setCancelUrl("https://99ac-2402-4000-23c0-4193-1d5d-129-24e7-3d.ngrok-free.app/PaymentCancel.html");
+        payment.setNotifyUrl("https://localhost:8080/api/v1/payment/notify");
+//        https://localhost:8080/api/v1/paymentent/notify
         payment.setHash(hash);
+        payment.setAmount(amount1);
 
         System.out.println("payment "+payment);
         return ResponseEntity.status(HttpStatus.OK)
@@ -103,21 +109,24 @@ public class PaymentController {
                 .body("Payment Cancelled!");
     }
 
-//    @PostMapping("/notify")
-//    public ResponseEntity<Void> paymentNotify(@RequestBody String notificationData) {
-//        System.out.println("Payment Notification: " + notificationData);
-//        return ResponseEntity.status(HttpStatus.OK).build();
-//    }
+    @GetMapping("/notify")
+    public ResponseEntity<String> handleNotification(@RequestParam Map<String, String> params) {
+        System.out.println("Received notification: ");
+        String status = params.get("status_code");
+        String orderId = params.get("order_id");
+        String method = params.get("method");
+        String amount = params.get("payhere_amount");
 
-    @PostMapping("/notify")
-    public ResponseEntity<Void> paymentNotify(@RequestBody String notificationData) {
-        System.out.println("Payment Notification: " + notificationData);
+        if ("2".equals(status)) {
+            // Save Order & Payment here
+            System.out.println("✅ Payment successful: Order ID = " + orderId + ", Amount = " + amount);
+            // call your orderService.saveOrderPayment(...)
+        } else {
+            System.out.println("❌ Payment not successful: Order ID = " + orderId);
+        }
 
-        // TODO: Parse the notification and update DB payment status
-
-        return ResponseEntity.status(HttpStatus.OK).build();
+        return ResponseEntity.ok("Received");
     }
-
 
 
     @GetMapping("getAll")
