@@ -363,68 +363,76 @@
 <script>
 
 
-$(document).ready(function () {
+    $(document).ready(function () {
 
-    console.log("Paynow")
+        console.log("Paynow")
 
-        const bookingId = 59; //new URLSearchParams(window.location.search).get('bookingId');
+        const bookingId = 1; //new URLSearchParams(window.location.search).get('bookingId');
         const amount = parseFloat($("#amount").val());
         const method = "CREDIT_CARD";
 
+        $("#amount").on("blur", function () {
+            const amount = parseFloat($(this).val());
 
-        $.ajax({
-            url: `http://localhost:8080/api/v1/payment/get?bookingId=${bookingId}&amount=${amount}`,
-            method: "GET",
-            // headers: {
-            //     "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
-            // },
-            success: function (response) {
-                if (response.statusCode === 200) {
-                    // alert("Payment details successfully");
-                    document.getElementById('merchant_id').value = response.data.merchantId;
-                    document.getElementById('return_url').value = response.data.returnUrl;
-                    document.getElementById('cancel_url').value = response.data.cancelUrl;
-                    document.getElementById('notify_url').value = response.data.notifyUrl;
-                    document.getElementById('order_id').value = bookingId;
-                    document.getElementById('items').value = "Hotel Booking";
-                    document.getElementById('currency').value = "LKR";
-                    document.getElementById('hash').value = response.data.hash;
-                    console.log(response.data.merchantId);
-                    console.log(response.data.returnUrl);
-                    console.log(response.data.cancelUrl);
-                    console.log(response.data.notifyUrl);
-                    console.log(bookingId);
-                    console.log("Hash: " + response.data.hash);
-                } else {
-                    alert("Payment initiation failed: " + response.message);
+            if (!amount || amount <= 0) {
+                alert("Please enter a valid amount.");
+                return;
+            }
+
+
+            $.ajax({
+                url: `http://localhost:8080/api/v1/payment/get?bookingId=${bookingId}&amount=${amount}`,
+                method: "GET",
+                // headers: {
+                //     "Authorization": `Bearer ${localStorage.getItem("jwtToken")}`
+                // },
+                success: function (response) {
+                    if (response.statusCode === 200) {
+                        // alert("Payment details successfully");
+                        document.getElementById('merchant_id').value = response.data.merchantId;
+                        document.getElementById('return_url').value = response.data.returnUrl;
+                        document.getElementById('cancel_url').value = response.data.cancelUrl;
+                        document.getElementById('notify_url').value = response.data.notifyUrl;
+                        document.getElementById('order_id').value = bookingId;
+                        document.getElementById('items').value = "Hotel Booking";
+                        document.getElementById('currency').value = "LKR";
+                        document.getElementById('hash').value = response.data.hash;
+                        console.log(response.data.merchantId);
+                        console.log(response.data.returnUrl);
+                        console.log(response.data.cancelUrl);
+                        console.log(response.data.notifyUrl);
+                        console.log(bookingId);
+                        console.log("Hash: " + response.data.hash);
+                    } else {
+                        alert("Payment initiation failed: " + response.message);
+                    }
+                },
+                error: function (err) {
+                    console.error(err);
+                    alert("Error while initiating payment.");
                 }
-            },
-            error: function (err) {
-                console.error(err);
-                alert("Error while initiating payment.");
-            }
+            });
         });
-
-
     });
-        function payNow() {
-            let urlParams = new URLSearchParams(window.location.search);
-            let bookingId = 59; //urlParams.get('bookingId');
-            console.log("Booking ID: ", bookingId);
 
-            // Check if the booking ID is missing
-            if (!bookingId) {
-                alert("Booking not found. Please book first.");
-                window.location.href = "rooms.html";
-                return; // Prevent further execution if bookingId is not found
-            }
+    function payNow() {
+        let urlParams = new URLSearchParams(window.location.search);
+        let bookingId = 1; //urlParams.get('bookingId');
+        console.log("Booking ID: ", bookingId);
 
-            const paymentData = {
-                amount: parseFloat($("#amount").val()),
-                method: "CREDIT_CARD",
-                bookingId: bookingId,
-                paymentDate: new Date().toISOString()
-            };
+        // Check if the booking ID is missing
+        if (!bookingId) {
+            alert("Booking not found. Please book first.");
+            window.location.href = "rooms.html";
+            return; // Prevent further execution if bookingId is not found
+        }
+
+        const paymentData = {
+            amount: parseFloat($("#amount").val()),
+            method: "CREDIT_CARD",
+            bookingId: bookingId,
+            paymentDate: new Date().toISOString()
+        };
         // First AJAX call to save the payment details
         $.ajax({
             url: "http://localhost:8080/api/v1/payment/save",

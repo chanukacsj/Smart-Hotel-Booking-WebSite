@@ -8,6 +8,7 @@ import org.example.smarthotelbookingwebsite.dto.ResponseDTO;
 import org.example.smarthotelbookingwebsite.service.impl.PaymentServiceImpl;
 import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,6 +27,9 @@ import java.util.Map;
 public class PaymentController {
 
     private final PaymentServiceImpl paymentServiceimpl;
+    @Value("${app.domain}")
+    private String appDomain;
+
 
     @Autowired
     public PaymentController(PaymentServiceImpl paymentServiceimpl) {
@@ -58,7 +62,7 @@ public class PaymentController {
         String merahantID     = "1230019";
         String merchantSecret = "MzY3MTUwNDg0MTIzMjQ5MDY3OTE1MTI1ODU3OTYxODc3MzY3Mjkx";
         String orderID        = String.valueOf(bookingId);
-        double amount1         = 200.00;
+        double amount1         = amount;
         String currency       = "LKR";
         DecimalFormat df       = new DecimalFormat("0.00");
         String amountFormatted = df.format(amount1);
@@ -69,8 +73,8 @@ public class PaymentController {
         PaymentDTO payment = new PaymentDTO();
         payment.setMerchantId("1230019");
         payment.setCurrency("LKR");
-        payment.setReturnUrl("https://99ac-2402-4000-23c0-4193-1d5d-129-24e7-3d.ngrok-free.app/PaymentSuccess.html");
-        payment.setCancelUrl("https://99ac-2402-4000-23c0-4193-1d5d-129-24e7-3d.ngrok-free.app/PaymentCancel.html");
+        payment.setReturnUrl(appDomain + "/PaymentSuccess.html");
+        payment.setCancelUrl(appDomain + "/PaymentCancel.html");
         payment.setNotifyUrl("https://localhost:8080/api/v1/payment/notify");
 //        https://localhost:8080/api/v1/paymentent/notify
         payment.setHash(hash);

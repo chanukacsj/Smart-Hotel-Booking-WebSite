@@ -228,11 +228,12 @@
                             console.log("User Role:", userRole);
 
                             if (userRole === "ADMIN") {
-                            //    alert("Welcome to Hotel Admin Dashboard");
+                                localStorage.setItem("email", email);
+                                //    alert("Welcome to Hotel Admin Dashboard");
                                 window.location.href = "AdminDashBoard.html";
                             } else if (userRole === "USER") {
                                 // alert("Login successful");
-                                localStorage.setItem("emailUser", email);
+                                localStorage.setItem("email", email);
                                 window.location.href = "CustomerDashboard.html";
                             } else if (userRole === "Manager") {
                                 localStorage.setItem("email", email);

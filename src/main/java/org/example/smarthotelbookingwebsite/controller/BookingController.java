@@ -10,6 +10,7 @@ import org.example.smarthotelbookingwebsite.service.impl.EmailServiceImpl;
 import org.example.smarthotelbookingwebsite.util.JwtUtil;
 import org.example.smarthotelbookingwebsite.util.VarList;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,10 @@ public class BookingController {
     private final BookingServiceImpl bookingServiceImpl;
     private final EmailServiceImpl emailServiceImpl;
     private final EmailService emailService;
+    @Value("${app.domain}")
+    private String appDomain;
+
+
     @Autowired
     JwtUtil jwtUtil;
 
@@ -85,7 +90,7 @@ public class BookingController {
 
 
             // Constructing the payment link with PayHere
-            String paymentLink = "https://8bd7-2402-4000-20c3-d84f-b5f6-96c6-9430-8ab2.ngrok-free.app/Payment.html?bookingId=" + id;
+            String paymentLink = appDomain+"/Payment.html?bookingId=" + id;
 
             // Sending the booking confirmation email with the payment link
             emailService.sendBookingConfirmationEmail(userEmail, bookingDetails, paymentLink);
@@ -97,7 +102,7 @@ public class BookingController {
     }
 
     @GetMapping("getAll")
-    @PreAuthorize("hasAnyAuthority('ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','USER')")
     public ResponseEntity<ResponseDTO> getAllBookings(@RequestHeader("Authorization") String token) {
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)

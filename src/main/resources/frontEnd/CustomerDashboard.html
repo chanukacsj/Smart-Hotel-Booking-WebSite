@@ -14,7 +14,7 @@
           integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="shortcut icon" href="./favicon.svg" type="image/svg+xml">
-
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
     <!--
       - custom css link
     -->
@@ -37,6 +37,84 @@
         ol, ul {
             padding-left: 0rem;
         }
+        /* Swiper pagination dots positioning */
+        .swiper-pagination {
+            bottom: 10px !important;
+        }
+
+        /* Add space below Swiper to prevent overlap */
+        .swiper {
+            padding-bottom: 40px;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            height: 100%;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            right: -250px; /* Hide initially */
+            background-color: #f8f9fa;
+            box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+            transition: right 0.3s ease;
+            z-index: 1050; /* Ensures it's above other elements */
+        }
+
+        /* Show Sidebar when open or show class is added */
+        .sidebar.open,
+        .sidebar.show {
+            right: 0;
+        }
+
+        /* Sidebar Header (Profile Section) */
+        .sidebar .profile-header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .sidebar .profile-header img {
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-bottom: 14px;
+            margin-left: 67px;
+            margin-top: 40px;
+        }
+
+        /* Sidebar Links/List */
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar ul li {
+            padding: 10px 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .sidebar ul li a {
+            display: block;
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            transition: color 0.2s;
+        }
+
+        .sidebar ul li a:hover {
+            color: #007bff;
+        }
+
+        /* Close Button */
+        .sidebar .close-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
     </style>
 </head>
 
@@ -152,11 +230,46 @@
 
             </nav>
 
-            <button class="btn btn-primary" onclick="logout()">Log Out</button>
+<!--            <button class="btn btn-primary" onclick="logout()">Log Out</button>-->
+            <a style="color: white" class="nav-link me-3" href="#" id="profileBtn" onclick="toggleSidebar()"><i class="fa-solid fa-user-circle"></i> Profile</a>
 
         </div>
     </div>
+<div>
+    <!-- Sidebar (Profile) -->
+    <div id="profileSidebar" class="sidebar">
+        <span class="close-btn" onclick="toggleSidebar()">×</span>
+        <div class="profile-header">
+                <img id="modalProfilePicture" src="assets/images/default-profile.jpeg"
+                     alt="Profile Picture" class="profile-img">
+                <p id="modalUserName">User Name</p>
+                <p id="modalUserEmail">User Email</p>
+<!--                <p id="modalUserRole">User Role</p>-->
+        </div>
 
+        <div class="p-3">
+            <h5 class="mb-3">Bookings</h5>
+            <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                <table class="table table-bordered table-striped">
+                    <thead class="table-light">
+                    <tr>
+                        <th>roomID</th>
+                        <th>checkInDate</th>
+                        <th>checkOutDate</th>
+                    </tr>
+                    </thead>
+                    <tbody id="bookingTableBody">
+                    </tbody>
+                </table>
+            </div>
+            <a style="border: solid 2px black; color: black;" onclick="logout();"
+               class="btn btn-outline-danger mt-3 w-100">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+    </div>
+
+</div>
 </header>
 
 
@@ -563,26 +676,103 @@
 <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
 <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 <script>
-
     $(document).ready(function () {
         let token = localStorage.getItem("jwtToken");
+        let email = localStorage.getItem("email");
 
-        if (!token) {
+        console.log("Email:", email);
+        console.log("Token:", token);
+
+        if (!token || !email) {
             alert("You are not logged in!");
             window.location.href = "login.html";
             return;
         }
 
+        const imageUrl = "assets/images/";
+
+        // Load user details
+        $.ajax({
+            url: "http://localhost:8080/api/v1/user/getAll",
+            method: "GET",
+            headers: {
+                "Authorization": "Bearer " + token
+            },
+            success: function (response) {
+                console.log("Response:", response);
+
+                const user = response.data.find(u => u.email === email);
+                const userId = response.data.find(u => u.email === email).id;
+                console.log(userId)
+
+                if (user) {
+                    $("#modalUserName").text(user.username);
+                    $("#modalUserEmail").text(user.email);
+                    $("#modalUserRole").text(user.role);
+
+                    if (user.profileImage) {
+                        const image = imageUrl + user.profileImage;
+                        $("#modalProfilePicture").attr("src", image);
+                    }
+                } else {
+                    console.warn("User with the given email not found.");
+                }
+
+                $.ajax({
+                    url: "http://localhost:8080/api/v1/booking/getAll", // Update this URL if needed
+                    method: "GET",
+                    headers: {
+                        "Authorization": "Bearer " + token
+                    },
+                    success: function (response) {
+
+                        const bookings = response.data || [];
+
+                        const userBookings = bookings.filter(booking => booking.userId === userId);                        console.log("userbookings:", userBookings);
+
+                        if (userBookings.length === 0) {
+                            $("#bookingTableBody").html("<tr><td colspan='5'>No bookings found.</td></tr>");
+                            return;
+                        }
+
+                        // Populate booking table
+                        let tableBody = $("#bookingTableBody");
+                        tableBody.empty();
+
+                        userBookings.forEach(booking => {
+                            let row = `
+                <tr>
+                    <td>${booking.roomId}</td>
+                    <td>${booking.checkInDate}</td>
+                    <td>${booking.checkOutDate}</td>
+                </tr>
+            `;
+                            tableBody.append(row);
+                        });
+                    },
+                    error: function (err) {
+                        console.error("Error fetching bookings:", err);
+                        alert("Failed to fetch bookings.");
+                    }
+                });
+            },
+            error: function (err) {
+                console.error("Failed to fetch user data:", err);
+                alert("Error fetching user data.");
+            }
+        });
+
+        // Handle form submission
         $(".tour-search-form").submit(function (e) {
             e.preventDefault();
             handleFormSubmission();
         });
 
         function handleFormSubmission() {
-            let destination = $("#destination").val();
-            let checkin = $("#checkin").val();
-            let checkout = $("#checkout").val();
-            let people = $("#people option:selected").val();
+            const destination = $("#destination").val();
+            const checkin = $("#checkin").val();
+            const checkout = $("#checkout").val();
+            const people = $("#people option:selected").val();
 
             localStorage.setItem("destination", destination);
             localStorage.setItem("checkin", checkin);
@@ -593,31 +783,66 @@
         }
     });
 
+    // Set check-in and check-out dates on window load
     window.onload = function () {
-        let checkinField = document.getElementById("checkin");
-        let checkoutField = document.getElementById("checkout");
+        const checkinField = document.getElementById("checkin");
+        const checkoutField = document.getElementById("checkout");
 
         if (checkinField && checkoutField) {
-            let today = new Date().toISOString().split('T')[0]; // Get today's date
-            let tomorrow = new Date();
-            tomorrow.setDate(tomorrow.getDate() + 1); // Add 1 day for tomorrow
-            let tomorrowDate = tomorrow.toISOString().split('T')[0];
+            const today = new Date().toISOString().split('T')[0];
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            const tomorrowDate = tomorrow.toISOString().split('T')[0];
 
             checkinField.value = today;
             checkoutField.value = tomorrowDate;
         }
     };
 
+    // Set destination from button click
     function setDestination(value) {
-        console.log("value: " + value);
+        console.log("Selected destination:", value);
         document.getElementById("destination").value = value;
         document.querySelector(".tour-search-form").submit();
     }
+
+    // Logout function
     function logout() {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("email");
         alert("Logged out successfully");
-        window.location.href = "Login.html";
+        window.location.href = "login.html";
     }
+
+    // Toggle profile sidebar
+    function toggleSidebar() {
+        const sidebar = document.getElementById("profileSidebar");
+        if (sidebar) {
+            sidebar.classList.toggle("active");
+            console.log("Sidebar state:", sidebar.classList.contains("active") ? "Visible" : "Hidden");
+            if (sidebar.classList.contains("active")) {
+                sidebar.style.right = "0"; // Show sidebar
+            } else {
+                sidebar.style.right = "-250px"; // Hide sidebar
+            }
+        } else {
+            console.error("Sidebar element not found!");
+        }
+    }
+
+    // Close sidebar when clicking outside
+    document.addEventListener("click", function (event) {
+        const sidebar = document.getElementById("profileSidebar");
+        const profileBtn = document.getElementById("profileBtn");
+
+        if (
+            sidebar && sidebar.classList.contains("active") &&
+            !sidebar.contains(event.target) &&
+            event.target !== profileBtn
+        ) {
+            sidebar.classList.remove("active");
+        }
+    });
 
 </script>
 </body>

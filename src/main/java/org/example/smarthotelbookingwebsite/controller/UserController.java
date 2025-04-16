@@ -119,7 +119,7 @@ public class UserController {
                 .body(new ResponseDTO(VarList.OK, "User role updated successfully", null));
     }
     @GetMapping("getAll")
-    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager','USER')")
     public ResponseEntity<ResponseDTO> getAllUsers(@RequestHeader("Authorization") String token) {
 
         String jwt = token.substring(7);
