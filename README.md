@@ -23,6 +23,10 @@ Filter by destination, check-in/check-out dates, and number of guests
 
 Make payments via PayHere integration
 
+![Screenshot (88)](https://github.com/user-attachments/assets/da782ece-c502-412f-a7c2-41cceb68f0b8)
+![Screenshot (93)](https://github.com/user-attachments/assets/5cc4535d-4fe2-47f7-9285-aaad5d90cbda)
+![Screenshot (94)](https://github.com/user-attachments/assets/425ed4d4-c9fc-43fd-83f7-80d9821ad13d)
+
 View and manage personal bookings
 
 Profile sidebar with appointment view and logout
@@ -88,7 +92,6 @@ Security: JWT, MD5 (for PayHere)
 3rd Party: PayHere, Ngrok, SMTP for email
 ![Screenshot (77)](https://github.com/user-attachments/assets/aaf40739-bac0-432e-8f4b-195054604a25)
 ![Screenshot (78)](https://github.com/user-attachments/assets/c1ca8360-49d1-4409-9075-9085d965b6f4)
-![Screenshot (88)](https://github.com/user-attachments/assets/da782ece-c502-412f-a7c2-41cceb68f0b8)
 ![Screenshot (92)](https://github.com/user-attachments/assets/ceddb14c-ecf5-4eb2-be80-2be3cc71c07a)
 
 🎥 Youtube link - https://youtu.be/WW8pgatZwxY?si=d_cCcOEbnhRp1mIT
