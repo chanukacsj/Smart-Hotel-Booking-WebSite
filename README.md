@@ -27,6 +27,27 @@ View and manage personal bookings
 
 Profile sidebar with appointment view and logout
 
+![Screenshot (91)](https://github.com/user-attachments/assets/00f3f7dc-f9e0-478e-a9f9-b19ffdcc795d)
+
+🛡️ Admin Panel
+
+Manage all users (admins and hotel managers)
+
+Add new hotels and assign managers
+
+Add and manage hotel rooms
+
+View, confirm, or cancel customer bookings
+
+Monitor all payment transactions
+
+Delete or update any user, hotel, or room
+
+Search functionality for quick access to users or hotels
+
+![Screenshot (85)](https://github.com/user-attachments/assets/fdc5ff12-8f0e-4c51-aa7d-4e573773ea03)
+
+
 📊 Manager Panel
 View and manage all bookings by users
 
@@ -68,5 +89,6 @@ Security: JWT, MD5 (for PayHere)
 ![Screenshot (77)](https://github.com/user-attachments/assets/aaf40739-bac0-432e-8f4b-195054604a25)
 ![Screenshot (78)](https://github.com/user-attachments/assets/c1ca8360-49d1-4409-9075-9085d965b6f4)
 ![Screenshot (88)](https://github.com/user-attachments/assets/da782ece-c502-412f-a7c2-41cceb68f0b8)
+![Screenshot (92)](https://github.com/user-attachments/assets/ceddb14c-ecf5-4eb2-be80-2be3cc71c07a)
 
-Youtube link - https://youtu.be/WW8pgatZwxY?si=d_cCcOEbnhRp1mIT
+🎥 Youtube link - https://youtu.be/WW8pgatZwxY?si=d_cCcOEbnhRp1mIT
