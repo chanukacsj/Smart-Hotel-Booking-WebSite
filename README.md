@@ -79,9 +79,11 @@ OTP sent via email for registration and forgotten password
 
 ![Screenshot (89)](https://github.com/user-attachments/assets/a32bd020-f237-47d1-9fcd-3beecd2ad317)
 ![Screenshot (90)](https://github.com/user-attachments/assets/7622e36d-ee6a-4d9c-ac68-2b3df4b1bec2)
-![Screenshot (98)](https://github.com/user-attachments/assets/35debe68-2059-44ad-b1ca-bd777022daee)
-![Screenshot (97)](https://github.com/user-attachments/assets/7474a10c-2482-4d2b-b91e-09d35d6cfbec)
+
 ![Screenshot (96)](https://github.com/user-attachments/assets/532f23a2-e322-4e7a-968c-259b3f4c8367)
+![Screenshot (97)](https://github.com/user-attachments/assets/7474a10c-2482-4d2b-b91e-09d35d6cfbec)
+![Screenshot (98)](https://github.com/user-attachments/assets/35debe68-2059-44ad-b1ca-bd777022daee)
+
 
 🛠️ Tech Stack
 Frontend: HTML, CSS, JavaScript, jQuery, Bootstrap
