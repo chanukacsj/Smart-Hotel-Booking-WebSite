@@ -90,7 +90,7 @@ public class BookingController {
 
 
             // Constructing the payment link with PayHere
-            String paymentLink = appDomain+"/Payment.html?bookingId=" + id;
+            String paymentLink = "https://smart-hotel-booking-28c26.web.app/index?bookingId=" + id;
 
             // Sending the booking confirmation email with the payment link
             emailService.sendBookingConfirmationEmail(userEmail, bookingDetails, paymentLink);

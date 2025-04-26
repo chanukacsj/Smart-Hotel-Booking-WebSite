@@ -19,6 +19,7 @@ import java.net.URI;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @CrossOrigin(origins = "*")
@@ -66,6 +67,7 @@ public class PaymentController {
         String currency       = "LKR";
         DecimalFormat df       = new DecimalFormat("0.00");
         String amountFormatted = df.format(amount1);
+        System.out.println("amountFor"+amountFormatted);
         String hash    = getMd5(merahantID + orderID + amountFormatted + currency + getMd5(merchantSecret));
         System.out.println("Generated Hash: " + hash);
 
@@ -73,12 +75,13 @@ public class PaymentController {
         PaymentDTO payment = new PaymentDTO();
         payment.setMerchantId("1230019");
         payment.setCurrency("LKR");
-        payment.setReturnUrl(appDomain + "/PaymentSuccess.html");
-        payment.setCancelUrl(appDomain + "/PaymentCancel.html");
-        payment.setNotifyUrl("https://localhost:8080/api/v1/payment/notify");
+        payment.setReturnUrl("https://smart-hotel-booking-28c26.web.app/PaymentCancel.html");
+        payment.setCancelUrl("https://smart-hotel-booking-28c26.web.app/PaymentSuccess.html");
+        payment.setNotifyUrl("https://a6d9-2402-4000-2170-6d3-609f-35ae-c74d-5324.ngrok-free.app/api/v1/payment/notify");
 //        https://localhost:8080/api/v1/paymentent/notify
         payment.setHash(hash);
-        payment.setAmount(amount1);
+        payment.setAmount(Double.parseDouble(amountFormatted));
+        payment.setBookingId(bookingId);
 
         System.out.println("payment "+payment);
         return ResponseEntity.status(HttpStatus.OK)
@@ -86,19 +89,19 @@ public class PaymentController {
 
     }
 
-    @PostMapping("/save")
-    public ResponseEntity<ResponseDTO> savePayment(@RequestBody @Valid PaymentDTO paymentDTO) {
-
-        System.out.println("Payment Amount: " + paymentDTO.getAmount());
-        System.out.println("Payment Method: " + paymentDTO.getMethod());
-        System.out.println("Booking ID: " + paymentDTO.getBookingId());
-        System.out.println("Payment Date: " + paymentDTO.getPaymentDate());
-
-        paymentServiceimpl.save(paymentDTO);
-        return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK, "Payment Successfully", null));
-
-    }
+//    @PostMapping("/save")
+//    public ResponseEntity<ResponseDTO> savePayment(@RequestBody @Valid PaymentDTO paymentDTO) {
+//
+//        System.out.println("Payment Amount: " + paymentDTO.getAmount());
+//        System.out.println("Payment Method: " + paymentDTO.getMethod());
+//        System.out.println("Booking ID: " + paymentDTO.getBookingId());
+//        System.out.println("Payment Date: " + paymentDTO.getPaymentDate());
+//
+//        paymentServiceimpl.save(paymentDTO);
+//        return ResponseEntity.status(HttpStatus.OK)
+//                .body(new ResponseDTO(VarList.OK, "Payment Successfully", null));
+//
+//    }
 
     @GetMapping("/success")
     public ResponseEntity<String> paymentSuccess(@RequestParam("payment_id") String paymentId) {
@@ -113,26 +116,32 @@ public class PaymentController {
                 .body("Payment Cancelled!");
     }
 
-    @GetMapping("/notify")
+    @PostMapping("/notify")
     public ResponseEntity<String> handleNotification(@RequestParam Map<String, String> params) {
         System.out.println("Received notification: ");
         String status = params.get("status_code");
         String orderId = params.get("order_id");
         String method = params.get("method");
-        String amount = params.get("payhere_amount");
+        String amountStr = params.get("payhere_amount");
 
         if ("2".equals(status)) {
-            // Save Order & Payment here
-            System.out.println("✅ Payment successful: Order ID = " + orderId + ", Amount = " + amount);
-            // call your orderService.saveOrderPayment(...)
+            System.out.println("✅ Payment successful: Order ID = " + orderId + ", Amount = " + amountStr);
+
+            // Convert to DTO
+            PaymentDTO paymentDTO = new PaymentDTO();
+            paymentDTO.setBookingId(Long.parseLong(orderId));
+            paymentDTO.setAmount(Double.parseDouble(amountStr));
+            paymentDTO.setMethod(method);
+            paymentDTO.setPaymentDate(LocalDateTime.parse(LocalDateTime.now().toString()));
+
+            // Save to DB
+            paymentServiceimpl.save(paymentDTO);
         } else {
             System.out.println("❌ Payment not successful: Order ID = " + orderId);
         }
 
         return ResponseEntity.ok("Received");
     }
-
-
     @GetMapping("getAll")
     @PreAuthorize("hasAnyAuthority('ADMIN')")
     public ResponseEntity<ResponseDTO> getAllPayments(@RequestHeader("Authorization") String token) {
