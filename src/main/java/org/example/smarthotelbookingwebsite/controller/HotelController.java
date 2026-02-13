@@ -35,13 +35,11 @@ import java.util.List;
 @RequestMapping("api/v1/hotel")
 public class HotelController {
     private final HotelService hotelService;
-    private final HotelServiceImpl hotelServiceImpl;
     @Autowired
     JwtUtil jwtUtil;
 
-    public HotelController(HotelService hotelService, HotelServiceImpl hotelServiceImpl) {
+    public HotelController(HotelService hotelService) {
         this.hotelService = hotelService;
-        this.hotelServiceImpl = hotelServiceImpl;
     }
     @PostMapping(value = "/save")
     @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
@@ -69,7 +67,7 @@ public class HotelController {
         System.out.println(hotelDto.getImage());
 
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
-        hotelServiceImpl.updateHotel(id,hotelDto);
+        hotelService.updateHotel(id,hotelDto);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Hotel Updated Successfully", null));
     }
@@ -78,6 +76,6 @@ public class HotelController {
     public ResponseEntity<ResponseDTO>getAllHotels(@RequestHeader("Authorization") String token) {
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
         return ResponseEntity.status(HttpStatus.OK)
-                .body(new ResponseDTO(VarList.OK,"Success",hotelServiceImpl.getAllHotels()));
+                .body(new ResponseDTO(VarList.OK,"Success",hotelService.getAllHotels()));
     }
 }

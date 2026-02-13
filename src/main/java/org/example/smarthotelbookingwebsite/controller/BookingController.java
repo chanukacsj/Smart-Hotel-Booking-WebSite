@@ -21,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/v1/booking")
 public class BookingController {
     private final BookingService bookingService;
-    private final BookingServiceImpl bookingServiceImpl;
-    private final EmailServiceImpl emailServiceImpl;
     private final EmailService emailService;
     @Value("${app.domain}")
     private String appDomain;
@@ -31,11 +29,8 @@ public class BookingController {
     @Autowired
     JwtUtil jwtUtil;
 
-    public BookingController(BookingService bookingService, BookingServiceImpl bookingServiceImpl, EmailServiceImpl emailServiceImpl, EmailService emailService) {
+    public BookingController(BookingService bookingService, EmailService emailService) {
         this.bookingService = bookingService;
-        this.bookingServiceImpl = bookingServiceImpl;
-
-        this.emailServiceImpl = emailServiceImpl;
         this.emailService = emailService;
     }
 
@@ -48,7 +43,7 @@ public class BookingController {
 
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
 
-        bookingServiceImpl.save(bookingDTO);
+        bookingService.save(bookingDTO);
 
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Booking Saved Successfully", null));
@@ -75,7 +70,7 @@ public class BookingController {
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
 
         // Update the booking
-        bookingServiceImpl.update(id, bookingDTO);
+        bookingService.update(id, bookingDTO);
 
         // If the booking is confirmed, generate the payment link
         if ("CONFIRMED".equals(bookingDTO.getStatus())) {

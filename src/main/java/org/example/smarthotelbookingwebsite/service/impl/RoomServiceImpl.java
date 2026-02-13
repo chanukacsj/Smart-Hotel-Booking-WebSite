@@ -34,7 +34,7 @@ public class RoomServiceImpl implements RoomService {
 
     @Override
     public void save(RoomDTO roomDTO) {
-       roomRepository.save(modelMapper.map(roomDTO,Room.class));
+       roomRepository.save(modelMapper.map(roomDTO,Room.class)); // RoomDTO → Room entity convert karanawa
     }
 
     @Override

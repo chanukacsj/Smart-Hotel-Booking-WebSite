@@ -12,27 +12,33 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+
 @CrossOrigin(origins = "http://localhost:63342")
 @RestController
 @RequestMapping("api/v1/room")
 public class RoomController {
     private final RoomService roomService;
-    private final RoomServiceImpl roomServiceImpl;
+   // private final RoomServiceImpl roomServiceImpl;
+
     @Autowired
     JwtUtil jwtUtil;
 
     public RoomController(RoomService roomService, RoomServiceImpl roomServiceImpl) {
         this.roomService = roomService;
-        this.roomServiceImpl = roomServiceImpl;
+     //   this.roomServiceImpl = roomServiceImpl;
     }
+
     @PostMapping("/save")
-    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
+    @PreAuthorize("hasAnyAuthority('ADMIN','Manager')") // role eka check karanawa token eken
+
     public ResponseEntity<ResponseDTO> saveRoom(@RequestBody @Valid RoomDTO roomDTO,@RequestHeader("Authorization") String token) {
+
         System.out.println("hotelID"+" "+roomDTO.getHotelID());
         System.out.println(roomDTO.getImage1());
         System.out.println(roomDTO.getImage2());
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
-        roomServiceImpl.save(roomDTO);
+        roomService.save(roomDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Room Saved Successfully", null));
     }
@@ -48,8 +54,9 @@ public class RoomController {
     @PreAuthorize("hasAnyAuthority('ADMIN','Manager')")
     public ResponseEntity<ResponseDTO> updateRoom(@PathVariable Long id, @RequestBody @Valid RoomDTO roomDTO,@RequestHeader("Authorization") String token) {
         System.out.println(roomDTO.getImage1()+"   Image 1");
+
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
-        roomServiceImpl.update(id,roomDTO);
+        roomService.update(id,roomDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Room Updated Successfully", null));
     }

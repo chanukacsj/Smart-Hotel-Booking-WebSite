@@ -41,7 +41,7 @@ public class ReviewController {
     public ResponseEntity<ResponseDTO> saveReview(@RequestBody @Valid ReviewDTO reviewDTO,@RequestHeader("Authorization") String token) {
         System.out.println("date"+reviewDTO.getReviewDate());
         jwtUtil.getUserRoleCodeFromToken(token.substring(7));
-        reviewServiceImpl.save(reviewDTO);
+        reviewService.save(reviewDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Review Saved Successfully", null));
     }
@@ -53,7 +53,7 @@ public class ReviewController {
     }
     @PutMapping("/update/{id}")
     public ResponseEntity<ResponseDTO> updateReview(@PathVariable Long id, @RequestBody @Valid ReviewDTO reviewDTO) {
-        reviewServiceImpl.update(id,reviewDTO);
+        reviewService.update(id,reviewDTO);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(new ResponseDTO(VarList.OK, "Review Updated Successfully", null));
     }

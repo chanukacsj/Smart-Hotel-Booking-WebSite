@@ -19,13 +19,12 @@ import java.util.List;
 @RequestMapping("api/v1/ManagerRoom")
 public class ManagerRoomController {
     private final RoomService roomService;
-    private final RoomServiceImpl roomServiceImpl;
+
     @Autowired
     JwtUtil jwtUtil;
 
-    public ManagerRoomController(RoomService roomService, RoomServiceImpl roomServiceImpl) {
+    public ManagerRoomController(RoomService roomService) {
         this.roomService = roomService;
-        this.roomServiceImpl = roomServiceImpl;
     }
     @GetMapping("/getAllRoomByHotelID")
     @PreAuthorize("hasAnyAuthority('Manager')")

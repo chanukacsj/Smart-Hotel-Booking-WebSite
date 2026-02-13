@@ -19,7 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
-@Configuration
+@Configuration // configuration class
 @EnableMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig {
     @Autowired
